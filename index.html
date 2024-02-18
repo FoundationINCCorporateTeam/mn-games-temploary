@@ -43,13 +43,43 @@
       background-color: #2ac;
     }
   </style>
+      <style>
+        /* Styling for the buttons */
+        .futuristic-button {
+            background-color: #4CAF50; /* Green background */
+            border: none;
+            color: white; /* White text */
+            padding: 15px 30px; /* Padding */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s; /* Smooth transition */
+            cursor: pointer;
+            border-radius: 12px; /* Rounded corners */
+            font-family: Arial, sans-serif; /* Futuristic font */
+            outline: none; /* Remove outline */
+            border: 2px solid transparent; /* Transparent border */
+        }
+
+        /* Hover effect */
+        .futuristic-button:hover {
+            background-color: #45a049; /* Darker green */
+            border: 2px solid #4CAF50; /* Green border */
+        }
+    </style>
 </head>
 <body>
   <div class="container">
     <h1>Welcome to MN Games</h1>
     <p>Experience the future of gaming. (Hello! Welcome to our temporary website. We are trying to find a soulution to our website with authentication being blocked. We are still trying to find soultions but as of right now we are working on upgrading our Ultimate Games Website hosting. Ultimate v2. Has been depricated.)</p>
-    <button onclick="window.location.href='/premium.html'">Go to Premium</button>
-    <button onclick="window.location.href='/ultimate.html'">Go to Ultimate</button>
+ <!-- Premium button -->
+    <button class="futuristic-button" onclick="window.location.href='/premium.html'">Premium Games</button>
+    
+    <!-- Ultimate button -->
+    <button class="futuristic-button" onclick="window.location.href='/ultimate.html'">Ultimate Games</button>
+</body>
 
 
 </body>
