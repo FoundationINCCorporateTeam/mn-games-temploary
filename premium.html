@@ -45,11 +45,13 @@
   </style>
 </head>
 <body>
-  <button class="button" onclick="openSecureBrowser()"> MN Games Premium Website</button>
+    <button class="button" onclick="openSecureBrowser()">Open MN Games Premium Website</button>
+  </div>
 
-  <script> function openSecureBrowser () {
-  var newWindow = window.open('about:blank', '_blank');
-  newWindow.document.write(<html><head><title><MN Secure Browser></title></head><iframe src="https://v1-hjrifndbdhjdjdndbdhdhdbvr.manica.org/"style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
-}</script>
-</body>
+  <script>
+    function openSecureBrowser() {
+      var newWindow = window.open('about:blank', '_blank');
+      newWindow.document.write('<html><head><title>MN Games Secure Browser</title></head><body><iframe src="https://mnsecurebrowser.spoggi.com/" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
+    }
+  </script>
 </html>
