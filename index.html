@@ -105,7 +105,30 @@
         zoneId: 'rlqg3eqjxi',
     });
 </script>
-    <script type="text/javascript"> var infolinks_pid = 3415303; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+    <script type="text/javascript">
+	    // Advanced Anti Ad Blocker with Notification
+function detectAdBlockerAdvanced() {
+    const adBlockerDetected = document.createElement('div');
+    adBlockerDetected.innerHTML = 'Please disable your ad blocker to support our website.';
+    adBlockerDetected.style.color = 'red';
+    adBlockerDetected.style.fontSize = '20px';
+    
+    document.body.appendChild(adBlockerDetected);
+    
+    setTimeout(() => {
+        if(adBlockerDetected.offsetHeight === 0) {
+            console.log('Ad blocker is not active.');
+        } else {
+            console.log('Ad blocker detected. Notifying user...');
+            alert('Please disable your ad blocker to access the content.');
+        }
+        document.body.removeChild(adBlockerDetected);
+    }, 100);
+}
+
+detectAdBlockerAdvanced();
+    </script>
+	  <script type="text/javascript"> var infolinks_pid = 3415303; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
 </body>
 </body>
 </html>
