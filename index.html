@@ -123,23 +123,30 @@ i.inpagepush('show');
 })(window, document);
 </script>
 
-       <form id='form' role='search'>
-<input type='search' id='query' name='q'
-placeholder='Search...'
-aria-label='Search through site content' required>
-<button>Search</button>
-</form>
 <script>
-const f = document.getElementById('form');
-const q = document.getElementById('query');
-function submitted(event) {
-event.preventDefault();
-const url = 'https://xml.ezmob.com/redirect?feed=645312&auth=Xiszrv&query=' + q.value + '&url=https://mn.basiclue.com';
-const win = window.open(url, '_blank');
-win.focus();
-}
-f.addEventListener('submit', submitted);
+(function(i,n,t,s,t,l){
+ i.intstl = i.intstl || function() {
+  (i.intstl.q=(i.intstl.q||[])).push(arguments)
+};
+var s=n.getElementsByTagName('head')[0];
+var q=n.createElement('script'); q.async=1;
+q.src='https://static.ezmob.com/intstl/intstl.js';
+s.appendChild(q);
+i.intstl('init', {
+ host: 'xml.ezmob.com',
+ feed: 645313,
+ auth : 'WOUGXs',
+ logo: 'https://adk.ezmob.com/images/icoLogo.png',
+ color1: '#3c8dbc', color2: '#307196',
+ textColor: 'white', background: '#f7f7f6',
+ engagementPeriod: 10,
+ interval: 15,
+defer: 10
+});
+i.intstl('show');
+})(window, document);
 </script>
+                                
 
                                                          
                                 
