@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournaments</title>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Tournaments</h1>
+</header>
+
+<main>
+    <section id="tournament-info">
+        <h2>Tournament Information</h2>
+        <p>Here you can find information about our latest tournaments.</p>
+        <!-- Add your tournament information here -->
+    </section>
+
+    <section id="join-tournament">
+        <h2>Join Latest Tournament</h2>
+        <p>Click the button below to join our latest tournament:</p>
+        <a href="https://challonge.com/tournaments/signup/IlOybxDgMQ#/signup/6tbwv64mgu" target="_blank" rel="noopener noreferrer">
+            <button>Join Latest Tournament</button>
+        </a>
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2024 Your Website Name. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
