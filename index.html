@@ -28,8 +28,7 @@
     }
 
     nav a {
-        float: left;
-        display: block;
+        display: inline-block;
         color: white;
         text-align: center;
         padding: 14px 20px;
@@ -46,9 +45,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: auto;
-        padding-bottom: 20px; /* Added padding to push content down */
-        margin-top: 50px; /* Added margin to push content down */
+        padding: 20px;
+        margin-top: 50px;
     }
 
     /* Button Styles */
@@ -61,7 +59,7 @@
         text-decoration: none;
         display: inline-block;
         font-size: 16px;
-        margin: 4px 2px;
+        margin: 10px; /* Increased margin for spacing */
         transition-duration: 0.4s;
         cursor: pointer;
         border-radius: 12px;
@@ -77,20 +75,20 @@
 
     .premium-button,
     .ultimate-button {
-        width: auto; /* Adjusting width to fit content */
+        width: auto;
     }
 
     .card-container {
         display: flex;
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 20px;
+        flex-wrap: wrap; /* Allows cards to wrap to the next line */
         margin-top: 20px;
     }
 
     .card {
-        flex: 1 0 300px; /* Flexbox for responsive grid */
+        flex: 1 0 300px;
         max-width: 300px;
+        margin: 20px;
         text-align: center;
         background-color: #f0f0f0;
         border-radius: 10px;
@@ -114,7 +112,8 @@
         color: #666;
     }
 
-    button {
+    button,
+    a {
         border: none;
         outline: 0;
         display: inline-block;
@@ -125,12 +124,7 @@
         cursor: pointer;
         width: 100%;
         font-size: 18px;
-    }
-
-    a {
         text-decoration: none;
-        font-size: 22px;
-        color: black;
     }
 
     button:hover,
