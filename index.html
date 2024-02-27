@@ -25,15 +25,16 @@
         background-color: black;
         overflow: hidden;
         width: 100%;
+        padding: 8px 0; /* Reduced top and bottom padding */
     }
 
     nav a {
-        float: left;
-        display: block;
+        display: inline-block;
         color: white;
         text-align: center;
-        padding: 14px 20px;
+        padding: 10px 15px;
         text-decoration: none;
+        font-size: 16px;
     }
 
     nav a:hover {
@@ -46,9 +47,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: auto;
-        padding-bottom: 20px; /* Added padding to push content down */
-        margin-top: 50px; /* Added margin to push content down */
+        padding-bottom: 20px;
+        margin-top: 50px;
     }
 
     /* Button Styles */
@@ -77,20 +77,24 @@
 
     .premium-button,
     .ultimate-button {
-        width: auto; /* Adjusting width to fit content */
+        width: auto;
+    }
+
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
     }
 
     .card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        width: 300px; /* Fixed width */
-        height: 300px; /* Fixed height */
-        margin: auto;
+        width: 300px;
         text-align: center;
         background-color: #f0f0f0;
         border-radius: 10px;
         padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-top: 20px; /* Adjusted margin to push the card closer to the Ultimate button */
+        margin: 10px; /* Reduced margin */
     }
 
     .card img {
@@ -107,6 +111,7 @@
     .card p {
         font-size: 16px;
         color: #666;
+        margin: 10px 0; /* Adjusted margin */
     }
 
     button {
@@ -150,21 +155,24 @@
 
     <h2>Meet The Creators!</h2>
 
-    <div class="card">
-        <h1>Nolan</h1>
-        <p class="title">CEO, Lead Developer, and Founder</p>
-        <p>Hi I am the owner and founder of MN Games!</p>
+    <div class="card-container">
+        <div class="card">
+            <h1>Nolan</h1>
+            <p class="title">CEO, Lead Developer, and Founder</p>
+            <p>Hi I am the owner and founder of MN Games!</p>
+        </div>
+        <div class="card">
+            <h1>Vinny</h1>
+            <p class="title">Chief Administrative Officer</p>
+            <p></p>
+        </div>
+        <div class="card">
+            <h1>Eil (6th Grade)</h1>
+            <p class="title">Chief 6th Grade Management Officer</p>
+            <p></p>
+        </div>
     </div>
-    <div class="card">
-        <h1>Vinny</h1>
-        <p class="title">Chief Administrative Officer</p>
-        <p></p>
-    </div>
-    <div class="card">
-        <h1>Eil (6th Grade)</h1>
-        <p class="title">Chief 6th Grade Management Officer</p>
-        <p></p>
-    </div>
+
     <button class="futuristic-button ultimate-button" onclick="window.location.href='/ourteam.html'">View more of our leaders!</button>
 </div>
 
