@@ -26,7 +26,8 @@
     }
 
     nav a {
-        display: inline-block; /* Display inline-block to keep navbar horizontal */
+        float: left;
+        display: block;
         color: white;
         text-align: center;
         padding: 14px 20px;
@@ -40,52 +41,17 @@
     /* Container Styles */
     .container {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        margin-top: 50px;
-    }
-
-    /* Button Styles */
-    .futuristic-button {
-        background-color: #4CAF50;
-        border: none;
-        color: white;
-        padding: 15px 30px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 10px;
-        transition-duration: 0.4s;
-        cursor: pointer;
-        border-radius: 12px;
-        font-family: Arial, sans-serif;
-        outline: none;
-        border: 2px solid transparent;
-    }
-
-    .futuristic-button:hover {
-        background-color: #45a049;
-        border: 2px solid #4CAF50;
-    }
-
-    .premium-button,
-    .ultimate-button {
-        width: auto;
-    }
-
-    .card-container {
-        display: flex;
-        justify-content: center;
         flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
         margin-top: 20px;
     }
 
+    /* Card Styles */
     .card {
-        flex: 1 0 300px;
-        max-width: 300px;
+        flex: 0 0 calc(33.33% - 40px); /* Adjusting card width for a 3-column grid */
+        max-width: calc(33.33% - 40px);
         margin: 20px;
         text-align: center;
         background-color: #f0f0f0;
@@ -95,39 +61,20 @@
     }
 
     .card img {
-        width: 100%;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
+        margin-bottom: 15px;
     }
 
-    .card h1 {
-        margin-top: 10px;
-        font-size: 24px;
+    .card h2 {
+        font-size: 20px;
         color: #333;
     }
 
     .card p {
         font-size: 16px;
         color: #666;
-    }
-
-    button,
-    a {
-        border: none;
-        outline: 0;
-        display: inline-block;
-        padding: 8px;
-        color: white;
-        background-color: #000;
-        text-align: center;
-        cursor: pointer;
-        width: 100%;
-        font-size: 18px;
-        text-decoration: none;
-    }
-
-    button:hover,
-    a:hover {
-        opacity: 0.7;
     }
 </style>
 </head>
@@ -140,39 +87,54 @@
 </nav>
 
 <div class="container">
-    <h1>Welcome to MN Games</h1>
-    <p>Experience the future of gaming. Attention! We have put ads on our website to upgrade our hosting! You don't have to but if you would click on them that would earn us more revenue.</p>
-    <button class="futuristic-button premium-button" onclick="window.location.href='/premium.html'">Premium Games</button>
-    <button class="futuristic-button ultimate-button" onclick="window.location.href='/ultimate.html'">Ultimate Games</button>
-
-    <h2>Meet The Creators!</h2>
-
-    <div class="card-container">
-        <div class="card">
-            <h1>Nolan</h1>
-            <p class="title">CEO, Lead Developer, and Founder</p>
-            <p>Hi I am the owner and founder of MN Games!</p>
-        </div>
-        <div class="card">
-            <h1>Vinny</h1>
-            <p class="title">Chief Administrative Officer</p>
-            <p></p>
-        </div>
-        <div class="card">
-            <h1>Eil (6th Grade)</h1>
-            <p class="title">Chief 6th Grade Management Officer</p>
-            <p></p>
-        </div>
+    <!-- Team Cards -->
+    <div class="card">
+        <h2>Nolan</h2>
+        <p>Position: MN Games Owner, founder, and lead developer</p>
     </div>
+    <div class="card">
 
-    <button class="futuristic-button ultimate-button" onclick="window.location.href='/ourteam.html'">View more of our leaders!</button>
+        <h2>Vinny</h2>
+        <p>Position: CAO Chief Administrative Officer</p>
+    </div>
+      <div class="card">
+
+        <h2>Carsten</h2>
+        <p>Position: Chief of Staff</p>
+    </div>
+      <div class="card">
+
+        <h2>Logan</h2>
+        <p>Position: Chief Customer Relations Officer</p>
+    </div>
+      <div class="card">
+
+        <h2>Eil A (6th Grade)</h2>
+        <p>Position: Chief 6th Grade Managment Officer</p>
+    </div>
+      <div class="card">
+
+        <h2>Aaron</h2>
+        <p>Position: Chief Operations Officer</p>
+    </div>
+      <div class="card">
+
+        <h2>Rush (6th Grade)</h2>
+        <p>Position: 6th Grade Support and Manager</p>
+    </div>
+      <div class="card">
+
+        <h2>Bryson</h2>
+        <p>Position: Chief Human Resource Officer</p>
+    </div>
+      <div class="card">
+
+        <h2>Maxx</h2>
+        <p>Position: Head Sales Manager</p>
+    </div>
+    <h2>There are many other people who are in our workforce but these are most of our company leaders</h2>
+    <!-- Repeat the above card structure for other team members -->
 </div>
-
-<h2> Hello! I have two favors to ask! If you would do this for me it would mean the world to me!</h2>
-<p>One, if you could share this with your friends to get more people on our website I would appreciate it. This would help me with ad revenue and help me fund our site.</p>
-<p>Two, if you would click on ads that would also really help me fund our site!</p>
-<h3>Thank you so much!</h3>
 
 </body>
 </html>
-
