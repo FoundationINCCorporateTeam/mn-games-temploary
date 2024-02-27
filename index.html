@@ -73,38 +73,40 @@
             border: 2px solid #4CAF50;
         }
     </style>
-	    <style>
-        /* CSS for styling */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #000; /* Black background */
-            color: #fff; /* White text color */
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .profile {
-            background-color: #222; /* Dark grey background */
-            width: 300px;
-            margin: 20px auto;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* White shadow */
-        }
-        .profile img {
-            width: 200px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
-        .profile h2 {
-            margin-bottom: 10px;
-            color: #fff; /* White text color */
-        }
-        .profile p {
-            color: #ccc; /* Light grey text color */
-            margin-bottom: 5px;
-        }
-    </style>
+	<style>.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+}
+
+.title {
+  color: grey;
+  font-size: 18px;
+}
+
+button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+a {
+  text-decoration: none;
+  font-size: 22px;
+  color: black;
+}
+
+button:hover, a:hover {
+  opacity: 0.7;
+}</style>
 </head>
 <body>
 <nav>
@@ -118,11 +120,20 @@
     <h1>Welcome to MN Games</h1>
     <p>Experience the future of gaming. Attention! We have put ads on our website to upgrade our hosting! You don't have to but if you would click on them that would earn us more revenue.</p>
 	<h2>Meet The Creators!</h2>
-    <div class="profile">
-        <img src="istockphoto-176230653-612x612.jpg" alt="Nolan's Photo">
-        <h2>Nolan</h2>
-        <p>Role: Owner and founder of MN Games</p>
-    </div>
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="card">
+  <img src="img.jpg" alt="John" style="width:100%">
+  <h1>John Doe</h1>
+  <p class="title">CEO & Founder, Example</p>
+  <p>Harvard University</p>
+  <a href="#"><i class="fa fa-dribbble"></i></a>
+  <a href="#"><i class="fa fa-twitter"></i></a>
+  <a href="#"><i class="fa fa-linkedin"></i></a>
+  <a href="#"><i class="fa fa-facebook"></i></a>
+  <p><button>Contact</button></p>
+</div>
 
 
     <button class="futuristic-button" onclick="window.location.href='/premium.html'">Premium Games</button>
