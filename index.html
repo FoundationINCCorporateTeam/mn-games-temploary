@@ -41,6 +41,11 @@
         background-color: #555;
     }
 
+    /* Move navigation links to the left side */
+    nav .left-links {
+        float: left;
+    }
+
     /* Container Styles */
     .container {
         display: flex;
@@ -141,17 +146,22 @@
 </head>
 <body>
 <nav>
-    <a href="index.html">Home</a>
-    <a href="premium.html">Premium</a>
-    <a href="ultimate.html">Ultimate</a>
-    <a href="tournaments.html">Tournaments</a>
+    <div class="left-links">
+        <a href="index.html">Home</a>
+        <a href="premium.html">Premium</a>
+        <a href="ultimate.html">Ultimate</a>
+        <a href="tournaments.html">Tournaments</a>
+    </div>
+    <div class="right-links">
+        <!-- Moved buttons to the left side -->
+        <button class="futuristic-button premium-button" onclick="window.location.href='/premium.html'">Premium Games</button>
+        <button class="futuristic-button ultimate-button" onclick="window.location.href='/ultimate.html'">Ultimate Games</button>
+    </div>
 </nav>
 
 <div class="container">
     <h1>Welcome to MN Games</h1>
     <p>Experience the future of gaming. Attention! We have put ads on our website to upgrade our hosting! You don't have to but if you would click on them that would earn us more revenue.</p>
-    <button class="futuristic-button premium-button" onclick="window.location.href='/premium.html'">Premium Games</button>
-    <button class="futuristic-button ultimate-button" onclick="window.location.href='/ultimate.html'">Ultimate Games</button>
 
     <h2>Meet The Creators!</h2>
 
