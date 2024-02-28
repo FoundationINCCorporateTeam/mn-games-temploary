@@ -63,23 +63,6 @@
             background-color: #2ac;
         }
     </style>
-	  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    #passwordProtection {
-      text-align: center;
-    }
-
-    #content {
-      display: none;
-    }
-  </style>
 </head>
 <body>
 
@@ -93,7 +76,7 @@
     <input type="password" id="passwordInput" placeholder="Enter password">
     <button onclick="checkPassword()">Submit</button>
   </div>
-  <div id="content">
+  <div id="content" style="display: none;">
     <button onclick="openBlankPage()">Open MN Games Enterprise Proxy</button>
   </div>
 
@@ -117,4 +100,4 @@
   </script>
 
 </body>
-</html> 
+</html>
