@@ -6,7 +6,59 @@
   <title>Home | Schoology</title>
   <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
   <style>
-    /* ... Your existing CSS styles ... */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+    }
+    /* Navbar Styles */
+    nav {
+      background-color: black;
+      overflow: hidden;
+      width: 100%;
+    }
+    nav a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+    nav a:hover {
+      background-color: #555;
+    }
+    /* Container Styles */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 50vh;
+    }
+    /* Button Styles */
+    .button {
+      padding: 15px 30px;
+      font-size: 1.1em;
+      background-color: #3af;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #2ac;
+    }
+    /* Script Section */
+    #scriptSection {
+      display: none;
+      text-align: left;
+      padding: 20px;
+    }
   </style>
   <script>
     function toggleScriptSection() {
@@ -46,40 +98,47 @@
 
   <button class="button" onclick="toggleScriptSection()">Show Page Source</button>
 
-  <pre id="scriptSection">
-    &lt;!DOCTYPE html&gt;
-    &lt;html lang="en"&gt;
-    &lt;head&gt;
-      &lt;meta charset="UTF-8"&gt;
-      &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-      &lt;title&gt;Home | Schoology&lt;/title&gt;
-      &lt;link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/&gt;
-      &lt;style&gt;
-        /* ... Your existing CSS styles ... */
-      &lt;/style&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-      &lt;nav&gt;
-        <!-- ... Your existing navigation links ... -->
-      &lt;/nav&gt;
+  <div id="scriptSection">
+    <pre>
+      &lt;!DOCTYPE html&gt;
+      &lt;html lang="en"&gt;
+      &lt;head&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+        &lt;title&gt;Home | Schoology&lt;/title&gt;
+        &lt;link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/&gt;
+        &lt;style&gt;
+          /* CSS styles here */
+        &lt;/style&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+        &lt;nav&gt;
+          &lt;a href="index.html"&gt;Home&lt;/a&gt;
+          &lt;a href="premium.html"&gt;Premium&lt;/a&gt;
+          &lt;a href="ultimate.html"&gt;Ultimate&lt;/a&gt;
+          &lt;a href="tournaments.html"&gt;Tournaments&lt;/a&gt;
+          &lt;a href="enterprise.html"&gt;Enterprise Proxy and Websites&lt;/a&gt;
+          &lt;a href="https://mnsupport.ladesk.com/"&gt;MN Games Support&lt;/a&gt;
+          &lt;a href="elite.js"&gt;Elite&lt;/a&gt;
+        &lt;/nav&gt;
 
-      &lt;h2&gt;Elite is coming... Are you ready?&lt;/h2&gt;
+        &lt;h2&gt;Elite is coming... Are you ready?&lt;/h2&gt;
 
-      &lt;p&gt;Information: Our developers are excited to announce that the MN Games Elite website is on the way!&lt;br&gt;
-      We do not have a set release date but a release date will be posted here when it releases.&lt;br&gt;
-      (Update) My name is Nolan! I am one of the lead developers of MN Games! I am here to explain some of the features on MN Games to you.&lt;br&gt;
-      Here are some of the game sites that might be accessible to you in the new site (This is not a guarantee just a plan):&lt;br&gt;
-      - Shell Shockers&lt;br&gt;
-      - Among Us (Probably a popular remake)&lt;br&gt;
-      - Roblox (Big if on this one depends on the site that Roblox is on)&lt;br&gt;
-      - Fortnite (if our site that we host it on works)&lt;br&gt;
-      Those were just some of the many websites that could be on the new site.&lt;br&gt;
-      Elite will focus much more on online games and less on game websites like Ultimate.&lt;br&gt;
-      There will be much more information to come and this is where the information will be posted! If you have any questions, contact us!&lt;/p&gt;
+        &lt;p&gt;Information: Our developers are excited to announce that the MN Games Elite website is on the way!&lt;br&gt;
+        We do not have a set release date but a release date will be posted here when it releases.&lt;br&gt;
+        (Update) My name is Nolan! I am one of the lead developers of MN Games! I am here to explain some of the features on MN Games to you.&lt;br&gt;
+        Here are some of the game sites that might be accessible to you in the new site (This is not a guarantee just a plan):&lt;br&gt;
+        - Shell Shockers&lt;br&gt;
+        - Among Us (Probably a popular remake)&lt;br&gt;
+        - Roblox (Big if on this one depends on the site that Roblox is on)&lt;br&gt;
+        - Fortnite (if our site that we host it on works)&lt;br&gt;
+        Those were just some of the many websites that could be on the new site.&lt;br&gt;
+        Elite will focus much more on online games and less on game websites like Ultimate.&lt;br&gt;
+        There will be much more information to come and this is where the information will be posted! If you have any questions, contact us!&lt;/p&gt;
 
-    &lt;/body&gt;
-    &lt;/html&gt;
-  </pre>
-
+      &lt;/body&gt;
+      &lt;/html&gt;
+    </pre>
+  </div>
 </body>
 </html>
