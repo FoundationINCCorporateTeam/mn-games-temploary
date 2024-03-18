@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Schoology</title>
+    <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
+</head>
+<body>
+    <script>
+
 // Create meta elements
 const metaCharset = document.createElement('meta');
 metaCharset.setAttribute('charset', 'UTF-8');
@@ -124,3 +135,7 @@ document.body.appendChild(featureRequestLink);
 document.body.appendChild(noltScript);
 document.body.appendChild(hubSpotScript);
 
+
+    </script>
+</body>
+</html>
