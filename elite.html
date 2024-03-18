@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Schoology</title>
+    <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #222;
+            color: #fff;
+            text-align: center;
+        }
+        /* Navbar Styles */
+        nav {
+            background-color: black;
+            overflow: hidden;
+            width: 100%;
+        }
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        /* Container Styles */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 50vh;
+        }
+        /* Button Styles */
+        .button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            background-color: #3af;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #2ac;
+        }
+        /* Script Section */
+        #scriptSection {
+            display: none;
+            text-align: left;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="premium.html">Premium</a>
+        <a href="ultimate.html">Ultimate</a>
+        <a href="tournaments.html">Tournaments</a>
+        <a href="enterprise.html">Enterprise Proxy and Websites</a>
+        <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
+        <a href="elite.js">Elite</a>
+    </nav>
+
+    <h2>Elite is coming... Are you ready?</h2>
+
+    <p>Information: Our developers are excited to announce that the MN Games Elite website is on the way!<br>
+    We do not have a set release date but a release date will be posted here when it releases.<br>
+    (Update) My name is Nolan! I am one of the lead developers of MN Games! I am here to explain some of the features on MN Games to you.<br>
+    Here are some of the game sites that might be accessible to you in the new site (This is not a guarantee just a plan):<br>
+    - Shell Shockers<br>
+    - Among Us (Probably a popular remake)<br>
+    - Roblox (Big if on this one depends on the site that Roblox is on)<br>
+    - Fortnite (if our site that we host it on works)<br>
+    Those were just some of the many websites that could be on the new site.<br>
+    Elite will focus much more on online games and less on game websites like Ultimate.<br>
+    There will be much more information to come and this is where the information will be posted! If you have any questions, contact us!</p>
+
+    <a class="button" data-nolt="button" href="https://mn-games-feedback-and-website-ideas.nolt.io">Feature Request</a>
+
+    <div id="scriptSection">
+        <h3>Page Script:</h3>
+        <pre>
+            <?php
+            // Here goes the PHP code to output the script content
+            $scriptContent = file_get_contents(__FILE__);
+            echo htmlspecialchars($scriptContent);
+            ?>
+        </pre>
+    </div>
+
+    <button class="button" id="toggleScriptButton">Show Code</button>
+
+    <script>
+        const scriptSection = document.getElementById('scriptSection');
+        const toggleScriptButton = document.getElementById('toggleScriptButton');
+
+        toggleScriptButton.addEventListener('click', function () {
+            if (scriptSection.style.display === 'none') {
+                scriptSection.style.display = 'block';
+                toggleScriptButton.textContent = 'Hide Code';
+            } else {
+                scriptSection.style.display = 'none';
+                toggleScriptButton.textContent = 'Show Code';
+            }
+        });
+    </script>
+</body>
+</html>
