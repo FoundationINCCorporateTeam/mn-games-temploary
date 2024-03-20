@@ -211,6 +211,39 @@
 
     <button class="futuristic-button ultimate-button" onclick="window.location.href='/ourteam.html'">View more of our leaders!</button>
 </div>
+	<form>
+	<h2 style="font-family:Arial;">Poll! What do you want to happen next?</h2>
+		<label for="cars">Please choose an option</label>
+<select id="cars" name="cars">
+  <option value="Possible Free Proxy For Everyone">Volvo</option>
+  <option value="Website Rework">Saab</option>
+  <option value="Service Update: Faster Service Times">Fiat</option>
+  <option value="Possibly Another Game Website...">Audi</option>
+</select>
+		<input type="submit" name="submit">
+	</form>
+	<script>
+   const form = document.querySelector("#form")
+   const submitButton = document.querySelector("#submit")
+   const scriptURL = 'https://script.google.com/macros/s/AKfycbxH7W1OAYcsYNU1wTBS60lONybjMmB-1PiTBHVaXzqF_4lY9hQc8xCpScE7j8S1NJbssQ/exec'
+
+   form.addEventListener('submit', e => {
+     submitButton.disabled = true
+     e.preventDefault()
+     let requestBody = new FormData(form)
+     fetch(scriptURL, { method: 'POST', body: requestBody})
+       .then(response => {
+          alert('Success!', response)
+          submitButton.disabled = false
+         })
+       .catch(error => {
+       alert('Error!', error.message)
+         submitButton.disabled = false
+
+       }
+       )
+   })
+</script>
 
 <h2> Hello! I have two favors to ask! If you would do this for me it would mean the world to me!</h2>
 <p>One, if you could share this with your friends to get more people on our website I would appreciate it. This would help me with ad revenue and help me fund our site.</p>
