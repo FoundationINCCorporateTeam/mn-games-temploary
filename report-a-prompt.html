@@ -1,19 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Contact Form</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | Schoology</title>
+  <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+    }
+    /* Navbar Styles */
+    nav {
+      background-color: black;
+      overflow: hidden;
+      width: 100%;
+    }
+    nav a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+    nav a:hover {
+      background-color: #555;
+    }
+    /* Container Styles */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 50vh;
+    }
+    /* Button Styles */
+    .button {
+      padding: 15px 30px;
+      font-size: 1.1em;
+      background-color: #3af;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #2ac;
+    }
+    /* Script Section */
+    #scriptSection {
+      display: none;
+      text-align: left;
+      padding: 20px;
+    }
+  </style>
+  <script>
+    function toggleScriptSection() {
+      var scriptSection = document.getElementById("scriptSection");
+      if (scriptSection.style.display === "none") {
+        scriptSection.style.display = "block";
+      } else {
+        scriptSection.style.display = "none";
+      }
+    }
+  </script>
 </head>
 <body>
-    <h1>Contact Us</h1>
-    <form action="process_form.php" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" required></textarea><br><br>
-        <input type="submit" value="Submit">
-    </form>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="premium.html">Premium</a>
+    <a href="ultimate.html">Ultimate</a>
+    <a href="tournaments.html">Tournaments</a>
+    <a href="enterprise.html">Enterprise Proxy and Websites</a>
+    <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
+    <a href="elite.html">Elite</a>
+  </nav>
+
+  <h1>Report an Inappropriate Search in the form below.</h1>
+    
+      <iframe
+        height="500px"
+        src="https://app.formester.com/f/ce6acc15-b4e3-41cf-82bd-1a99a8c33592"
+        frameborder="0"
+        style="min-width: 100%; max-width: 100%; border: none"
+        sandbox="allow-scripts allow-same-origin allow-top-navigation allow-forms"
+      ></iframe>
+    
 </body>
 </html>
