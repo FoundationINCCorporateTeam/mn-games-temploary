@@ -29,14 +29,6 @@
     input[type="submit"]:hover {
         background-color: #45a049;
     }
-    .success-message {
-        background-color: #7FFF7F; /* Green background */
-        border: 1px solid #98FB98; /* Lighter shade of green border */
-        color: white; /* White text */
-        padding: 10px; /* Padding */
-        border-radius: 10px; /* Rounded corners */
-        margin-top: 20px; /* Margin from the top */
-    }
 </style>
 </head>
 <body>
@@ -48,8 +40,6 @@
     <input type="submit" value="Sign Up">
     <p style="text-align:center;">Already have an account?<br><a style="text-align:center;" href="sign-in.html">Login!</a></p>
 </form>
-
-<div class="success-message" id="successMessage" style="display:none;">Sign-up Successful! Welcome to MN Games...</div>
 
 <script>
 document.getElementById("signin-form").addEventListener("submit", function(event) {
@@ -71,7 +61,7 @@ document.getElementById("signin-form").addEventListener("submit", function(event
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Failed to sign up');
+            throw new Error('Failed to sign in');
         }
         return response.json();
     })
@@ -79,28 +69,16 @@ document.getElementById("signin-form").addEventListener("submit", function(event
         console.log('Success:', data);
         const token = data.authToken; // Extracting the token from the response
         console.log('Token:', token); // Log the token to the console for debugging
-        
-        // Calculate expiration time (3 days from now)
-        const expirationTime = new Date().getTime() + (3 * 24 * 60 * 60 * 1000);
-        
-        // Store token and expiration time in local storage
-        localStorage.setItem('authToken', token);
-        
-        // Show success message
-        document.getElementById("successMessage").style.display = "block";
-        
+        localStorage.setItem('authToken', token); // Store the token in local storage with the key 'authToken'
+        alert('Signed in successfully');
         // Redirect the user to another page after successful sign-in
         window.location.href = 'dashboard.html'; // Change to your protected page URL
     })
     .catch((error) => {
         console.error('Error:', error);
-        // Redirect to the error page
-        //window.location.href = 'SIGN_UP_ERROR_834.html';
+        alert('An error occurred while signing in. Please try again later.');
     });
 });
-
-// Function to remove expired tokens from local storage
-// Call removeExpiredTokens function when the page loads
 </script>
 
 </body>
