@@ -71,7 +71,7 @@ document.getElementById("signin-form").addEventListener("submit", function(event
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Failed to sign in');
+            throw new Error('Failed to sign up');
         }
         return response.json();
     })
@@ -96,7 +96,7 @@ document.getElementById("signin-form").addEventListener("submit", function(event
     .catch((error) => {
         console.error('Error:', error);
         // Redirect to the error page
-        //window.location.href = 'SIGN_UP_ERROR_834.html';
+        window.location.href = 'SIGN_UP_ERROR_834.html';
     });
 });
 
