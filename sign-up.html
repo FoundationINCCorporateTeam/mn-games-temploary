@@ -29,6 +29,14 @@
     input[type="submit"]:hover {
         background-color: #45a049;
     }
+    .success-message {
+        background-color: #7FFF7F; /* Green background */
+        border: 1px solid #98FB98; /* Lighter shade of green border */
+        color: white; /* White text */
+        padding: 10px; /* Padding */
+        border-radius: 10px; /* Rounded corners */
+        margin-top: 20px; /* Margin from the top */
+    }
 </style>
 </head>
 <body>
@@ -40,6 +48,8 @@
     <input type="submit" value="Sign Up">
     <p style="text-align:center;">Already have an account?<br><a style="text-align:center;" href="sign-in.html">Login!</a></p>
 </form>
+
+<div class="success-message" id="successMessage" style="display:none;">Sign-up Successful! Welcome to MN Games...</div>
 
 <script>
 document.getElementById("signin-form").addEventListener("submit", function(event) {
@@ -77,7 +87,9 @@ document.getElementById("signin-form").addEventListener("submit", function(event
         localStorage.setItem('authToken', token);
         localStorage.setItem('authTokenExpiration', expirationTime);
         
-        alert('Signed in successfully');
+        // Show success message
+        document.getElementById("successMessage").style.display = "block";
+        
         // Redirect the user to another page after successful sign-in
         window.location.href = 'dashboard.html'; // Change to your protected page URL
     })
