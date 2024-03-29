@@ -3,31 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Secure Page</title>
+<title>Protected Page</title>
 </head>
 <body>
 
-<h1>Welcome to the Secure Page</h1>
+<h1>Welcome to the Protected Page</h1>
 <p>This page is accessible only if you are signed in.</p>
 
 <script>
 // Function to check if the user is signed in
 function checkAuthentication() {
+    // Check if token exists in local storage
+    const token = localStorage.getItem('token');
+    if (!token) {
+        // If token doesn't exist, redirect user to sign-in page
+        window.location.href = 'signin.html';
+        return; // Exit function to prevent further execution
+    }
+    
     // Fetch authentication information from the "me" endpoint
     fetch('https://x8ki-letl-twmt.n7.xano.io/api:QBUFEf9p/auth/me', {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token') // Assuming token is stored in local storage
+            'Authorization': 'Bearer ' + token
         }
     })
     .then(response => {
-        if (response.ok) {
-            // If the response is successful, the user is signed in
-            console.log('User is signed in');
-        } else {
+        if (!response.ok) {
             // If the response is not successful, redirect user to sign-in page
-            console.log('User is not signed in');
-            //window.location.href = 'sign-in.html';
+            console.log('Failed to authenticate:', response.status);
+            window.location.href = 'signin.html';
         }
     })
     .catch(error => {
