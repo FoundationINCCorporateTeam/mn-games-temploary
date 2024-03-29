@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+
+<form id="signin-form">
+    <h2>Sign in</h2>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <input type="submit" value="Sign Up">
+</form>
+
+<script>
+document.getElementById("signin-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+    
+    var userData = {
+        email: email,
+        password: password,
+        field_value: "SomeValue" // Add the required field_value parameter
+    };
+    
+    fetch('https://x8ki-letl-twmt.n7.xano.io/api:QBUFEf9p/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        alert('Signed in successfully');
+        // You can redirect the user to another page or do any other action upon successful sign-up
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred while signing up. Please try again later.');
+    });
+});
+</script>
+
+</body>
+</html>
