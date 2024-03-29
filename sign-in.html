@@ -3,46 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Protected Page</title>
+<title>Sign In</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    input[type="email"],
+    input[type="password"],
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
 </head>
 <body>
 
-<h1>Welcome to the Protected Page</h1>
-<p>This page is accessible only if you are signed in.</p>
+<form id="signin-form">
+    <h2>Sign in</h2>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <input type="submit" value="Sign In">
+</form>
 
 <script>
-// Function to check if the user is signed in
-function checkAuthentication() {
-    // Check if token exists in local storage
-    const token = localStorage.getItem('token');
-    if (!token) {
-        // If token doesn't exist, redirect user to sign-in page
-        window.location.href = 'signin.html';
-        return; // Exit function to prevent further execution
-    }
+document.getElementById("signin-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
     
-    // Fetch authentication information from the "me" endpoint
-    fetch('https://x8ki-letl-twmt.n7.xano.io/api:QBUFEf9p/auth/me', {
-        method: 'GET',
+    var userData = {
+        email: email,
+        password: password
+    };
+    
+    fetch('https://x8ki-letl-twmt.n7.xano.io/api:QBUFEf9p/auth/login', {
+        method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + token
-        }
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
     })
     .then(response => {
         if (!response.ok) {
-            // If the response is not successful, redirect user to sign-in page
-            console.log('Failed to authenticate:', response.status);
-            window.location.href = 'signin.html';
+            throw new Error('Failed to sign in');
         }
+        return response.json();
     })
-    .catch(error => {
-        console.error('Error checking authentication:', error);
-        // Handle error
+    .then(data => {
+        console.log('Success:', data);
+        // Assuming the response contains the user data including the token in the password field
+        const token = data.password; // Extracting token from the password field
+        // Store the token securely for later use
+        localStorage.setItem('token', token);
+        alert('Signed in successfully');
+        // You can redirect the user to another page or do any other action upon successful sign-in
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('An error occurred while signing in. Please try again later.');
     });
-}
-
-// Call checkAuthentication function when the page loads
-window.onload = checkAuthentication;
+});
 </script>
 
 </body>
