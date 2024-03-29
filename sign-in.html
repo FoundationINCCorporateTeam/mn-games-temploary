@@ -71,7 +71,7 @@ document.getElementById("signin-form").addEventListener("submit", function(event
         localStorage.setItem('token', token); // Store the token in local storage
         alert('Signed in successfully');
         // Redirect the user to another page after successful sign-in
-        window.location.href = 'protected.html'; // Change to your protected page URL
+        //window.location.href = 'protected.html'; // Change to your protected page URL
     })
     .catch((error) => {
         console.error('Error:', error);
