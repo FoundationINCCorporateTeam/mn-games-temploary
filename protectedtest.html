@@ -32,7 +32,7 @@ function checkAuthentication() {
         if (!response.ok) {
             // If the response is not successful, redirect user to sign-in page
             console.log('Failed to authenticate:', response.status);
-            window.location.href = 'signin.html';
+            //window.location.href = 'signin.html';
         }
     })
     .catch(error => {
