@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign Up</title>
+<title>Sign In</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -37,7 +37,7 @@
     <h2>Sign in</h2>
     <input type="email" id="email" placeholder="Email" required>
     <input type="password" id="password" placeholder="Password" required>
-    <input type="submit" value="Sign Up">
+    <input type="submit" value="Sign In">
 </form>
 
 <script>
@@ -48,8 +48,7 @@ document.getElementById("signin-form").addEventListener("submit", function(event
     
     var userData = {
         email: email,
-        password: password,
-        field_value: "SomeValue" // Add the required field_value parameter
+        password: password
     };
     
     fetch('https://x8ki-letl-twmt.n7.xano.io/api:QBUFEf9p/auth/login', {
@@ -59,15 +58,24 @@ document.getElementById("signin-form").addEventListener("submit", function(event
         },
         body: JSON.stringify(userData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to sign in');
+        }
+        return response.json();
+    })
     .then(data => {
         console.log('Success:', data);
+        // Assuming the response contains an authentication token
+        const token = data.token; // Adjust this based on the actual response structure
+        // Store the token securely for later use
+        localStorage.setItem('token', token);
         alert('Signed in successfully');
-        // You can redirect the user to another page or do any other action upon successful sign-up
+        // You can redirect the user to another page or do any other action upon successful sign-in
     })
     .catch((error) => {
         console.error('Error:', error);
-        alert('An error occurred while signing up. Please try again later.');
+        alert('An error occurred while signing in. Please try again later.');
     });
 });
 </script>
