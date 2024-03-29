@@ -85,7 +85,6 @@ document.getElementById("signin-form").addEventListener("submit", function(event
         
         // Store token and expiration time in local storage
         localStorage.setItem('authToken', token);
-        localStorage.setItem('authTokenExpiration', expirationTime);
         
         // Show success message
         document.getElementById("successMessage").style.display = "block";
@@ -96,25 +95,12 @@ document.getElementById("signin-form").addEventListener("submit", function(event
     .catch((error) => {
         console.error('Error:', error);
         // Redirect to the error page
-        window.location.href = 'SIGN_UP_ERROR_834.html';
+        //window.location.href = 'SIGN_UP_ERROR_834.html';
     });
 });
 
 // Function to remove expired tokens from local storage
-function removeExpiredTokens() {
-    const expirationTime = localStorage.getItem('authTokenExpiration');
-    if (expirationTime) {
-        const currentTime = new Date().getTime(); // Current time in milliseconds
-        if (currentTime > expirationTime) {
-            // Token has expired, remove it from local storage
-            localStorage.removeItem('authToken');
-            localStorage.removeItem('authTokenExpiration');
-        }
-    }
-}
-
 // Call removeExpiredTokens function when the page loads
-window.onload = removeExpiredTokens;
 </script>
 
 </body>
