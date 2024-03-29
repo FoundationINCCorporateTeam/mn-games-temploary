@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign Up</title>
+<title>Sign In</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -32,16 +32,17 @@
 </style>
 </head>
 <body>
-
-<form id="signup-form">
-    <h2>Sign Up</h2>
+<h2 style="text-align:center;"> Welcome to MN Games! To access our website and content please create an account. If you already have one please click login.</h2>
+<form id="signin-form">
+    <h2 style="text-align:center;">Sign-up for an MN Games Account!</h2>
     <input type="email" id="email" placeholder="Email" required>
     <input type="password" id="password" placeholder="Password" required>
     <input type="submit" value="Sign Up">
+    <p style="text-align:center;">Already have an account?<br><a style="text-align:center;" href="sign-in.html">Login!</a></p>
 </form>
 
 <script>
-document.getElementById("signup-form").addEventListener("submit", function(event) {
+document.getElementById("signin-form").addEventListener("submit", function(event) {
     event.preventDefault();
     var email = document.getElementById("email").value;
     var password = document.getElementById("password").value;
@@ -51,24 +52,31 @@ document.getElementById("signup-form").addEventListener("submit", function(event
         password: password
     };
     
-    fetch('https://cloud.appwrite.io/v1/account', {
+    fetch('https://x8ki-letl-twmt.n7.xano.io/api:A-o4OQD_/auth/signup', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
-            'X-Appwrite-Project': '6606fc10888f15d99993', // Replace with your project ID
-            'X-Appwrite-Key': '76c6c0054626a367bf7e862153f3d0d9ee6d047604eaab5281e1ce4c0ce0f4f5140afee7e0a12a57c786202e697dc58e00ebf02295f1275965aff7568df354ae6e2648fbfbf2b3ecb58e6e9f471d29abdb196be8b8985332d0b973aecdc1c705751dd5bc2e407e6100d591d3d36b6ebdd2bce2a6b89abcc356b7a7d0a8ad6641' // Replace with your API key
+            'Content-Type': 'application/json'
         },
         body: JSON.stringify(userData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to sign in');
+        }
+        return response.json();
+    })
     .then(data => {
         console.log('Success:', data);
-        alert('Signed up successfully!');
-        // You can redirect the user to another page or do any other action upon successful sign-up
+        const token = data.authToken; // Extracting the token from the response
+        console.log('Token:', token); // Log the token to the console for debugging
+        localStorage.setItem('authToken', token); // Store the token in local storage with the key 'authToken'
+        alert('Signed in successfully');
+        // Redirect the user to another page after successful sign-in
+        window.location.href = 'dashboard.html'; // Change to your protected page URL
     })
     .catch((error) => {
         console.error('Error:', error);
-        alert('An error occurred while signing up. Please try again later.');
+        alert('An error occurred while signing in. Please try again later.');
     });
 });
 </script>
