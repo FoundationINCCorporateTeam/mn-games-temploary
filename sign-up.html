@@ -48,14 +48,15 @@ document.getElementById("signup-form").addEventListener("submit", function(event
     
     var userData = {
         email: email,
-        password: password,
-        field_value: "SomeValue" // Add the required field_value parameter
+        password: password
     };
     
-    fetch('https://x8ki-letl-twmt.n7.xano.io/api:QBUFEf9p/auth/signup', {
+    fetch('https://cloud.appwrite.io/v1/account', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'X-Appwrite-Project': '6606fc10888f15d99993', // Replace with your project ID
+            'X-Appwrite-Key': '76c6c0054626a367bf7e862153f3d0d9ee6d047604eaab5281e1ce4c0ce0f4f5140afee7e0a12a57c786202e697dc58e00ebf02295f1275965aff7568df354ae6e2648fbfbf2b3ecb58e6e9f471d29abdb196be8b8985332d0b973aecdc1c705751dd5bc2e407e6100d591d3d36b6ebdd2bce2a6b89abcc356b7a7d0a8ad6641' // Replace with your API key
         },
         body: JSON.stringify(userData)
     })
