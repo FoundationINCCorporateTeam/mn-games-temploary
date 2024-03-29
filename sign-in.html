@@ -68,7 +68,14 @@ document.getElementById("signin-form").addEventListener("submit", function(event
         console.log('Success:', data);
         const token = data.authToken; // Extracting the token from the response
         console.log('Token:', token); // Log the token to the console for debugging
-        localStorage.setItem('authToken', token); // Store the token in local storage with the key 'authToken'
+        
+        // Calculate expiration time (3 days from now)
+        const expirationTime = new Date().getTime() + (3 * 24 * 60 * 60 * 1000);
+        
+        // Store token and expiration time in local storage
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('authTokenExpiration', expirationTime);
+        
         alert('Signed in successfully');
         // Redirect the user to another page after successful sign-in
         window.location.href = 'protectedtest.html'; // Change to your protected page URL
