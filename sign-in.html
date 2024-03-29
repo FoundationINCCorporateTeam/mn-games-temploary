@@ -66,12 +66,13 @@ document.getElementById("signin-form").addEventListener("submit", function(event
     })
     .then(data => {
         console.log('Success:', data);
-        // Assuming the response contains the user data including the token in the password field
-        const token = data.password; // Extracting token from the password field
+        // Assuming the response contains the authentication token
+        const token = data.token; // Adjust this based on the actual response structure
         // Store the token securely for later use
         localStorage.setItem('token', token);
         alert('Signed in successfully');
-        // You can redirect the user to another page or do any other action upon successful sign-in
+        // Redirect the user to another page after successful sign-in
+        window.location.href = 'protected.html';
     })
     .catch((error) => {
         console.error('Error:', error);
