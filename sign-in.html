@@ -69,6 +69,9 @@ document.getElementById("signin-form").addEventListener("submit", function(event
         const token = data.authToken; // Extracting the token from the response
         console.log('Token:', token); // Log the token to the console for debugging
         
+        // Store the token in local storage
+        localStorage.setItem('authToken', token);
+        
         alert('Signed in successfully');
         // Redirect the user to another page after successful sign-in
         window.location.href = 'dashboard.html'; // Change to your protected page URL
@@ -78,6 +81,15 @@ document.getElementById("signin-form").addEventListener("submit", function(event
         alert('An error occurred while signing in. Please try again later.');
     });
 });
+
+// Check if the user is already authenticated (has an auth token)
+window.onload = function() {
+    const authToken = localStorage.getItem('authToken');
+    if (authToken) {
+        // Redirect the user to the dashboard if already authenticated
+        window.location.href = 'dashboard.html';
+    }
+}
 </script>
 
 </body>
