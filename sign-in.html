@@ -112,6 +112,14 @@ document.getElementById("signin-form").addEventListener("submit", function(event
         }, 3000); // 3000 milliseconds delay
     });
 });
+
+// Add event listeners to input fields to hide error message when focused
+document.getElementById("email").addEventListener("focus", function() {
+    document.getElementById("errorMessage").style.display = "none";
+});
+document.getElementById("password").addEventListener("focus", function() {
+    document.getElementById("errorMessage").style.display = "none";
+});
 </script>
 
 </body>
