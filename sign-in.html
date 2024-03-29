@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign In</title>
-       <link rel="shortcut icon" type="image/png" href="/Designer (5).png"/>
+<link rel="shortcut icon" type="image/png" href="/Designer (5).png"/>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -30,6 +30,15 @@
     input[type="submit"]:hover {
         background-color: #45a049;
     }
+    .error-message {
+        background-color: #FF6666; /* Red background */
+        border: 1px solid #FFFFFF; /* White border */
+        color: white; /* White text */
+        padding: 10px; /* Padding */
+        border-radius: 10px; /* Rounded corners */
+        margin-top: 20px; /* Margin from the top */
+        text-align: center;
+    }
     .success-message {
         background-color: #7FFF7F; /* Green background */
         border: 1px solid #98FB98; /* Lighter shade of green border */
@@ -37,7 +46,7 @@
         padding: 10px; /* Padding */
         border-radius: 10px; /* Rounded corners */
         margin-top: 20px; /* Margin from the top */
-        text-align:center;
+        text-align: center;
     }
 </style>
 </head>
@@ -51,6 +60,7 @@
     <p style="text-align:center;">Don't Have an Account?<br><a style="text-align:center;" href="sign-up.html">Sign-up!</a></p>
 </form>
 
+<div class="error-message" id="errorMessage" style="display:none;">Invalid email or password. Please try again.</div>
 <div class="success-message" id="successMessage" style="display:none;">Sign-in Successful! Welcome back!</div>
 
 <script>
@@ -86,13 +96,16 @@ document.getElementById("signin-form").addEventListener("submit", function(event
         // Show success message
         document.getElementById("successMessage").style.display = "block";
         
-        // Redirect the user to another page after successful sign-up after 3 seconds
+        // Redirect the user to another page after successful sign-in after 3 seconds
         setTimeout(function() {
             window.location.href = 'dashboard.html'; // Change to your protected page URL
         }, 3000); // 3000 milliseconds delay
     })
     .catch((error) => {
         console.error('Error:', error);
+        // Show error message
+        document.getElementById("errorMessage").style.display = "block";
+        
         // Redirect to the error page after 3 seconds
         setTimeout(function() {
             //window.location.href = 'SIGN_UP_ERROR_834.html';
