@@ -66,13 +66,12 @@ document.getElementById("signin-form").addEventListener("submit", function(event
     })
     .then(data => {
         console.log('Success:', data);
-        // Assuming the response contains the authentication token
-        const token = data.token; // Adjust this based on the actual response structure
-        // Store the token securely for later use
-        localStorage.setItem('token', token);
+        const token = data.token; // Extracting the token from the response
+        console.log('Token:', token); // Log the token to the console for debugging
+        localStorage.setItem('token', token); // Store the token in local storage
         alert('Signed in successfully');
         // Redirect the user to another page after successful sign-in
-        window.location.href = 'protectedtest.html';
+        window.location.href = 'protected.html'; // Change to your protected page URL
     })
     .catch((error) => {
         console.error('Error:', error);
