@@ -89,6 +89,32 @@ function resetAuthToken() {
     // Redirect user to sign-in page after removing token
     window.location.href = 'sign-in.html';
 }
+    <script>
+// Function to check if the user is signed in
+function checkAuthentication() {
+    // Check if token exists in local storage
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+        // If token doesn't exist, redirect user to sign-in page
+        window.location.href = 'sign-in.html';
+        return; // Exit function to prevent further execution
+    }
+    
+    // Example: Check if token is valid (You should implement your own validation logic here)
+    // For demonstration purposes, always consider the user as authenticated
+    // In a real-world scenario, you would perform server-side validation of the token
+    const isAuthenticated = true; // Change this according to your validation logic
+    
+    if (!isAuthenticated) {
+        // If user is not authenticated, redirect user to sign-in page
+        window.location.href = 'sign-in.html';
+        return; // Exit function to prevent further execution
+    }
+}
+
+// Call checkAuthentication function when the page loads
+window.onload = checkAuthentication;
+</script>
 </script>
 
 </body>
