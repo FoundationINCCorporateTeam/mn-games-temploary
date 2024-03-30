@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign In</title>
+<title>Password Reset</title>
 <link rel="shortcut icon" type="image/png" href="/Designer (5).png"/>
 <style>
     body {
@@ -27,7 +27,6 @@
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Shadow effect */
     }
     input[type="email"],
-    input[type="password"],
     input[type="submit"] {
         width: 100%;
         padding: 10px;
@@ -63,30 +62,26 @@
 <body>
 
 <div class="container">
-    <form id="signin-form">
-        <h2 style="text-align:center;">Sign-in to your MN Games Account!</h2>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <input type="submit" value="Sign In">
-        <p style="text-align:center;">Don't Have an Account?<br><a style="text-align:center;" href="sign-up.html">Sign-up!</a></p>
+    <form id="resetForm">
+        <h2 style="text-align:center;">Password Reset</h2>
+        <input type="email" id="email" placeholder="Enter your email" required>
+        <input type="submit" value="Reset Password">
     </form>
 
-    <div class="error-message" id="errorMessage">Invalid email or password. Please try again.</div>
-    <div class="success-message" id="successMessage">Sign-in Successful! Welcome back!</div>
+    <div class="error-message" id="errorMessage">Failed to reset password. Please try again.</div>
+    <div class="success-message" id="successMessage">Password reset email sent successfully! Check your inbox.</div>
 </div>
 
 <script>
-document.getElementById("signin-form").addEventListener("submit", function(event) {
+document.getElementById("resetForm").addEventListener("submit", function(event) {
     event.preventDefault();
     var email = document.getElementById("email").value;
-    var password = document.getElementById("password").value;
     
     var userData = {
-        email: email,
-        password: password
+        email: email
     };
     
-    fetch('https://x8ki-letl-twmt.n7.xano.io/api:U1fa8GL4/auth/login', {
+    fetch('https://x8ki-letl-twmt.n7.xano.io/api:zcFv1lWu/auth/request-magic-link', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -95,42 +90,20 @@ document.getElementById("signin-form").addEventListener("submit", function(event
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Failed to sign in');
+            throw new Error('Failed to reset password');
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Success:', data);
-        const token = data.authToken; // Extracting the token from the response
-        console.log('Token:', token); // Log the token to the console for debugging
-        localStorage.setItem('authToken', token); // Store the token in local storage with the key 'authToken'
-        
         // Show success message
         document.getElementById("successMessage").style.display = "block";
-        
-        // Redirect the user to another page after successful sign-in after 3 seconds
-        setTimeout(function() {
-            window.location.href = 'dashboard.html'; // Change to your protected page URL
-        }, 3000); // 3000 milliseconds delay
+        // Hide error message if previously shown
+        document.getElementById("errorMessage").style.display = "none";
     })
     .catch((error) => {
         console.error('Error:', error);
         // Show error message
         document.getElementById("errorMessage").style.display = "block";
-        
-        // Redirect to the error page after 3 seconds
-        setTimeout(function() {
-            //window.location.href = 'SIGN_UP_ERROR_834.html';
-        }, 3000); // 3000 milliseconds delay
+        // Hide success message if previously shown
+        document.getElementById("successMessage").style.display = "none";
     });
-});
-
-// Add event listeners to input fields to hide error message when focused
-document.getElementById("email").addEventListener("focus", function() {
-    document.getElementById("errorMessage").style.display = "none";
-});
-document.getElementById("password").addEventListener("focus", function() {
-    document.getElementById("errorMessage").style.display = "none";
 });
 </script>
 
