@@ -14,7 +14,7 @@
 
         // Function to check authentication status
         async function checkAuthStatus() {
-            var session = supabase.auth.session();
+            var session = await supabase.auth.getSession();
             if (!session) {
                 // Redirect to login page if user is not logged in
                 window.location.href = 'login.html'; // Change to your login page URL
