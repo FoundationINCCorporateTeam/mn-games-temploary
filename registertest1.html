@@ -31,31 +31,30 @@
   // Initialize Supabase client (outside functions)
   const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
-  const supabase = createClient(supabase); // Pass the initialized instance
 
-  function createClient(initializedSupabase) {
-    return initializedSupabase.createClient(supabaseUrl, { apiKey: supabaseKey });
+  // Create Supabase client instance immediately
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  function createClient(url, key) {
+    return supabase.createClient(url, { apiKey: key });
   }
 
-  // Ensure Supabase is ready before use
-  supabase.ready.then(() => {
-    // Event listener for form submission (after Supabase initialization)
-    document.getElementById("registerForm").addEventListener("submit", async function(event) {
-      event.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+  // Event listener for form submission (using the initialized supabase)
+  document.getElementById("registerForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-      try {
-        const { user, error } = await supabase.auth.signUp({ email, password });
-        if (error) {
-          throw error;
-        }
-        console.log('User:', user);
-        // Redirect to dashboard or next page
-      } catch (error) {
-        console.error('Registration error:', error.message);
+    try {
+      const { user, error } = await supabase.auth.signUp({ email, password });
+      if (error) {
+        throw error;
       }
-    });
+      console.log('User:', user);
+      // Redirect to dashboard or next page
+    } catch (error) {
+      console.error('Registration error:', error.message);
+    }
   });
 </script>
 
