@@ -30,9 +30,11 @@
         }
         .error {
             color: red;
+            display: none;
         }
         .success {
             color: green;
+            display: none;
         }
     </style>
 </head>
@@ -41,9 +43,9 @@
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required minlength="6">
         <button type="submit">Login</button>
+        <p id="error-message" class="error"></p>
+        <p id="success-message" class="success"></p>
     </form>
-    <p style="text-align:center;" id="error-message" class="error" style="display: none;">Invalid email or password</p>
-    <p style="text-align:center;" id="success-message" class="success" style="display: none;">Successfully logged in, redirecting...</p>
 
     <script>
         // Initialize Supabase
@@ -56,23 +58,24 @@
         var errorMessage = document.getElementById('error-message');
         var successMessage = document.getElementById('success-message');
 
-        // Hide error and success messages when input fields are clicked
-        emailInput.addEventListener('click', function() {
-            errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
-        });
-
-        passwordInput.addEventListener('click', function() {
-            errorMessage.style.display = 'none';
-            successMessage.style.display = 'none';
-        });
-
         // Handle form submission
         form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
             var email = emailInput.value;
             var password = passwordInput.value;
+
+            if (!email || !password) {
+                errorMessage.textContent = 'Please fill in all fields.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            if (password.length < 6) {
+                errorMessage.textContent = 'Password must be at least 6 characters.';
+                errorMessage.style.display = 'block';
+                return;
+            }
 
             // Authenticate the user
             const { data, error } = await supabase.auth.signInWithPassword({
@@ -82,19 +85,16 @@
 
             if (error) {
                 console.error('Error logging in:', error);
-                if (error.code === 'INVALID_PASSWORD' || error.code === 'INVALID_USER')
-                    errorMessage.textContent = 'Invalid email or password';
-                else
-                    errorMessage.textContent = 'Error with login. If this continues please contact us.';
-                errorMessage.style.display = 'block';
-                setTimeout(function() {
-                    errorMessage.style.display = 'none';
-                }, 3000); // Hide error message after 3 seconds
+                if (error.message === 'AuthApiError: Invalid login credentials') {
+                    errorMessage.textContent = 'Invalid email or password.';
+                    errorMessage.style.display = 'block';
+                }
             } else {
                 console.log('User logged in:', data);
+                successMessage.textContent = 'Successfully logged in, redirecting...';
                 successMessage.style.display = 'block';
                 setTimeout(function() {
-                    window.location.href = 'dashboard';
+                    window.location.href = 'https://schoology.panel.moe/dashboard';
                 }, 3000); // Redirect after 3 seconds
             }
         });
