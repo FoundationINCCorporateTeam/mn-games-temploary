@@ -87,6 +87,9 @@
                 else
                     errorMessage.textContent = 'Error with login. If this continues please contact us.';
                 errorMessage.style.display = 'block';
+                setTimeout(function() {
+                    errorMessage.style.display = 'none';
+                }, 3000); // Hide error message after 3 seconds
             } else {
                 console.log('User logged in:', data);
                 successMessage.style.display = 'block';
