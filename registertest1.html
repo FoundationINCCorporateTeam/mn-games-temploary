@@ -1,62 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Registration</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.18.0/dist/supabase.min.js"></script>
 </head>
 <body>
+    <h1>Supabase Registration</h1>
+    <form id="registration-form">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Register</button>
+    </form>
+    <script>
+        // **Security: Avoid embedding credentials in client-side code**
 
-<div class="container">
-  <h1>Register</h1>
-  <form id="registerForm">
-    <div class="mb-3">
-      <label for="email" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
-      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Password</label>
-      <input type="password" class="form-control" id="password">
-    </div>
-    <button type="submit" class="btn btn-primary">Register</button>
-  </form>
-</div>
+        const supabase = supabase.createClient(); // Initialize without credentials
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.18.0/dist/supabase.min.js"></script>
+        const registrationForm = document.getElementById('registration-form');
 
-<script>
-  // Initialize Supabase client (outside functions)
-  const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
+        registrationForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
 
-  // Create Supabase client instance immediately
-  const supabase = createClient(supabaseUrl, supabaseKey);
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-  function createClient(url, key) {
-    return supabase.createClient(url, { apiKey: key });
-  }
+            try {
+                const { user, error } = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
 
-  // Event listener for form submission (using the initialized supabase)
-  document.getElementById("registerForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+                if (error) {
+                    console.error('Registration failed:', error);
+                    alert('Registration failed. Please try again.');
+                    return;
+                }
 
-    try {
-      const { user, error } = await supabase.auth.signUp({ email, password });
-      if (error) {
-        throw error;
-      }
-      console.log('User:', user);
-      // Redirect to dashboard or next page
-    } catch (error) {
-      console.error('Registration error:', error.message);
-    }
-  });
-</script>
-
+                const response = await user.json();
+                console.log('Registration successful!', response);
+                // Redirect to success page or display confirmation message
+                alert('Registration successful! You can now log in.');
+                // Replace with your desired redirection or action
+                // window.location.href = 'success.html';
+            } catch (error) {
+                console.error('An unexpected error occurred:', error);
+                alert('An unexpected error occurred. Please try again.');
+            }
+        });
+    </script>
 </body>
 </html>
