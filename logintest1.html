@@ -71,6 +71,12 @@
                 return;
             }
 
+            if (password.length < 6) {
+                errorMessage.textContent = 'Password must be at least 6 characters.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
             // Authenticate the user
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
@@ -79,10 +85,8 @@
 
             if (error) {
                 console.error('Error logging in:', error);
-                if (error.message === ' Error logging in: AuthApiError: Invalid login credentials') {
-                    errorMessage.textContent = 'Invalid email or password.';
-                    errorMessage.style.display = 'block';
-                }
+                errorMessage.textContent = 'Invalid email or password.';
+                errorMessage.style.display = 'block';
             } else {
                 console.log('User logged in:', data);
                 successMessage.textContent = 'Successfully logged in, redirecting...';
