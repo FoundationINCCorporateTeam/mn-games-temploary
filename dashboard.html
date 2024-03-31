@@ -23,6 +23,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    overflow: hidden; /* Clearfix for floated elements */
 }
 
 /* Header Styles */
@@ -92,6 +93,13 @@ main h2 {
 .column button:hover {
     background-color: #45a049;
 }
+
+/* Clearfix for floated elements */
+.container::after {
+    content: "";
+    display: table;
+    clear: both;
+}
 </style>
 </head>
 <body>
@@ -145,7 +153,7 @@ function checkAuthentication() {
     const token = localStorage.getItem('authToken');
     if (!token) {
         // If token doesn't exist, redirect user to sign-in page
-        window.location.href = 'unauthorized1.html';
+        window.location.href = 'sign-in.html';
         return; // Exit function to prevent further execution
     }
     
@@ -156,7 +164,7 @@ function checkAuthentication() {
     
     if (!isAuthenticated) {
         // If user is not authenticated, redirect user to sign-in page
-        window.location.href = 'unauthorized1.html';
+        window.location.href = 'sign-in.html';
         return; // Exit function to prevent further execution
     }
 }
