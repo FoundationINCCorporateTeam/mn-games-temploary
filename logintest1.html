@@ -4,36 +4,7 @@
     <title>Login Form</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        form {
-            width: 300px;
-            margin: 0 auto;
-        }
-        input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .error {
-            color: red;
-        }
-        .success {
-            color: green;
-        }
+        /* Your styles here */
     </style>
 </head>
 <body>
@@ -44,6 +15,7 @@
     </form>
     <p style="text-align:center;" id="error-message" class="error" style="display: none;">Invalid email or password</p>
     <p style="text-align:center;" id="success-message" class="success" style="display: none;">Successfully logged in, redirecting...</p>
+    <p style="text-align:center;" id="general-error-message" class="error" style="display: none;">Error with login. If this continues please contact us.</p>
 
     <script>
         // Initialize Supabase
@@ -55,6 +27,17 @@
         var passwordInput = document.getElementById('password');
         var errorMessage = document.getElementById('error-message');
         var successMessage = document.getElementById('success-message');
+        var generalErrorMessage = document.getElementById('general-error-message');
+
+        // Hide error messages when input fields are clicked
+        emailInput.addEventListener('focus', function() {
+            errorMessage.style.display = 'none';
+            generalErrorMessage.style.display = 'none';
+        });
+        passwordInput.addEventListener('focus', function() {
+            errorMessage.style.display = 'none';
+            generalErrorMessage.style.display = 'none';
+        });
 
         // Handle form submission
         form.addEventListener('submit', async function(event) {
@@ -64,20 +47,29 @@
             var password = passwordInput.value;
 
             // Authenticate the user
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
 
-            if (error) {
-                console.error('Error logging in:', error);
-                errorMessage.style.display = 'block';
-            } else {
-                console.log('User logged in:', data);
-                successMessage.style.display = 'block';
-                setTimeout(function() {
-                    window.location.href = 'dashboard';
-                }, 3000); // Redirect after 3 seconds
+                if (error) {
+                    console.error('Error logging in:', error);
+                    if (error.message === 'Invalid email or password') {
+                        errorMessage.style.display = 'block';
+                    } else {
+                        generalErrorMessage.style.display = 'block';
+                    }
+                } else {
+                    console.log('User logged in:', data);
+                    successMessage.style.display = 'block';
+                    setTimeout(function() {
+                        window.location.href = 'dashboard';
+                    }, 3000); // Redirect after 3 seconds
+                }
+            } catch (error) {
+                console.error('Unexpected error:', error);
+                generalErrorMessage.style.display = 'block';
             }
         });
     </script>
