@@ -19,11 +19,6 @@
             border-radius: 5px;
             box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
             width: 300px;
-            transition: transform 0.3s;
-        }
-
-        #register-form:hover {
-            transform: scale(1.05);
         }
 
         #register-form input {
@@ -33,11 +28,6 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
-            transition: border-color 0.3s;
-        }
-
-        #register-form input:focus {
-            border-color: #007BFF;
         }
 
         #register-form button {
@@ -49,7 +39,6 @@
             border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
 
         #register-form button:hover {
@@ -66,7 +55,7 @@
 
     <script>
         // Initialize Supabase
-        var supabase = createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
+        var supabase = Supabase.createClient('your-supabase-url', 'your-public-anon-key');
 
         // Get form elements
         var form = document.getElementById('register-form');
