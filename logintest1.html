@@ -71,12 +71,6 @@
                 return;
             }
 
-            if (password.length < 6) {
-                errorMessage.textContent = 'Password must be at least 6 characters.';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
             // Authenticate the user
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
