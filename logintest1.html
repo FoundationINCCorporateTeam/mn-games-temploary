@@ -28,14 +28,22 @@
         button:hover {
             background-color: #45a049;
         }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
     </style>
 </head>
 <body>
     <form id="login-form">
         <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" id="password" placeholder="Password" required minlength="6">
         <button type="submit">Login</button>
     </form>
+    <p id="error-message" class="error" style="display: none;">Invalid email or password</p>
+    <p id="success-message" class="success" style="display: none;">Successfully logged in, redirecting...</p>
 
     <script>
         // Initialize Supabase
@@ -45,6 +53,8 @@
         var form = document.getElementById('login-form');
         var emailInput = document.getElementById('email');
         var passwordInput = document.getElementById('password');
+        var errorMessage = document.getElementById('error-message');
+        var successMessage = document.getElementById('success-message');
 
         // Handle form submission
         form.addEventListener('submit', async function(event) {
@@ -54,15 +64,20 @@
             var password = passwordInput.value;
 
             // Authenticate the user
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { data, error } = await supabase.auth.signIn({
                 email: email,
                 password: password,
             });
 
             if (error) {
                 console.error('Error logging in:', error);
+                errorMessage.style.display = 'block';
             } else {
                 console.log('User logged in:', data);
+                successMessage.style.display = 'block';
+                setTimeout(function() {
+                    window.location.href = 'dashboard';
+                }, 3000); // Redirect after 3 seconds
             }
         });
     </script>
