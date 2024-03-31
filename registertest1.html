@@ -32,7 +32,7 @@
 
 <script>
     function createClient(url, key) {
-        return new window.SupabaseClient(url, key);
+        return supabase.createClient(url, { apiKey: key });
     }
 
     document.getElementById("registerForm").addEventListener("submit", async function(event) {
