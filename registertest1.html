@@ -31,15 +31,15 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.18.0/dist/supabase.min.js"></script>
 
 <script>
-    // Define createClient function
-    function createClient(url, key) {
-        return supabase.createClient(url, { apiKey: key });
-    }
-
     // Initialize Supabase client
     const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
     const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // Define createClient function
+    function createClient(url, key) {
+        return supabase.createClient(url, { apiKey: key });
+    }
 
     // Event listener for form submission
     document.getElementById("registerForm").addEventListener("submit", async function(event) {
