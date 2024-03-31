@@ -79,7 +79,7 @@
 
             if (error) {
                 console.error('Error logging in:', error);
-                if (error.message === 'AuthApiError: Invalid login credentials') {
+                if (error.message === ' Error logging in: AuthApiError: Invalid login credentials') {
                     errorMessage.textContent = 'Invalid email or password.';
                     errorMessage.style.display = 'block';
                 }
