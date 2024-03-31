@@ -21,23 +21,23 @@
         var passwordInput = document.getElementById('password');
 
         // Handle form submission
-        form.addEventListener('submit', function(event) {
+        form.addEventListener('submit', async function(event) {
             event.preventDefault();
 
             var email = emailInput.value;
             var password = passwordInput.value;
 
             // Authenticate the user
-            supabase.auth.signIn({
+            const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
                 password: password,
-            }).then(function(response) {
-                if (response.error) {
-                    console.error('Error logging in:', response.error);
-                } else {
-                    console.log('User logged in:', response.data);
-                }
             });
+
+            if (error) {
+                console.error('Error logging in:', error);
+            } else {
+                console.log('User logged in:', data);
+            }
         });
     </script>
 </body>
