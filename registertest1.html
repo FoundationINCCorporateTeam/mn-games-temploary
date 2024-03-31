@@ -28,38 +28,34 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.18.0/dist/supabase.min.js"></script>
 
 <script>
-  // Initialize Supabase client (outside the function)
+  // Initialize Supabase client (outside functions)
   const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
-  const supabase = createClient(supabase); // Pass the initialized supabase
+  const supabase = createClient(supabase); // Pass the initialized instance
 
-  // Define createClient function (without initializing supabase)
   function createClient(initializedSupabase) {
     return initializedSupabase.createClient(supabaseUrl, { apiKey: supabaseKey });
   }
 
-  // Event listener for form submission
-  document.getElementById("registerForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  // Ensure Supabase is ready before use
+  supabase.ready.then(() => {
+    // Event listener for form submission (after Supabase initialization)
+    document.getElementById("registerForm").addEventListener("submit", async function(event) {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-    try {
-      // Ensure supabase is ready (if necessary)
-      await supabase.isReady; // Assuming supabase has an isReady property
-
-      const { user, error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-      if (error) {
-        throw error;
+      try {
+        const { user, error } = await supabase.auth.signUp({ email, password });
+        if (error) {
+          throw error;
+        }
+        console.log('User:', user);
+        // Redirect to dashboard or next page
+      } catch (error) {
+        console.error('Registration error:', error.message);
       }
-      console.log('User:', user);
-      // Redirect to dashboard or next page
-    } catch (error) {
-      console.error('Registration error:', error.message);
-    }
+    });
   });
 </script>
 
