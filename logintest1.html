@@ -64,7 +64,7 @@
             var password = passwordInput.value;
 
             // Authenticate the user
-            const { data, error } = await supabase.auth.signIn({
+            const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
                 password: password,
             });
