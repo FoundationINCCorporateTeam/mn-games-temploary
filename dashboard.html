@@ -146,7 +146,7 @@ main h2 {
 <script>
 // Function to remove/reset authentication token
 function resetAuthToken() {
-    localStorage.removeItem('authToken'); // Remove authToken from local storage
+    localStorage.removeItem('sb-tdsxayxnjomnoiestnmj-auth-token'); // Remove authToken from local storage
     // Redirect user to sign-in page after removing token
     window.location.href = 'sign-in.html';
 }
@@ -154,7 +154,7 @@ function resetAuthToken() {
 // Function to check if the user is signed in
 function checkAuthentication() {
     // Check if token exists in local storage
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
     if (!token) {
         // If token doesn't exist, redirect user to sign-in page
         window.location.href = 'sign-in.html';
@@ -168,7 +168,7 @@ function checkAuthentication() {
     
     if (!isAuthenticated) {
         // If user is not authenticated, redirect user to sign-in page
-        window.location.href = 'sign-in.html';
+        window.location.href = 'sb-tdsxayxnjomnoiestnmj-auth-token';
         return; // Exit function to prevent further execution
     }
 }
