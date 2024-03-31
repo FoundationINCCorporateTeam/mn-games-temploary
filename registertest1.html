@@ -1,58 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supabase Registration</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.18.0/dist/supabase.min.js"></script>
+    <title>Registration Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
 </head>
 <body>
-    <h1>Supabase Registration</h1>
-    <form id="registration-form">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+    <form id="register-form">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
         <button type="submit">Register</button>
     </form>
+
     <script>
-        // **Security: Avoid embedding credentials in client-side code**
+        // Initialize Supabase
+        var supabase = Supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
 
-        const supabase = supabase.createClient(); // Initialize without credentials
+        // Get form elements
+        var form = document.getElementById('register-form');
+        var emailInput = document.getElementById('email');
+        var passwordInput = document.getElementById('password');
 
-        const registrationForm = document.getElementById('registration-form');
-
-        registrationForm.addEventListener('submit', async (event) => {
+        // Handle form submission
+        form.addEventListener('submit', function(event) {
             event.preventDefault();
 
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            var email = emailInput.value;
+            var password = passwordInput.value;
 
-            try {
-                const { user, error } = await fetch('/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ email, password })
-                });
-
-                if (error) {
-                    console.error('Registration failed:', error);
-                    alert('Registration failed. Please try again.');
-                    return;
+            // Create a new user
+            supabase.auth.signUp({
+                email: email,
+                password: password,
+            }).then(function(response) {
+                if (response.error) {
+                    console.error('Error registering:', response.error);
+                } else {
+                    console.log('User registered:', response.data);
                 }
-
-                const response = await user.json();
-                console.log('Registration successful!', response);
-                // Redirect to success page or display confirmation message
-                alert('Registration successful! You can now log in.');
-                // Replace with your desired redirection or action
-                // window.location.href = 'success.html';
-            } catch (error) {
-                console.error('An unexpected error occurred:', error);
-                alert('An unexpected error occurred. Please try again.');
-            }
+            });
         });
     </script>
 </body>
