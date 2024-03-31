@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
+</head>
+<body>
+    <form id="login-form">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        // Initialize Supabase
+        var supabase = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
+
+        // Get form elements
+        var form = document.getElementById('login-form');
+        var emailInput = document.getElementById('email');
+        var passwordInput = document.getElementById('password');
+
+        // Handle form submission
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var email = emailInput.value;
+            var password = passwordInput.value;
+
+            // Authenticate the user
+            supabase.auth.signIn({
+                email: email,
+                password: password,
+            }).then(function(response) {
+                if (response.error) {
+                    console.error('Error logging in:', response.error);
+                } else {
+                    console.log('User logged in:', response.data);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
