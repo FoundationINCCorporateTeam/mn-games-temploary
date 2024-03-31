@@ -137,7 +137,7 @@ function checkAuthentication() {
     const token = localStorage.getItem('authToken');
     if (!token) {
         // If token doesn't exist, redirect user to sign-in page
-        window.location.href = 'sign-in.html';
+        window.location.href = 'unauthorized1.html';
         return; // Exit function to prevent further execution
     }
     
