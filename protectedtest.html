@@ -9,20 +9,37 @@
     <p>This page is restricted. You must be logged in to access it.</p>
 
     <script>
-        // Initialize Supabase
-        var supabase = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
+// Function to remove/reset authentication token
+function resetAuthToken() {
+    localStorage.removeItem('sb-tdsxayxnjomnoiestnmj-auth-token'); // Remove authToken from local storage
+    // Redirect user to sign-in page after removing token
+    window.location.href = 'sign-in.html';
+}
 
-        // Function to check authentication status
-        async function checkAuthStatus() {
-            var session = await supabase.auth.getSession();
-            if (!session) {
-                // Redirect to login page if user is not logged in
-                window.location.href = 'login.html'; // Change to your login page URL
-            }
-        }
+// Function to check if the user is signed in
+function checkAuthentication() {
+    // Check if token exists in local storage
+    const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+    if (!token) {
+        // If token doesn't exist, redirect user to sign-in page
+        window.location.href = 'sign-in.html';
+        return; // Exit function to prevent further execution
+    }
+    
+    // Example: Check if token is valid (You should implement your own validation logic here)
+    // For demonstration purposes, always consider the user as authenticated
+    // In a real-world scenario, you would perform server-side validation of the token
+    const isAuthenticated = true; // Change this according to your validation logic
+    
+    if (!isAuthenticated) {
+        // If user is not authenticated, redirect user to sign-in page
+        window.location.href = 'sb-tdsxayxnjomnoiestnmj-auth-token';
+        return; // Exit function to prevent further execution
+    }
+}
 
-        // Check authentication status when the page loads
-        checkAuthStatus();
-    </script>
+// Call checkAuthentication function when the page loads
+window.onload = checkAuthentication;
+</script>
 </body>
 </html>
