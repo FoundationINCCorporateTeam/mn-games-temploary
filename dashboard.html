@@ -61,6 +61,37 @@ main h2 {
     font-size: 32px;
     margin-bottom: 20px;
 }
+
+/* Game Columns Styles */
+.column {
+    float: left;
+    width: 25%;
+    padding: 0 20px;
+}
+
+.column h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.column p {
+    margin-bottom: 20px;
+}
+
+.column button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.column button:hover {
+    background-color: #45a049;
+}
 </style>
 </head>
 <body>
@@ -76,9 +107,27 @@ main h2 {
 <!-- Main Section -->
 <main>
     <div class="container">
-        <!-- Your dashboard content goes here -->
-        <h2>Welcome to MN Games!</h2>
-        <p>This is your dashboard. You can access all the features of MN Games here.</p>
+        <!-- Game Columns -->
+        <div class="column">
+            <h3>Premium Games</h3>
+            <p>Explore our premium games.</p>
+            <button>Explore</button>
+        </div>
+        <div class="column">
+            <h3>Ultimate Games</h3>
+            <p>Discover our ultimate gaming experience.</p>
+            <button>Discover</button>
+        </div>
+        <div class="column">
+            <h3>MN Secure Browser</h3>
+            <p>Experience secure browsing with our browser.</p>
+            <button>Get Secure</button>
+        </div>
+        <div class="column">
+            <h3>Home Page</h3>
+            <p>Return to the home page.</p>
+            <button>Home</button>
+        </div>
     </div>
 </main>
 
