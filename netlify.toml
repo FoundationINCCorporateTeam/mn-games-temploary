@@ -1,0 +1,14 @@
+# Redirects configuration for Netlify
+[[redirects]]
+  from = "/*"
+  to = "/404"
+  status = 404
+from = "/*"
+  to = "/401"
+  status = 401
+from = "/*"
+  to = "/403"
+  status = 403
+from = "/*"
+  to = "/500"
+  status = 500
