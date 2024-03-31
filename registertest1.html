@@ -34,8 +34,8 @@
   const supabase = createClient(supabase); // Pass the initialized supabase
 
   // Define createClient function (without initializing supabase)
-  function createClient(supabaseInstance) {
-    return supabaseInstance.createClient(supabaseUrl, { apiKey: supabaseKey });
+  function createClient(initializedSupabase) {
+    return initializedSupabase.createClient(supabaseUrl, { apiKey: supabaseKey });
   }
 
   // Event listener for form submission
@@ -45,6 +45,9 @@
     const password = document.getElementById("password").value;
 
     try {
+      // Ensure supabase is ready (if necessary)
+      await supabase.isReady; // Assuming supabase has an isReady property
+
       const { user, error } = await supabase.auth.signUp({
         email,
         password,
