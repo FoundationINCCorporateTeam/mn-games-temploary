@@ -39,6 +39,13 @@
     .close-btn {
         display: none;
     }
+    .redirect-info {
+        position: fixed;
+        bottom: 10px;
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+    }
 </style>
 </head>
 <body>
@@ -71,11 +78,16 @@
     <button class="close-btn" onclick="closeTour()">Close</button>
 </div>
 
+<div class="redirect-info" id="redirect-info" style="display:none;">
+    Redirecting in <span id="countdown">5</span> seconds...
+</div>
+
 <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
     const nextBtn = document.querySelector('.next-btn');
     const closeBtn = document.querySelector('.close-btn');
+    const redirectInfo = document.getElementById('redirect-info');
 
     function showSlide(n) {
         slides.forEach(slide => slide.classList.remove('active'));
@@ -97,8 +109,18 @@
     }
 
     function closeTour() {
-        // Redirect to sign-in page upon closing the tour
-        window.location.href = "sign-in.html";
+        redirectInfo.style.display = 'block';
+        let countdown = 5;
+        const countdownDisplay = document.getElementById('countdown');
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            countdownDisplay.innerText = countdown;
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                // Redirect to sign-in page upon closing the tour
+                window.location.href = "sign-in.html";
+            }
+        }, 1000);
     }
 
     // Show the first slide initially
