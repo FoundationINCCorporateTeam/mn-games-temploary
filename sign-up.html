@@ -46,6 +46,23 @@
         #register-form button:hover {
             background: #0056b3;
         }
+
+        #error-message, #success-message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        #error-message {
+            background-color: #FFC0CB;
+            color: #900;
+        }
+
+        #success-message {
+            background-color: #90EE90;
+            color: #006400;
+        }
     </style>
 </head>
 <body>
@@ -54,6 +71,8 @@
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required>
         <button type="submit">Register</button>
+        <p id="error-message"></p>
+        <p id="success-message"></p>
     </form>
 
     <script>
@@ -64,6 +83,8 @@
         var form = document.getElementById('register-form');
         var emailInput = document.getElementById('email');
         var passwordInput = document.getElementById('password');
+        var errorMessage = document.getElementById('error-message');
+        var successMessage = document.getElementById('success-message');
 
         // Handle form submission
         form.addEventListener('submit', function(event) {
@@ -79,8 +100,18 @@
             }).then(function(response) {
                 if (response.error) {
                     console.error('Error registering:', response.error);
+                    errorMessage.textContent = 'Error registering: ' + response.error.message;
+                    errorMessage.style.display = 'block';
+                    successMessage.style.display = 'none';
                 } else {
                     console.log('User registered:', response.data);
+                    successMessage.textContent = 'User registered successfully!';
+                    successMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    // Redirect after 3 seconds
+                    setTimeout(function() {
+                        window.location.href = 'onboarding.html';
+                    }, 3000);
                 }
             });
         });
