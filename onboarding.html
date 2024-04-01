@@ -27,7 +27,7 @@
     }
     .button-container {
         position: fixed;
-        bottom: 50px;
+        bottom: 25%;
         width: 100%;
         text-align: center;
     }
@@ -91,14 +91,12 @@
     function nextSlide() {
         if (currentSlide < slides.length - 1) {
             showSlide(currentSlide + 1);
-        } else {
-            // Redirect to sign-in page upon completing the tour
-            window.location.href = "sign-in.html";
         }
     }
 
     function closeTour() {
-        document.querySelector('.slides').style.display = 'none';
+        // Redirect to sign-in page upon closing the tour
+        window.location.href = "sign-in.html";
     }
 
     // Show the first slide initially
