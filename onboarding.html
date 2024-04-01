@@ -25,18 +25,19 @@
         max-width: 600px;
         margin: 0 auto;
     }
-    .next-btn {
+    .button-container {
         position: fixed;
-        bottom: 20px;
-        right: 20px;
+        bottom: 50px;
+        width: 100%;
+        text-align: center;
+    }
+    .button-container button {
+        padding: 15px 30px;
+        font-size: 18px;
         cursor: pointer;
     }
     .close-btn {
         display: none;
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        cursor: pointer;
     }
 </style>
 </head>
@@ -61,8 +62,10 @@
     </div>
 </div>
 
-<button class="next-btn" onclick="nextSlide()">Next</button>
-<button class="close-btn" onclick="closeTour()">Close</button>
+<div class="button-container">
+    <button class="next-btn" onclick="nextSlide()">Next</button>
+    <button class="close-btn" onclick="closeTour()">Close</button>
+</div>
 
 <script>
     let currentSlide = 0;
@@ -86,6 +89,9 @@
     function nextSlide() {
         if (currentSlide < slides.length - 1) {
             showSlide(currentSlide + 1);
+        } else {
+            // Redirect to sign-in page upon completing the tour
+            window.location.href = "sign-in.html";
         }
     }
 
