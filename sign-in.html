@@ -5,6 +5,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
     <style>
         body {
+            text-align:center;
             font-family: Arial, sans-serif;
         }
         form {
@@ -39,12 +40,13 @@
     </style>
 </head>
 <body>
+    <h2>MN Games Sign-in</h2>
     <form id="login-form">
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required minlength="6">
         <button type="submit">Login</button>
-        <p style="text=align-center"> Don't have an account?<br><a herf="sign-up">Create an One!</a>
-        <p style="text=align-center"> Forgot your password?<br><a herf="forgotpassword">Reset it!</a>
+        <p style="text=align-center"> Don't have an account?<br><a herf="sign-up">Create an One!</a></p>
+        <p style="text=align-center"> Forgot your password?<br><a herf="forgotpassword">Reset it!</a></p>
         <p id="error-message" class="error"></p>
         <p id="success-message" class="success"></p>
     </form>
