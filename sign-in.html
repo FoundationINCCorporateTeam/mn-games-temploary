@@ -75,22 +75,22 @@
                 errorMessage.style.display = 'block';
                 return;
             }
+
             // Authenticate the user
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { user, session, error } = await supabase.auth.signIn({
                 email: email,
                 password: password,
             });
 
             if (error) {
                 console.error('Error logging in:', error);
-                if (error.message === 'AuthApiError: Email not confirmed') {
-                    errorMessage.textContent = 'Please confirm your email before signing in.';
-                } else {
-                    errorMessage.textContent = 'Invalid email or password.';
-                }
+                errorMessage.textContent = 'Invalid email or password.';
+                errorMessage.style.display = 'block';
+            } else if (!user.email_confirmed_at) {
+                errorMessage.textContent = 'Please confirm your email before signing in.';
                 errorMessage.style.display = 'block';
             } else {
-                console.log('User logged in:', data);
+                console.log('User logged in:', user);
                 successMessage.textContent = 'Successfully logged in, redirecting...';
                 successMessage.style.display = 'block';
                 setTimeout(function() {
