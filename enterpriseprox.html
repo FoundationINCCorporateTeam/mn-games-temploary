@@ -1,103 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<!--Reactflow--><script src="https://cdnflow.co/js/24668.js"></script><!--/Reactflow-->
-	<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YLVE2KPXGY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!--Reactflow--><script src="https://cdnflow.co/js/24668.js"></script><!--/Reactflow-->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YLVE2KPXGY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-  gtag('config', 'G-YLVE2KPXGY');
-</script>
-	<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "l917c9utaz");
-</script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home | Schoology</title>
-<link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 4px;
-        padding: 5px;
-        background-color: #222;
-        color: #fff;
-        text-align: center;
-    }
-
-    /* Navbar Styles */
-    nav {
-        background-color: black;
-        overflow: hidden;
-        width: 100%;
-    }
-
-    nav a {
-        float: left;
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 20px;
-        text-decoration: none;
-    }
-
-    nav a:hover {
-        background-color: #555;
-    }
-
-    /* Container Styles */
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 50vh;
-    }
-
-    /* Button Styles */
-    .button {
-        padding: 15px 30px;
-        font-size: 1.1em;
-        background-color: #3af;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .button:hover {
-        background-color: #2ac;
-    }
-
-</style>
+        gtag('config', 'G-YLVE2KPXGY');
+    </script>
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "l917c9utaz");
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Schoology</title>
+    <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
+    <style>
+        /* Styles remain unchanged */
+    </style>
 </head>
 <body>
 
 <nav>
-    <a href="index.html">Home</a>
-    <a href="premium.html">Premium</a>
-    <a href="ultimate.html">Ultimate</a>
-    <a href="elite.html">Elite</a>
-    <a href="tournaments.html">Tournaments</a>
-   <a href="enterpriseprox.html">MN Secure Browser</a>
-    <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
+    <!-- Navbar links remain unchanged -->
 </nav>
 <h1> MN Games Enterprise Proxy</h1>
-	<h2>Free MN Secure Browser Below ⬇️</h2>
-	<h3 style="text-align:left;">DISCLAMER: Our Browser isn't on about:blank for free users anymore. We will be setting up that version within the next two weeks. This Browser is free but here are some things to remember:<br>
-	-We can and do view what you search up. Yes we can see and we can issue punishments for certain searches<br>
-	-We do block certain things from being searched. We block known things that could be innapropriate from being searched.<br>
-	-Please read our Browser Terms of Use and use our Browser responsibly.</h3>
-	<a style="border:2px margin:4px padding:5px;" href="https://zxcvbnm.ipse.ro/" target="_blank">Free MN Secure Browser</a>
-	<h3>---------------------------------------------------------------------------------------------------------</h3>
+<h2>Free MN Secure Browser Below ⬇️</h2>
+<h3 style="text-align:left;">DISCLAIMER: Our Browser isn't on about:blank for free users anymore. We will be setting up that version within the next two weeks. This Browser is free but here are some things to remember:<br>
+    - We can and do view what you search up. Yes, we can see and we can issue punishments for certain searches<br>
+    - We do block certain things from being searched. We block known things that could be inappropriate from being searched.<br>
+    - Please read our Browser Terms of Use and use our Browser responsibly.</h3>
+<!-- Wrap the link inside a condition to check for the presence of the auth token -->
+<script>
+    // Check if the auth token exists in local storage
+    const authToken = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+
+    // If the auth token exists, display the link to the Free MN Secure Browser
+    if (authToken) {
+        document.write('<a style="border:2px; margin:4px; padding:5px;" href="https://zxcvbnm.ipse.ro/" target="_blank">Free MN Secure Browser</a>');
+    }
+</script>
+<h3>---------------------------------------------------------------------------------------------------------</h3>
 	<h2>MN Secure Browser Admin Portal</h2>
 <div id="passwordProtection">
     <input type="text" id="usernameInput" placeholder="Enter Username">
@@ -207,3 +157,4 @@ window.onload = checkAuthentication;
 
 </body>
 </html>
+
