@@ -25,10 +25,17 @@
         max-width: 600px;
         margin: 0 auto;
     }
-    .close-btn {
+    .next-btn {
         position: fixed;
-        top: 10px;
-        right: 10px;
+        bottom: 20px;
+        right: 20px;
+        cursor: pointer;
+    }
+    .close-btn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
         cursor: pointer;
     }
 </style>
@@ -54,16 +61,26 @@
     </div>
 </div>
 
-<span class="close-btn" onclick="closeTour()">Close</span>
+<button class="next-btn" onclick="nextSlide()">Next</button>
+<button class="close-btn" onclick="closeTour()">Close</button>
 
 <script>
     let currentSlide = 0;
     const slides = document.querySelectorAll('.slide');
+    const nextBtn = document.querySelector('.next-btn');
+    const closeBtn = document.querySelector('.close-btn');
 
     function showSlide(n) {
         slides.forEach(slide => slide.classList.remove('active'));
         slides[n].classList.add('active');
         currentSlide = n;
+        if (currentSlide === slides.length - 1) {
+            nextBtn.style.display = 'none';
+            closeBtn.style.display = 'block';
+        } else {
+            nextBtn.style.display = 'block';
+            closeBtn.style.display = 'none';
+        }
     }
 
     function nextSlide() {
@@ -75,12 +92,6 @@
     function closeTour() {
         document.querySelector('.slides').style.display = 'none';
     }
-
-    document.addEventListener('keydown', function(event) {
-        if (event.keyCode === 27) { // Escape key
-            closeTour();
-        }
-    });
 
     // Show the first slide initially
     showSlide(0);
