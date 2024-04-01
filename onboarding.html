@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Tour/Onboarding Page</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    .tour-box {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        max-width: 400px;
+        text-align: center;
+    }
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="overlay" id="tour-overlay">
+    <div class="tour-box">
+        <h2>Welcome to Our Website!</h2>
+        <p>This is a brief tour to guide you through our website features.</p>
+        <p>Step 1: Lorem ipsum dolor sit amet, consectetur adipiscing elit.1</p>
+        <p>Step 2: Lorem ipsum dolor sit amet, consectetur adipiscing elit.2</p>
+        <p>Step 3: Lorem ipsum dolor sit amet, consectetur adipiscing elit.3</p>
+        <button onclick="nextStep()">Next</button>
+        <span class="close-btn" onclick="closeTour()">Close</span>
+    </div>
+</div>
+
+<!-- Your website content goes here -->
+
+<script>
+    let currentStep = 1;
+
+    function nextStep() {
+        const steps = document.querySelectorAll('.tour-box p');
+        if (currentStep < steps.length) {
+            steps[currentStep - 1].style.display = 'none';
+            steps[currentStep].style.display = 'block';
+            currentStep++;
+        } else {
+            closeTour();
+        }
+    }
+
+    function closeTour() {
+        document.getElementById('tour-overlay').style.display = 'none';
+    }
+</script>
+</body>
+</html>
