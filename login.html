@@ -1,32 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="/css/style.min.css">
-    <script defer src="/js/login.js"></script>
+    <title>Login Form</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
+    <style>
+        body {
+            text-align:center;
+            font-family: Arial, sans-serif;
+        }
+        form {
+            width: 300px;
+            margin: 0 auto;
+        }
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            display: none;
+        }
+        .success {
+            background-color: #90EE90;
+            color: #006400;
+            display: none;
+        }
+    </style>
 </head>
-<body class="login">
-    <div class="container">
-        <h2 class="text-center">Login</h2>
-        <br>
-        <form action="/dashboard.html" class="loginForm">
-            <div class="input-group">
-                <label for="username" class="label">Username</label>
-                <input type="text" id="username" class="input">
-                <span class="error-message"></span>
-            </div>
-            <br>
-            <div class="input-group">
-                <label for="password" class="label">Password</label>
-                <input type="password" id="password" class="input">
-                <span class="error-message"></span>
-            </div>
-            <br>
-            <button class="button" type="submit">Login</button>
-        </form>
-    </div>
+<body>
+    <h2>MN Games Sign-in</h2>
+    <form id="login-form">
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required minlength="6">
+        <button type="submit">Login</button>
+        <p style="text-align:center"> Don't have an account?<br><a href="sign-up">Create One!</a></p>
+        <p style="text-align:center"> Forgot your password?<br><a href="forgotpassword">Reset it!</a></p>
+        <p id="error-message" class="error"></p>
+        <p id="success-message" class="success"></p>
+    </form>
+
+    <script>
+        // Initialize Supabase
+        var supabase = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
+
+        // Get form elements
+        var form = document.getElementById('login-form');
+        var emailInput = document.getElementById('email');
+        var passwordInput = document.getElementById('password');
+        var errorMessage = document.getElementById('error-message');
+        var successMessage = document.getElementById('success-message');
+
+        // Handle form submission
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            var email = emailInput.value;
+            var password = passwordInput.value;
+
+            if (!email || !password) {
+                errorMessage.textContent = 'Please fill in all fields.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Authenticate the user
+            const { user, session, error } = await supabase.auth.signIn({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                console.error('Error logging in:', error);
+                if (error.message === 'AuthApiError: Email not confirmed') {
+                    errorMessage.textContent = 'Please confirm your email before signing in.';
+                } else {
+                    errorMessage.textContent = 'Invalid email or password.';
+                }
+                errorMessage.style.display = 'block';
+            } else {
+                if (!user.email_confirmed_at) {
+                    errorMessage.textContent = 'Please confirm your email before signing in.';
+                    errorMessage.style.display = 'block';
+                } else {
+                    console.log('User logged in:', user);
+                    successMessage.textContent = 'Successfully logged in, redirecting...';
+                    successMessage.style.display = 'block';
+                    setTimeout(function() {
+                        window.location.href = 'https://schoology.panel.moe/dashboard';
+                    }, 3000); // Redirect after 3 seconds
+                }
+            }
+        });
+    </script>
 </body>
 </html>
