@@ -94,8 +94,16 @@
 
 <div class="container">
     <h1>Welcome to MN Games</h1>
-    <p>Attention! Ultimate Games are back up. During this month please mind your usage so Ultimate Games doesn't shutdown again.</p>                               
-    <button class="button" onclick="openSecureBrowser()">Ultimate Games: Online (Unblocked)</button>
+    <p>Attention! Ultimate Games are back up. During this month please mind your usage so Ultimate Games doesn't shutdown again.</p>
+	<script>
+    // Check if the auth token exists in local storage
+    const authToken = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+
+    // If the auth token exists, display the link to the Free MN Secure Browser
+    if (authToken) {
+        document.write('<button class="button" onclick="openSecureBrowser()">Ultimate Games: Online (Unblocked)</button>');
+    }
+</script>
 </div>
 
 <script>
