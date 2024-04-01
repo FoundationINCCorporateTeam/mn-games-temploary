@@ -45,8 +45,8 @@
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required minlength="6">
         <button type="submit">Login</button>
-        <p style="text=align-center"> Don't have an account?<br><a href="sign-up">Create an One!</a></p>
-        <p style="text=align-center"> Forgot your password?<br><a href="forgotpassword">Reset it!</a></p>
+        <p style="text-align:center"> Don't have an account?<br><a href="sign-up">Create an One!</a></p>
+        <p style="text-align:center"> Forgot your password?<br><a href="forgotpassword">Reset it!</a></p>
         <p id="error-message" class="error"></p>
         <p id="success-message" class="success"></p>
     </form>
@@ -74,13 +74,6 @@
                 errorMessage.style.display = 'block';
                 return;
             }
-
-            if (password.length < 6) {
-                errorMessage.textContent = 'Password must be at least 6 characters.';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
             // Authenticate the user
             const { data, error } = await supabase.auth.signInWithPassword({
                 email: email,
@@ -89,7 +82,11 @@
 
             if (error) {
                 console.error('Error logging in:', error);
-                errorMessage.textContent = 'Invalid email or password.';
+                if (error.message === 'AuthApiError: Email not confirmed') {
+                    errorMessage.textContent = 'Please confirm your email before signing in.';
+                } else {
+                    errorMessage.textContent = 'Invalid email or password.';
+                }
                 errorMessage.style.display = 'block';
             } else {
                 console.log('User logged in:', data);
