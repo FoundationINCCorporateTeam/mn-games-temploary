@@ -1,126 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login Form</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
-    <style>
-        body {
-            text-align:center;
-            font-family: Arial, sans-serif;
-        }
-        form {
-            width: 300px;
-            margin: 0 auto;
-        }
-        input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .error {
-            color: red;
-            display: none;
-        }
-        .success {
-            background-color: #90EE90;
-            color: #006400;
-            display: none;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <!-- Auth0 Lock library -->
+    <script src="https://cdn.auth0.com/js/lock/11.29/lock.min.js"></script>
 </head>
 <body>
-    <h2>MN Games Sign-in</h2>
-    <form id="login-form">
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required minlength="6">
-        <button type="submit">Login</button>
-        <p style="text-align:center"> Don't have an account?<br><a href="sign-up">Create One!</a></p>
-        <p style="text-align:center"> Forgot your password?<br><a href="forgotpassword">Reset it!</a></p>
-        <p id="error-message" class="error"></p>
-        <p id="success-message" class="success"></p>
-    </form>
+    <h1>Sign Up</h1>
+    <button id="signup">Sign Up</button>
 
     <script>
-        // Initialize Supabase
-        var supabase = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
+        var lock = new Auth0Lock('q87784Q6PtmEeRjM6adHCHOnZeut7ero', 'dev-6t58144bvsfqag0z.us.auth0.com');
 
-        // Get form elements
-        var form = document.getElementById('login-form');
-        var emailInput = document.getElementById('email');
-        var passwordInput = document.getElementById('password');
-        var errorMessage = document.getElementById('error-message');
-        var successMessage = document.getElementById('success-message');
-
-        // Handle form submission
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            var email = emailInput.value;
-            var password = passwordInput.value;
-
-            if (!email || !password) {
-                errorMessage.textContent = 'Please fill in all fields.';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
-            // Check if the email is confirmed
-            const { data: user, error } = await supabase
-                .from('users')
-                .select('email_confirmed_at')
-                .eq('email', email)
-                .single();
-
-            if (error) {
-                console.error('Error fetching user data:', error);
-                errorMessage.textContent = 'Error occurred while signing in.';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
-            if (!user) {
-                errorMessage.textContent = 'Invalid email or password.';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
-            if (!user.email_confirmed_at) {
-                errorMessage.textContent = 'Please confirm your email before signing in.';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
-            // Authenticate the user
-            const { session, error: signInError } = await supabase.auth.signIn({
-                email: email,
-                password: password,
+        document.getElementById('signup').addEventListener('click', function() {
+            lock.showSignup(function(err, profile, token) {
+                if (err) {
+                    console.error("Something went wrong: ", err);
+                } else {
+                    console.log("Profile: ", profile);
+                    console.log("Token: ", token);
+                    // Redirect or perform other actions after successful sign-up
+                }
             });
-
-            if (signInError) {
-                console.error('Error logging in:', signInError);
-                errorMessage.textContent = 'Invalid email or password.';
-                errorMessage.style.display = 'block';
-                return;
-            }
-
-            console.log('User logged in successfully:', session.user);
-            successMessage.textContent = 'Successfully logged in, redirecting...';
-            successMessage.style.display = 'block';
-            setTimeout(function() {
-                window.location.href = 'https://schoology.panel.moe/dashboard';
-            }, 3000); // Redirect after 3 seconds
         });
     </script>
 </body>
