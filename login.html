@@ -3,27 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <!-- Auth0 Lock library -->
-    <script src="https://cdn.auth0.com/js/lock/11.29/lock.min.js"></script>
+    <title>Clerk Integration</title>
+    <!-- Clerk SDK -->
+    <script src="https://js.clerk.dev"></script>
 </head>
 <body>
-    <h1>Sign Up</h1>
-    <button id="signup">Sign Up</button>
+    <div id="app">
+        <!-- Authentication components -->
+        <clerk-sign-in></clerk-sign-in>
+        <clerk-sign-up></clerk-sign-up>
+        <clerk-user-profile></clerk-user-profile>
+    </div>
 
     <script>
-        var lock = new Auth0Lock('q87784Q6PtmEeRjM6adHCHOnZeut7ero', 'dev-6t58144bvsfqag0z.us.auth0.com');
-
-        document.getElementById('signup').addEventListener('click', function() {
-            lock.showSignup(function(err, profile, token) {
-                if (err) {
-                    console.error("Something went wrong: ", err);
-                } else {
-                    console.log("Profile: ", profile);
-                    console.log("Token: ", token);
-                    // Redirect or perform other actions after successful sign-up
-                }
-            });
+        // Initialize Clerk with your public API key
+        Clerk.configure({
+            apiKey: 'pk_test_cXVhbGl0eS1tYXN0b2Rvbi0yNi5jbGVyay5hY2NvdW50cy5kZXYk',
+            frontendApi: 'https://api.clerk.dev',
+            navigate: true // Enable navigation
         });
     </script>
 </body>
