@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clerk Integration</title>
     <!-- Clerk SDK -->
-    <script src="https://js.clerk.dev"></script>
+    <script src="https://js.clerk.dev" onload="initializeClerk()" onerror="handleClerkLoadError()"></script>
 </head>
 <body>
     <div id="app">
@@ -16,12 +16,18 @@
     </div>
 
     <script>
-        // Initialize Clerk with your public API key
-        Clerk.configure({
-            apiKey: 'pk_test_cXVhbGl0eS1tYXN0b2Rvbi0yNi5jbGVyay5hY2NvdW50cy5kZXYk',
-            frontendApi: 'https://api.clerk.dev',
-            navigate: true // Enable navigation
-        });
+        function initializeClerk() {
+            // Initialize Clerk with your public API key
+            Clerk.configure({
+                apiKey: 'YOUR_PUBLIC_API_KEY',
+                frontendApi: 'https://api.clerk.dev',
+                navigate: true // Enable navigation
+            });
+        }
+
+        function handleClerkLoadError() {
+            console.error("Failed to load Clerk SDK.");
+        }
     </script>
 </body>
 </html>
