@@ -92,6 +92,35 @@
    <a href="enterpriseprox.html">MN Secure Browser</a>
 	<a href="https://mnsupport.ladesk.com/">MN Games Support</a>
 </nav>
+<div style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border: 2px solid #333; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); z-index: 9999;" id="popup">
+    <span style="position: absolute; top: 5px; right: 10px; cursor: pointer;" onclick="closePopup()">&times;</span>
+    <h2>Disclaimer</h2>
+    <p>Dear user,</p>
+    <p>Welcome to our game website. Before you proceed, we kindly ask you to carefully read and acknowledge the following:</p>
+    <p>1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.</p>
+    <p>2. We strongly advise against accessing this website during class time or any educational activities. We encourage you to prioritize your studies and respect your educational institution's policies.</p>
+    <p>3. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.</p>
+    <p>4. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.</p>
+    <p>Thank you for your understanding and cooperation. Enjoy your gaming experience responsibly.</p>
+</div>
+
+<div style="display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 9998;" id="overlay"></div>
+
+<script>
+    function showPopup() {
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("popup").style.display = "block";
+    }
+
+    function closePopup() {
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("popup").style.display = "none";
+    }
+
+    window.onload = function() {
+        showPopup();
+    };
+</script>
 
 <div class="container">
     <h1>Welcome to MN Games</h1>
