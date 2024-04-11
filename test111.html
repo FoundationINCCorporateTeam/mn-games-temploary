@@ -18,8 +18,8 @@
                 }
 
                 var referrer = document.referrer;
-                if (!referrer) {
-                    console.error("Referrer not available.");
+                if (!referrer || referrer === "") {
+                    console.error("Referrer not available or empty.");
                     return;
                 }
 
