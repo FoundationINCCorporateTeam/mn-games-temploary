@@ -1,0 +1,24 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+</head>
+<body>
+    <script>
+        // Function to check if the user came from an external source
+        function checkReferrer() {
+            var referrer = document.referrer;
+            if (referrer && referrer.indexOf("schoology.panel.moe") === -1) {
+                // Redirect to a different page
+                window.location.href = "different-page.html";
+            }
+        }
+
+        // Call the function on page load
+        checkReferrer();
+    </script>
+</body>
+</html>
