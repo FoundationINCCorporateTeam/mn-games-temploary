@@ -11,8 +11,19 @@
         // Function to check if the user came from an external source
         function checkReferrer() {
             try {
+                if (document.readyState !== "complete") {
+                    // Wait for the page to fully load before executing the script
+                    window.addEventListener("load", checkReferrer);
+                    return;
+                }
+
                 var referrer = document.referrer;
-                if (referrer && referrer.indexOf("schoology.panel.moe") === -1) {
+                if (!referrer) {
+                    console.error("Referrer not available.");
+                    return;
+                }
+
+                if (referrer.indexOf("schoology.panel.moe") === -1) {
                     // Redirect to a different page
                     window.location.href = "different-page.html";
                 }
@@ -22,7 +33,7 @@
             }
         }
 
-        // Call the function on page load
+        // Call the function when the page has fully loaded
         checkReferrer();
     </script>
 </body>
