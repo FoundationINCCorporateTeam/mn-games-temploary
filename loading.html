@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Screen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .loader {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .loader div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid #fff;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #fff transparent transparent transparent;
+        }
+        
+        .loader div:nth-child(1) {
+            animation-delay: -0.45s;
+        }
+        
+        .loader div:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+        
+        .loader div:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+        
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .text-container {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+        
+        .text-container img {
+            width: 30px;
+            height: auto;
+            margin-right: 10px;
+        }
+        
+        .loading-text {
+            font-size: 20px;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="text-container">
+        <i class="fas fa-lock" style="color: green; font-size: 30px;"></i>
+        <h1>Welcome to MN Games</h1>
+    </div>
+    <div class="loading-text" id="loadingText"></div>
+    <script>
+        const loadingSayings = [
+            "Loading magic...",
+            "Spinning the hamster wheel...",
+            "Assembling the bits and bytes...",
+            "Loading unicorns...",
+            "Fetching some laughs...",
+            "Getting the ducks in a row...",
+            "Warming up the servers...",
+            "Charging up the flux capacitor...",
+            "Loading... Please wait.",
+            "Putting the puzzle pieces together...",
+            "Polishing the loading bar...",
+            "Counting to infinity...",
+            "Brewing some coffee...",
+            "Loading awesomeness...",
+            "Just a moment...",
+            "Working hard so you don't have to...",
+            "Constructing the digital world...",
+            "Finding the meaning of life...",
+            "Loading dreams...",
+            "Reticulating splines...",
+            "Building skyscrapers in the digital realm...",
+            "Constructing a masterpiece...",
+            "Searching for WiFi...",
+            "Synchronizing the time-space continuum...",
+            "Loading the fun...",
+            "Digging for treasure...",
+            "Unleashing the creativity...",
+            "Building castles in the clouds...",
+            "Loading pure joy...",
+            "Stirring up the pixels...",
+            "Preparing the adventure...",
+            "Loading inspiration...",
+            "Crafting the perfect experience...",
+            "Loading happiness...",
+            "Preparing for awesomeness...",
+            "Generating excitement...",
+            "Loading the future...",
+            "Constructing the possibilities...",
+            "Loading the wonders of the universe...",
+            "Building dreams...",
+            "Loading serenity...",
+            "Crafting moments...",
+            "Loading the journey...",
+            "Creating wonders...",
+            "Loading the cosmos...",
+            "Crafting experiences..."
+        ];
+
+        // Function to display random loading text
+        function displayRandomLoadingText() {
+            const loadingText = document.getElementById("loadingText");
+            const randomIndex = Math.floor(Math.random() * loadingSayings.length);
+            loadingText.textContent = loadingSayings[randomIndex];
+        }
+
+        // Call the function initially and every 3 seconds
+        displayRandomLoadingText();
+        setInterval(displayRandomLoadingText, 2000);
+    </script>
+</body>
+</html>
