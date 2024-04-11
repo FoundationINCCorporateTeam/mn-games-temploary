@@ -160,10 +160,11 @@
 
     .popup span {
         position: absolute;
-        top: 5px;
-        right: 10px;
+        bottom: 5px;
+        left: 50%;
+        transform: translateX(-50%);
         cursor: pointer;
-        font-size: 32px;
+        font-size: 18px;
         color: #fff;
     }
 
@@ -192,14 +193,9 @@
 
     /* Adjustments for the disclaimer popup */
     .disclaimer-content input[type="checkbox"] {
-        transform: scale(1.5); /* Increase checkbox size */
+        transform: scale(2); /* Increase checkbox size */
     }
 
-    .popup span {
-        bottom: 10px; /* Move close button to the bottom */
-        left: 50%; /* Align to center horizontally */
-        transform: translateX(-50%); /* Adjust position */
-    }
 </style>
 </head>
 <body>
@@ -222,7 +218,7 @@
 </nav>
 
 <div class="popup" id="popup">
-    <span onclick="closePopup()">&times;</span>
+    <span onclick="closePopup()">Close</span>
     <div class="disclaimer-content">
         <h2>Disclaimer</h2>
         <p>Dear user,</p>
