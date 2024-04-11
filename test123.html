@@ -6,375 +6,99 @@
     <title>Home | Schoology</title>
     <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
     <style>
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #222;
-            color: #fff;
-            text-align: center;
-        }
-
-        /* New styles for the announcement bar */
-        .announcement-bar {
-            background-color: white;
-            color: purple;
-            padding: 10px 0;
-        }
-
-        /* Navbar Styles */
-        nav {
-            background-color: black;
-            overflow: hidden;
+        /* CSS for Glitch Effect */
+        .glitch-wrapper {
             width: 100%;
-            padding: 8px 0; /* Reduced top and bottom padding */
-        }
-
-        nav a {
-            display: inline-block;
-            color: white;
-            text-align: center;
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        nav a:hover {
-            background-color: #555;
-        }
-
-        /* Container Styles */
-        .container {
+            height: 100%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-bottom: 20px;
-            margin-top: 50px;
-        }
-
-        /* Button Styles */
-        .futuristic-button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 15px 30px;
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            border-radius: 12px;
-            font-family: Arial, sans-serif;
-            outline: none;
-            border: 2px solid transparent;
+            background-color: #000000;
         }
 
-        .futuristic-button:hover {
-            background-color: #45a049;
-            border: 2px solid #4CAF50;
-        }
-
-        .premium-button,
-        .ultimate-button {
-            width: auto;
-        }
-
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .card {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            width: 300px;
-            text-align: center;
-            background-color: #f0f0f0;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 10px; /* Reduced margin */
-        }
-
-        .card img {
-            width: 100%;
-            border-radius: 50%;
-        }
-
-        .card h1 {
-            margin-top: 10px;
-            font-size: 24px;
-            color: #333;
-        }
-
-        .card p {
-            font-size: 16px;
-            color: #666;
-            margin: 10px 0; /* Adjusted margin */
-        }
-
-        button {
-            border: none;
-            outline: 0;
-            display: inline-block;
-            padding: 8px;
-            color: white;
-            background-color: #000;
-            text-align: center;
-            cursor: pointer;
-            width: 100%;
-            font-size: 18px;
-        }
-
-        a {
-            text-decoration: none;
-            font-size: 22px;
-            color: black;
-        }
-
-        button:hover,
-        a:hover {
-            opacity: 0.7;
-        }
-
-        /* Combined styles with provided CSS */
-        :root {
-            --f-size: 15;
-            --f-unit: 1vmin;
-            --f: calc(var(--f-size) * var(--f-unit));
-            --bg: #181717; 
-        }
-
-        *, *::after, *::before {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial;
-            font-size: var(--f);
-            background-color: var(--bg);
-            display: flex;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin: 0 10px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: #fff;
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        section {
-            margin-bottom: 50px;
-        }
-
-        .product {
-            text-align: center;
-        }
-
-        .product img {
-            max-width: 100%;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px 0;
-        }
-
-        /* Glitch animation */
         .glitch {
-            flex: 1;
-            line-height: 0.75;
-            margin: auto;
-            color: #1af0dc;
-            text-align: center;
-            transform: scaleX(var(--scale, 1));
-            animation: glitch-p 11s infinite alternate;
-        }
-
-        .glitch::before,
-        .glitch::after {
-            --top: 0;        /* offset from top [0 - 10] */
-            --left: 0;       /* offset from left [0.001 - 1] */
-            --v-height: 30%; /* visible part */
-            
-            content: attr(data-text);
-            position: absolute;
-            width: 100%;
-            left: 0;
-            text-align: center;
-            transform: translateX(calc(var(--left) * 100%));
-            filter: drop-shadow(0 0 transparent); 
-            text-shadow: calc(var(--left) * -3em) 0 .02em lime, calc(var(--left) * -6em) 0 .02em #ff00e1;
-            background-color: #181717;
-            clip-path: polygon(0% var(--t-cut), 100% var(--t-cut), 100% var(--b-cut), 0% var(--b-cut));
-        }
-
-        .glitch::before {
-            animation: glitch-b 1.7s infinite alternate-reverse;
-        }
-
-        .glitch::after {
-            animation: glitch-a 3.1s infinite alternate;
-        }
-
-        @keyframes glitch-p {
-            17% { --scale: 0.87; }
-            31% { --scale: 1.1; }
-            37% { --scale: 1.3; }
-            47% { --scale: 0.91; }
-            87% { --scale: 1; }
-        }
-
-        @keyframes glitch-a {
-            10%, 30%, 50%, 70%, 90% {
-                --top: 0;
-                --left: 0;
-            }
-            0% { --v-height: 15%; }
-            20% {
-                --left: 0.005;
-            }
-            40% {
-                --left: 0.01;
-                --v-height: 20%;
-                --top: 3;
-            }
-            60% {
-                --left: 0.03;
-                --v-height: 25%;
-                --top: 6;
-            }
-            80% {
-                --left: 0.07;
-                --v-height: 5%;
-                --top: 8;
-            }
-            100% {
-                --left: 0.083;
-                --v-height: 30%;
-                --top: 1;
-            }
-        }
-
-        @keyframes glitch-b {
-            10%, 30%, 50%, 70%, 90% {
-                --top: 0;
-                --left: 0;
-            }
-            0% {
-                --v-height: 15%;
-                --top: 10;
-            }
-            20% {
-                --left: -0.005;
-            }
-            40% {
-                --left: -0.01;
-                --v-height: 17%;
-                --top: 3;
-            }
-            60% {
-                --left: -0.03;
-                --v-height: 35%;
-                --top: 6;
-            }
-            80% {
-                --left: -0.07;
-                --v-height: 5%;
-                --top: 8;
-            }
-            100% {
-                --left: -0.083;
-                --v-height: 30%;
-                --top: 1;
-            }
-        }
-
-        /* Apply glitch effect to specific elements */
-        h1.glitchy {
             position: relative;
-            display: inline-block;
+            font-size: 50px;
+            font-weight: bold;
+            color: #FFFFFF;
+            letter-spacing: 3px;
+            z-index: 1;
         }
 
-        h1.glitchy::before,
-        h1.glitchy::after {
+        .glitch:before,
+        .glitch:after {
+            display: block;
             content: attr(data-text);
             position: absolute;
             top: 0;
             left: 0;
-            overflow: hidden;
-            z-index: 1;
-            color: #1af0dc;
-            animation: glitch-p 3s infinite alternate;
+            opacity: 0.8;
         }
 
-        h1.glitchy::before {
-            left: 2px;
-            text-shadow: -1px 0 red;
+        .glitch:before {
+            animation: glitch-it 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+            color: #00FFFF;
+            z-index: -1;
         }
 
-        h1.glitchy::after {
-            left: -2px;
-            text-shadow: 1px 0 lime;
+        .glitch:after {
+            animation: glitch-it 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+            color: #FF00FF;
+            z-index: -2;
         }
 
-        @keyframes glitch-p {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
+        @keyframes glitch-it {
+            0% {
+                transform: translate(0);
+            }
+            20% {
+                transform: translate(-2px, 2px);
+            }
+            40% {
+                transform: translate(-2px, -2px);
+            }
+            60% {
+                transform: translate(2px, 2px);
+            }
+            80% {
+                transform: translate(2px, -2px);
+            }
+            to {
+                transform: translate(0);
+            }
         }
     </style>
 </head>
 <body>
-<div class="announcement-bar">
-    <p>Notice: <b>IMPORTANT ANNOUNCEMENT: MN Games Secure Browser is... NOW FREE FOR EVERYONE! MN Games leadership has decided to make the MN Secure browser available for all just go to https://schoology.panel.moe/enterpriseprox.html and the browser is free! But please ready the information BEFORE clicking on the browser. IT COULD BE IMPORTANT!</b></p>
+<div class="announcement-bar glitch-wrapper">
+    <p class="glitch" data-text="Notice: IMPORTANT ANNOUNCEMENT: MN Games Secure Browser is... NOW FREE FOR EVERYONE! MN Games leadership has decided to make the MN Secure browser available for all just go to https://schoology.panel.moe/enterpriseprox.html and the browser is free! But please ready the information BEFORE clicking on the browser. IT COULD BE IMPORTANT!">Notice: IMPORTANT ANNOUNCEMENT: MN Games Secure Browser is... NOW FREE FOR EVERYONE! MN Games leadership has decided to make the MN Secure browser available for all just go to https://schoology.panel.moe/enterpriseprox.html and the browser is free! But please ready the information BEFORE clicking on the browser. IT COULD BE IMPORTANT!</p>
 </div>
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="premium.html">Premium</a>
-    <a href="ultimate.html">Ultimate</a>
-    <a href="elite.html">Elite</a>
-    <a href="tournaments.html">Tournaments</a>
-   <a href="enterpriseprox.html">MN Secure Browser</a>
-    <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
-    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__cyL5V9UN1dSTUxMWjdSNUVNSDVVOFhJOUM4TDc0NS4u">Apply For A Job!</a>
-	 <a href="sign-up">Sign-up</a>
-	 <a href="sign-in">Sign-in</a>
+<nav class="glitch-wrapper">
+    <a href="index.html" class="glitch" data-text="Home">Home</a>
+    <a href="premium.html" class="glitch" data-text="Premium">Premium</a>
+    <a href="ultimate.html" class="glitch" data-text="Ultimate">Ultimate</a>
+    <a href="elite.html" class="glitch" data-text="Elite">Elite</a>
+    <a href="tournaments.html" class="glitch" data-text="Tournaments">Tournaments</a>
+    <a href="enterpriseprox.html" class="glitch" data-text="MN Secure Browser">MN Secure Browser</a>
+    <a href="https://mnsupport.ladesk.com/" class="glitch" data-text="MN Games Support">MN Games Support</a>
+    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__cyL5V9UN1dSTUxMWjdSNUVNSDVVOFhJOUM4TDc0NS4u" class="glitch" data-text="Apply For A Job!">Apply For A Job!</a>
+    <a href="sign-up" class="glitch" data-text="Sign-up">Sign-up</a>
+    <a href="sign-in" class="glitch" data-text="Sign-in">Sign-in</a>
 </nav>
-	<div style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #000000; padding: 20px; border: 2px solid #333; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); z-index: 9999;" id="popup">
-<span style="position: absolute; top: 5px; right: 10px; cursor: pointer; font-size: 32px;" onclick="closePopup()">&times;</span>
 
-    <h2>Disclaimer</h2>
-    <p>Dear user,</p>
-    <p>Welcome to our game website. Before you proceed, we kindly ask you to carefully read and acknowledge the following:</p>
-    <p>1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.</p>
-    <p>2. We strongly advise against accessing this website during class time or any educational activities. We encourage you to prioritize your studies and respect your educational institution's policies.</p>
-    <p>3. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.</p>
-    <p>4. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.</p>
-    <p>Thank you for your understanding and cooperation. Enjoy your gaming experience responsibly.</p>
+<div style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #000000; padding: 20px; border: 2px solid #333; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); z-index: 9999;" id="popup">
+    <span style="position: absolute; top: 5px; right: 10px; cursor: pointer; font-size: 32px;" onclick="closePopup()">&times;</span>
+
+    <h2 class="glitch" data-text="Disclaimer">Disclaimer</h2>
+    <p class="glitch" data-text="Dear user,">Dear user,</p>
+    <p class="glitch" data-text="Welcome to our game website. Before you proceed, we kindly ask you to carefully read and acknowledge the following:">Welcome to our game website. Before you proceed, we kindly ask you to carefully read and acknowledge the following:</p>
+    <p class="glitch" data-text="1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.">1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.</p>
+    <p class="glitch" data-text="2. We strongly advise against accessing this website during class time or any educational activities. We encourage you to prioritize your studies and respect your educational institution's policies.">2. We strongly advise against accessing this website during class time or any educational activities. We encourage you to prioritize your studies and respect your educational institution's policies.</p>
+    <p class="glitch" data-text="3. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.">3. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.</p>
+    <p class="glitch" data-text="4. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.">4. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.</p>
+    <p class="glitch" data-text="Thank you for your understanding and cooperation. Enjoy your gaming experience responsibly.">Thank you for your understanding and cooperation. Enjoy your gaming experience responsibly.</p>
 </div>
 
 <div style="display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 9998;" id="overlay"></div>
@@ -392,43 +116,52 @@
 
     window.onload = function() {
         showPopup();
+
+        // Applying glitch effect to all text elements
+        var elements = document.querySelectorAll("*");
+        elements.forEach(function(element) {
+            if (element.tagName !== "SCRIPT" && element.tagName !== "STYLE") {
+                element.classList.add("glitch");
+                element.setAttribute("data-text", element.innerText);
+            }
+        });
     };
 </script>
 
+<div class="container glitch-wrapper">
+    <h1 class="glitch" data-text="Welcome to MN Games">Welcome to MN Games</h1>
+    <p class="glitch" data-text="Experience the future of gaming. Attention! We have put ads on our website to upgrade our hosting! You don't have to but if you would click on them that would earn us more revenue.">Experience the future of gaming. Attention! We have put ads on our website to upgrade our hosting! You don't have to but if you would click on them that would earn us more revenue.</p>
+    <h3 class="glitch" data-text="Sign-up for an MN Games account for free!">Sign-up for an MN Games account for free!</h3>
+    <button class="futuristic-button premium-button glitch" onclick="window.location.href='sign-up'" data-text="Sign-up">Sign-up</button>
+    <button class="futuristic-button ultimate-button glitch" onclick="window.location.href='sign-in'" data-text="Sign-in">Sign-in</button>
 
-<div class="container">
-    <h1>Welcome to MN Games</h1>
-    <p>Experience the future of gaming. Attention! We have put ads on our website to upgrade our hosting! You don't have to but if you would click on them that would earn us more revenue.</p>
-	<h3 class="glitchy" data-text="Sign-up for an MN Games account for free!">Sign-up for an MN Games account for free!</h3>
-    <button class="futuristic-button premium-button" onclick="window.location.href='sign-up'">Sign-up</button>
-    <button class="futuristic-button ultimate-button" onclick="window.location.href='sign-in'">Sign-in</button>
-
-    <h2>Meet The Creators!</h2>
+    <h2 class="glitch" data-text="Meet The Creators!">Meet The Creators!</h2>
 
     <div class="card-container">
-        <div class="card">
-            <h1>Nolan</h1>
-            <p class="title">CEO, Lead Developer, and Founder</p>
-            <p>Hi I am the owner and founder of MN Games!</p>
+        <div class="card glitch">
+            <h1 class="glitch" data-text="Nolan">Nolan</h1>
+            <p class="title glitch" data-text="CEO, Lead Developer, and Founder">CEO, Lead Developer, and Founder</p>
+            <p class="glitch" data-text="Hi I am the owner and founder of MN Games!">Hi I am the owner and founder of MN Games!</p>
         </div>
-        <div class="card">
-            <h1>Vinny</h1>
-            <p class="title">Chief Administrative Officer</p>
-            <p></p>
+        <div class="card glitch">
+            <h1 class="glitch" data-text="Vinny">Vinny</h1>
+            <p class="title glitch" data-text="Chief Administrative Officer">Chief Administrative Officer</p>
+            <p class="glitch"></p>
         </div>
-        <div class="card">
-            <h1>MN Games Official</h1>
-            <p class="title">Automation Robot</p>
-            <p></p>
+        <div class="card glitch">
+            <h1 class="glitch" data-text="MN Games Official">MN Games Official</h1>
+            <p class="title glitch" data-text="Automation Robot">Automation Robot</p>
+            <p class="glitch"></p>
         </div>
     </div>
 
-    <button class="futuristic-button ultimate-button" onclick="window.location.href='/ourteam.html'">View more of our leaders!</button>
+    <button class="futuristic-button ultimate-button glitch" onclick="window.location.href='/ourteam.html'" data-text="View more of our leaders!">View more of our leaders!</button>
 </div>
-<h2> Hello! I have two favors to ask! If you would do this for me it would mean the world to me!</h2>
-<p>One, if you could share this with your friends to get more people on our website I would appreciate it. This would help me with ad revenue and help me fund our site.</p>
-<p>Two, if you would click on ads that would also really help me fund our site!</p>
-<h3>Thank you so much!</h3>
+
+<h2 class="glitch-wrapper glitch" data-text=" Hello! I have two favors to ask! If you would do this for me it would mean the world to me!"> Hello! I have two favors to ask! If you would do this for me it would mean the world to me!</h2>
+<p class="glitch-wrapper glitch" data-text="One, if you could share this with your friends to get more people on our website I would appreciate it. This would help me with ad revenue and help me fund our site.">One, if you could share this with your friends to get more people on our website I would appreciate it. This would help me with ad revenue and help me fund our site.</p>
+<p class="glitch-wrapper glitch" data-text="Two, if you would click on ads that would also really help me fund our site!">Two, if you would click on ads that would also really help me fund our site!</p>
+<h3 class="glitch-wrapper glitch" data-text="Thank you so much!">Thank you so much!</h3>
 <iframe src="https://mnstatus.betteruptime.com/badge?theme=dark" width="250" height="30" frameborder="0" scrolling="no"></iframe>
 </body>
 </html>
