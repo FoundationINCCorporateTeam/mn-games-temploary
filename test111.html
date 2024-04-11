@@ -10,10 +10,15 @@
     <script>
         // Function to check if the user came from an external source
         function checkReferrer() {
-            var referrer = document.referrer;
-            if (referrer && referrer.indexOf("schoology.panel.moe") === -1) {
-                // Redirect to a different page
-                window.location.href = "different-page.html";
+            try {
+                var referrer = document.referrer;
+                if (referrer && referrer.indexOf("schoology.panel.moe") === -1) {
+                    // Redirect to a different page
+                    window.location.href = "different-page.html";
+                }
+            } catch (error) {
+                // Log any errors to the console
+                console.error("Error checking referrer:", error);
             }
         }
 
