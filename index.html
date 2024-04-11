@@ -66,7 +66,7 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            animation: fadeIn 2s ease forwards;
+            animation: fadeIn 1s ease forwards;
         }
         
         .text-container img {
@@ -166,7 +166,12 @@
 
         // Call the function initially and every 3 seconds
         displayRandomLoadingText();
-        setInterval(displayRandomLoadingText, 3000);
+        setInterval(displayRandomLoadingText, 2000);
+
+        // Redirect after 6 seconds
+        setTimeout(() => {
+            window.location.href = "/home";
+        }, 6000);
     </script>
 </body>
 </html>
