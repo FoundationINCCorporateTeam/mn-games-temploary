@@ -6,190 +6,70 @@
     <title>Home | Schoology</title>
     <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
     <style>
-        /* Global Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #222;
-            color: #fff;
-            text-align: center;
-        }
-
-        /* New styles for the announcement bar */
-        .announcement-bar {
-            background-color: white;
-            color: purple;
-            padding: 10px 0;
-        }
-
-        /* Navbar Styles */
-        nav {
-            background-color: black;
-            overflow: hidden;
+        /* your existing CSS styles */
+        .glitch-wrapper {
             width: 100%;
-            padding: 8px 0; /* Reduced top and bottom padding */
-        }
-
-        nav a {
-            display: inline-block;
-            color: white;
-            text-align: center;
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        nav a:hover {
-            background-color: #555;
-        }
-
-        /* Container Styles */
-        .container {
+            height: 100%;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-bottom: 20px;
-            margin-top: 50px;
-        }
-
-        /* Button Styles */
-        .futuristic-button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 15px 30px;
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            border-radius: 12px;
-            font-family: Arial, sans-serif;
-            outline: none;
-            border: 2px solid transparent;
+            background-color: #222;
         }
 
-        .futuristic-button:hover {
-            background-color: #45a049;
-            border: 2px solid #4CAF50;
-        }
-
-        .premium-button,
-        .ultimate-button {
-            width: auto;
-        }
-
-        .card-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .card {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            width: 300px;
-            text-align: center;
-            background-color: #f0f0f0;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 10px; /* Reduced margin */
-        }
-
-        .card img {
-            width: 100%;
-            border-radius: 50%;
-        }
-
-        .card h1 {
-            margin-top: 10px;
-            font-size: 24px;
-            color: #333;
-        }
-
-        .card p {
-            font-size: 16px;
-            color: #666;
-            margin: 10px 0; /* Adjusted margin */
-        }
-
-        button {
-            border: none;
-            outline: 0;
-            display: inline-block;
-            padding: 8px;
-            color: white;
-            background-color: #000;
-            text-align: center;
-            cursor: pointer;
-            width: 100%;
-            font-size: 18px;
-        }
-
-        a {
-            text-decoration: none;
-            font-size: 22px;
-            color: black;
-        }
-
-        button:hover,
-        a:hover {
-            opacity: 0.7;
-        }
-
-        /* Glitch CSS */
         .glitch {
             position: relative;
-            font-size: inherit;
-            font-weight: bold;
-            color: #FFFFFF;
-            letter-spacing: 3px;
+            font-size: 80px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #fff;
+            letter-spacing: 5px;
             z-index: 1;
         }
 
         .glitch:before,
         .glitch:after {
             display: block;
-            content: attr(data-text);
+            content: attr(data-glitch);
             position: absolute;
             top: 0;
             left: 0;
             opacity: 0.8;
-            font-size: inherit;
         }
 
         .glitch:before {
-            animation: glitch-it 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-            color: #00FFFF;
+            animation: glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+            color: #0ff;
             z-index: -1;
         }
 
         .glitch:after {
-            animation: glitch-it 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
-            color: #FF00FF;
+            animation: glitch-color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+            color: #ff00ff;
             z-index: -2;
         }
 
-        @keyframes glitch-it {
+        @keyframes glitch-color {
             0% {
                 transform: translate(0);
             }
+
             20% {
-                transform: translate(-2px, 2px);
+                transform: translate(-3px, 3px);
             }
+
             40% {
-                transform: translate(-2px, -2px);
+                transform: translate(-3px, -3px);
             }
+
             60% {
-                transform: translate(2px, 2px);
+                transform: translate(3px, 3px);
             }
+
             80% {
-                transform: translate(2px, -2px);
+                transform: translate(3px, -3px);
             }
+
             to {
                 transform: translate(0);
             }
@@ -197,31 +77,33 @@
     </style>
 </head>
 <body>
-<div class="announcement-bar glitch-wrapper">
-    <p class="glitch" data-text="Notice: IMPORTANT ANNOUNCEMENT: MN Games Secure Browser is... NOW FREE FOR EVERYONE! MN Games leadership has decided to make the MN Secure browser available for all just go to https://schoology.panel.moe/enterpriseprox.html and the browser is free! But please ready the information BEFORE clicking on the browser. IT COULD BE IMPORTANT!">Notice: IMPORTANT ANNOUNCEMENT: MN Games Secure Browser is... NOW FREE FOR EVERYONE! MN Games leadership has decided to make the MN Secure browser available for all just go to https://schoology.panel.moe/enterpriseprox.html and the browser is free! But please ready the information BEFORE clicking on the browser. IT COULD BE IMPORTANT!</p>
+<div class="announcement-bar">
+    <!-- your announcement content -->
 </div>
 
-<nav class="glitch-wrapper">
-    <a href="index.html" class="glitch" data-text="Home">Home</a>
-    <a href="premium.html" class="glitch" data-text="Premium">Premium</a>
-    <a href="ultimate.html" class="glitch" data-text="Ultimate">Ultimate</a>
-    <a href="elite.html" class="glitch" data-text="Elite">Elite</a>
-    <a href="tournaments.html" class="glitch" data-text="Tournaments">Tournaments</a>
-    <a href="enterpriseprox.html" class="glitch" data-text="MN Secure Browser">MN Secure Browser</a>
-    <a href="https://mnsupport.ladesk.com/" class="glitch" data-text="MN Games Support">MN Games Support</a>
-    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__cyL5V9UN1dSTUxMWjdSNUVNSDVVOFhJOUM4TDc0NS4u" class="glitch" data-text="Apply For A Job!">Apply For A Job!</a>
-    <a href="sign-up" class="glitch" data-text="Sign-up">Sign-up</a>
-    <a href="sign-in" class="glitch" data-text="Sign-in">Sign-in</a>
+<nav>
+    <!-- your navigation menu -->
 </nav>
 
-<div style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #000000; padding: 20px; border: 2px solid #333; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); z-index: 9999;" id="popup">
-    <span style="position: absolute; top: 5px; right: 10px; cursor: pointer; font-size: 32px;" onclick="closePopup()">&times;</span>
+<!-- your popup disclaimer -->
 
-    <h2 class="glitch" data-text="Disclaimer">Disclaimer</h2>
-    <p class="glitch" data-text="Dear user,">Dear user,</p>
-    <p class="glitch" data-text="Welcome to our game website. Before you proceed, we kindly ask you to carefully read and acknowledge the following:">Welcome to our game website. Before you proceed, we kindly ask you to carefully read and acknowledge the following:</p>
-    <p class="glitch" data-text="1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.">1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.</p>
-    <p class="glitch" data-text="2. We strongly advise against accessing this website during class time or any educational activities. We encourage you to prioritize your studies and respect your educational institution's policies.">2. We strongly advise against accessing this website during class time or any educational activities. We encourage you to prioritize your studies and respect your educational institution's policies.</p>
-    <p class="glitch" data-text="3. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.">3. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions
+<div class="container">
+    <div class="glitch-wrapper">
+        <div class="glitch" data-glitch="Welcome to MN Games">Welcome to MN Games</div>
+    </div>
+    <p>Experience the future of gaming...</p>
+    <!-- your signup buttons -->
+
+    <div class="glitch-wrapper">
+        <div class="glitch" data-glitch="Meet The Creators!">Meet The Creators!</div>
+    </div>
+
+    <!-- your card containers -->
+
+    <button class="futuristic-button ultimate-button" onclick="window.location.href='/ourteam.html'">View more of our leaders!</button>
+</div>
+
+<!-- your additional content -->
+
 </body>
 </html>
