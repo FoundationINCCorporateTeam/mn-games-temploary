@@ -68,6 +68,15 @@ nav {
     padding: 8px 0; /* Reduced top and bottom padding */
 }
 
+/* Navbar Styles */
+nav {
+    background-color: black;
+    overflow: hidden;
+    width: 100%;
+    padding: 8px 0; /* Reduced top and bottom padding */
+    border-radius: 20px; /* Rounded corners */
+}
+
 nav a {
     display: inline-block;
     color: white;
@@ -86,18 +95,20 @@ nav a:hover {
 nav a::before {
     content: '';
     position: absolute;
-    bottom: 0;
+    top: 50%;
     left: 50%;
     width: 0;
-    height: 3px;
-    background-color: #fff;
-    transition: width 0.3s ease, left 0.3s ease;
-    transform: translateX(-50%);
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transition: width 0.3s ease, height 0.3s ease, transform 0.3s ease;
+    transform: translate(-50%, -50%);
 }
 
 nav a:hover::before {
-    width: 100%;
-    left: 0;
+    width: 120%; /* Adjust the size of the bubble */
+    height: 120%;
+    transform: translate(-50%, -50%);
 }
 
 
