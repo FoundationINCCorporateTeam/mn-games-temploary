@@ -66,7 +66,7 @@
             align-items: center;
             justify-content: center;
             opacity: 0;
-            animation: fadeIn 1s ease forwards;
+            animation: fadeIn 2s ease forwards;
         }
         
         .text-container img {
@@ -88,6 +88,11 @@
                 opacity: 1;
             }
         }
+
+        /* Added margin to the lock icon */
+        .lock-icon {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -98,7 +103,7 @@
         <div></div>
     </div>
     <div class="text-container">
-        <i class="fas fa-lock" style="color: green; font-size: 30px;"></i>
+        <i class="fas fa-lock lock-icon" style="color: green; font-size: 30px;"></i>
         <h1>Welcome to MN Games</h1>
     </div>
     <div class="loading-text" id="loadingText"></div>
@@ -161,7 +166,7 @@
 
         // Call the function initially and every 3 seconds
         displayRandomLoadingText();
-        setInterval(displayRandomLoadingText, 2000);
+        setInterval(displayRandomLoadingText, 3000);
     </script>
 </body>
 </html>
