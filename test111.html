@@ -19,7 +19,7 @@
 
                 var referrer = document.referrer;
                 if (!referrer || referrer === "") {
-                    console.error("Referrer not available or empty.");
+                    console.warn("Referrer not available or empty. Skipping redirection.");
                     return;
                 }
 
