@@ -53,14 +53,14 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding-bottom: 20px;
+        padding-bottom: 50px; /* Increased bottom padding */
         margin-top: 50px;
     }
 
     /* Button Styles */
     .futuristic-button {
         background-color: #0B40FD;
-        border: none;
+        border: 2px solid #fff; /* Added border */
         color: white;
         padding: 15px 30px;
         text-align: center;
@@ -73,7 +73,6 @@
         border-radius: 12px;
         font-family: Arial, sans-serif;
         outline: none;
-        border: 2px solid transparent;
     }
 
     .futuristic-button:hover {
@@ -160,7 +159,7 @@
 
     .popup span {
         position: absolute;
-        bottom: 5px;
+        bottom: 20px; /* Adjusted bottom position */
         left: 50%;
         transform: translateX(-50%);
         cursor: pointer;
@@ -193,7 +192,11 @@
 
     /* Adjustments for the disclaimer popup */
     .disclaimer-content input[type="checkbox"] {
-        transform: scale(2); /* Increase checkbox size */
+        transform: scale(3); /* Increased checkbox size */
+    }
+
+    .disclaimer-content label {
+        margin-top: 20px; /* Added margin */
     }
 
 </style>
