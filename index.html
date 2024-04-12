@@ -1,289 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home | Schoology</title>
-<link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
-<style>
-    /* Global Styles */
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #000;
-        color: #fff;
-        text-align: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Screen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .loader {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .loader div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid #fff;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #fff transparent transparent transparent;
+        }
+        
+        .loader div:nth-child(1) {
+            animation-delay: -0.45s;
+        }
+        
+        .loader div:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+        
+        .loader div:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+        
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .text-container {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 2s ease forwards;
+        }
+        
+        .text-container img {
+            width: 30px;
+            height: auto;
+            margin-right: 10px;
+        }
+        
+        .loading-text {
+            font-size: 20px;
+            text-align: center;
+        }
 
-    /* New styles for the announcement bar */
-    .announcement-bar {
-        background-color: white;
-        color: purple;
-        padding: 10px 0;
-    }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
 
-    /* Navbar Styles */
-    nav {
-        background-color: black;
-        overflow: hidden;
-        width: 100%;
-        padding: 8px 0; /* Reduced top and bottom padding */
-        border-radius: 20px; /* Rounded corners */
-    }
-
-    nav a {
-        display: inline-block;
-        color: white;
-        text-align: center;
-        padding: 10px 15px;
-        text-decoration: none;
-        font-size: 16px;
-        position: relative;
-        transition: transform 0.3s ease;
-    }
-
-    nav a:hover {
-        background-color: #555;
-    }
-
-    /* Container Styles */
-    .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding-bottom: 50px; /* Increased bottom padding */
-        margin-top: 50px;
-    }
-
-    /* Button Styles */
-    .futuristic-button {
-        background-color: #0B40FD;
-        border: 2px solid white; /* Added white border */
-        color: white;
-        padding: 15px 30px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        transition-duration: 0.4s;
-        cursor: pointer;
-        border-radius: 12px;
-        font-family: Arial, sans-serif;
-        outline: none;
-    }
-
-    .futuristic-button:hover {
-        background-color: #22357C;
-        border: 2px solid #4CAF50;
-    }
-
-    .premium-button,
-    .ultimate-button {
-        width: auto;
-    }
-
-    .card-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 20px;
-    }
-
-    .card {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        width: 300px;
-        text-align: center;
-        background-color: #f0f0f0;
-        border-radius: 10px;
-        padding: 20px;
-        margin: 10px; /* Reduced margin */
-    }
-
-    .card img {
-        width: 100%;
-        border-radius: 50%;
-    }
-
-    .card h1 {
-        margin-top: 10px;
-        font-size: 24px;
-        color: #333;
-    }
-
-    .card p {
-        font-size: 16px;
-        color: #666;
-        margin: 10px 0; /* Adjusted margin */
-    }
-
-    button {
-        border: none;
-        outline: 0;
-        display: inline-block;
-        padding: 8px;
-        color: white;
-        background-color: #000;
-        text-align: center;
-        cursor: pointer;
-        width: 100%;
-        font-size: 18px;
-    }
-
-    a {
-        text-decoration: none;
-        font-size: 22px;
-        color: black;
-    }
-
-    button:hover,
-    a:hover {
-        opacity: 0.7;
-    }
-
-    /* Popup styles */
-    .popup {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #000000;
-        padding: 20px;
-        border: 2px solid #333;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-    }
-
-    .popup button {
-        background-color: #333;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-top: 20px;
-    }
-
-    .popup button:hover {
-        background-color: #555;
-    }
-
-    .overlay {
-        display: none;
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 9998;
-    }
-
-    .disclaimer-content {
-        color: #fff;
-    }
-
-    .disclaimer-content p {
-        margin: 10px 0;
-    }
-
-    .disclaimer-content label {
-        display: block;
-    }
-
-    /* Adjustments for the disclaimer popup */
-    .disclaimer-content input[type="checkbox"] {
-        display: none; /* Hide checkbox */
-    }
-
-</style>
+        /* Added margin to the lock icon */
+        .lock-icon {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
-
-<div class="announcement-bar">
-    <p>Notice: <b>IMPORTANT ANNOUNCEMENT: MN Games Secure Browser is... NOW FREE FOR EVERYONE! MN Games leadership has decided to make the MN Secure browser available for all just go to https://schoology.panel.moe/enterpriseprox.html and the browser is free! But please ready the information BEFORE clicking on the browser. IT COULD BE IMPORTANT!</b></p>
-</div>
-
-<nav>
-    <a href="index.html">Home</a>
-    <a href="premium.html">Premium</a>
-    <a href="ultimate.html">Ultimate</a>
-    <a href="elite.html">Elite</a>
-    <a href="tournaments.html">Tournaments</a>
-    <a href="enterpriseprox.html">MN Secure Browser</a>
-    <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
-    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAO__cyL5V9UN1dSTUxMWjdSNUVNSDVVOFhJOUM4TDc0NS4u">Apply For A Job!</a>
-    <a href="sign-up">Sign-up</a>
-    <a href="sign-in">Sign-in</a>
-</nav>
-
-<div class="popup" id="popup">
-    <div class="disclaimer-content">
-        <h2>Disclaimer</h2>
-        <p>Dear user,</p>
-        <p>Welcome to our game website. Before you proceed, we kindly ask you to carefully read and acknowledge the following:</p>
-        <p>1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.</p>
-        <p>2. We strongly advise against accessing this website during class time or any educational activities. We encourage you to prioritize your studies and respect your educational institution's policies.</p>
-        <p>3. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.</p>
-        <p>4. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.</p>
-        <button onclick="closePopup()">Close</button>
+    <div class="loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<div class="container">
-    <h1>Welcome to MN Games</h1>
-    <p>Experience the future of gaming. Attention! We have put ads on our website to upgrade our hosting! You don't have to but if you would click on them that would earn us more revenue.</p>
-    <h3>Sign-up for an MN Games account for free!</h3>
-    <button class="futuristic-button premium-button" onclick="window.location.href='sign-up'">Sign-up</button>
-    <button class="futuristic-button ultimate-button" onclick="window.location.href='sign-in'">Sign-in</button>
-
-    <h2>Meet The Creators!</h2>
-
-    <div class="card-container">
-        <div class="card">
-            <h1>Nolan</h1>
-            <p class="title">CEO, Lead Developer, and Founder</p>
-            <p>Hi I am the owner and founder of MN Games!</p>
-        </div>
-        <div class="card">
-            <h1>Vinny</h1>
-            <p class="title">Chief Administrative Officer</p>
-            <p></p>
-        </div>
-        <div class="card">
-            <h1>MN Games Official</h1>
-            <p class="title">Automation Robot</p>
-            <p></p>
-        </div>
+    <div class="text-container">
+        <i class="fas fa-lock lock-icon" style="color: green; font-size: 30px;"></i>
+        <h1>Welcome to MN Games</h1>
     </div>
+    <div class="loading-text" id="loadingText"></div>
+    <script>
+        const loadingSayings = [
+            "Loading magic...",
+            "Spinning the hamster wheel...",
+            "Assembling the bits and bytes...",
+            "Loading unicorns...",
+            "Fetching some laughs...",
+            "Getting the ducks in a row...",
+            "Warming up the servers...",
+            "Charging up the flux capacitor...",
+            "Loading... Please wait.",
+            "Putting the puzzle pieces together...",
+            "Polishing the loading bar...",
+            "Counting to infinity...",
+            "Brewing some coffee...",
+            "Loading awesomeness...",
+            "Just a moment...",
+            "Working hard so you don't have to...",
+            "Constructing the digital world...",
+            "Finding the meaning of life...",
+            "Loading dreams...",
+            "Reticulating splines...",
+            "Building skyscrapers in the digital realm...",
+            "Constructing a masterpiece...",
+            "Searching for WiFi...",
+            "Synchronizing the time-space continuum...",
+            "Loading the fun...",
+            "Digging for treasure...",
+            "Unleashing the creativity...",
+            "Building castles in the clouds...",
+            "Loading pure joy...",
+            "Stirring up the pixels...",
+            "Preparing the adventure...",
+            "Loading inspiration...",
+            "Crafting the perfect experience...",
+            "Loading happiness...",
+            "Preparing for awesomeness...",
+            "Generating excitement...",
+            "Loading the future...",
+            "Constructing the possibilities...",
+            "Loading the wonders of the universe...",
+            "Building dreams...",
+            "Loading serenity...",
+            "Crafting moments...",
+            "Loading the journey...",
+            "Creating wonders...",
+            "Loading the cosmos...",
+            "Crafting experiences..."
+        ];
 
-    <button class="futuristic-button ultimate-button" onclick="window.location.href='/ourteam.html'">View more of our leaders!</button>
-</div>
-<h2> Hello! I have two favors to ask! If you would do this for me it would mean the world to me!</h2>
-<p>One, if you could share this with your friends to get more people on our website I would appreciate it. This would help me with ad revenue and help me fund our site.</p>
-<p>Two, if you would click on ads that would also really help me fund our site!</p>
-<h3>Thank you so much!</h3>
-<iframe src="https://mnstatus.betteruptime.com/badge?theme=dark" width="250" height="30" frameborder="0" scrolling="no"></iframe>
-<script>
-    function showPopup() {
-        document.getElementById("overlay").style.display = "block";
-        document.getElementById("popup").style.display = "block";
-    }
+        // Function to display random loading text
+        function displayRandomLoadingText() {
+            const loadingText = document.getElementById("loadingText");
+            const randomIndex = Math.floor(Math.random() * loadingSayings.length);
+            loadingText.textContent = loadingSayings[randomIndex];
+        }
 
-    function closePopup() {
-        document.getElementById("overlay").style.display = "none";
-        document.getElementById("popup").style.display = "none";
-    }
+        // Call the function initially and every 3 seconds
+        displayRandomLoadingText();
+        setInterval(displayRandomLoadingText, 2000);
 
-    window.onload = function() {
-        showPopup();
-    };
-</script>
+        // Redirect after 6 seconds
+        setTimeout(() => {
+            window.location.href = "/home";
+        }, 8000);
+    </script>
 </body>
 </html>
