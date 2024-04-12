@@ -157,14 +157,19 @@
         z-index: 9999;
     }
 
-    .popup span {
-        position: absolute;
-        bottom: 20px; /* Adjusted bottom position */
-        left: 50%;
-        transform: translateX(-50%);
+    .popup button {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
         cursor: pointer;
-        font-size: 18px;
-        color: #fff;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+
+    .popup button:hover {
+        background-color: #555;
     }
 
     .overlay {
@@ -192,12 +197,7 @@
 
     /* Adjustments for the disclaimer popup */
     .disclaimer-content input[type="checkbox"] {
-        transform: scale(0.8); /* Reduced checkbox size */
-    }
-
-    .disclaimer-content label {
-        margin-top: 30px; /* Added margin */
-        margin-bottom: 20px; /* Added margin */
+        display: none; /* Hide checkbox */
     }
 
 </style>
@@ -222,7 +222,6 @@
 </nav>
 
 <div class="popup" id="popup">
-    <span onclick="closePopup()">Close</span>
     <div class="disclaimer-content">
         <h2>Disclaimer</h2>
         <p>Dear user,</p>
@@ -231,28 +230,11 @@
         <p>2. We strongly advise against accessing this website during class time or any educational activities. We encourage you to prioritize your studies and respect your educational institution's policies.</p>
         <p>3. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.</p>
         <p>4. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.</p>
+        <button onclick="closePopup()">Close</button>
     </div>
 </div>
 
 <div class="overlay" id="overlay"></div>
-
-<script>
-    function showPopup() {
-        document.getElementById("overlay").style.display = "block";
-        document.getElementById("popup").style.display = "block";
-    }
-
-    function closePopup() {
-        if (document.getElementById("acknowledge").checked) {
-            document.getElementById("overlay").style.display = "none";
-            document.getElementById("popup").style.display = "none";
-        }
-    }
-
-    window.onload = function() {
-        showPopup();
-    };
-</script>
 
 <div class="container">
     <h1>Welcome to MN Games</h1>
@@ -288,5 +270,20 @@
 <p>Two, if you would click on ads that would also really help me fund our site!</p>
 <h3>Thank you so much!</h3>
 <iframe src="https://mnstatus.betteruptime.com/badge?theme=dark" width="250" height="30" frameborder="0" scrolling="no"></iframe>
+<script>
+    function showPopup() {
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("popup").style.display = "block";
+    }
+
+    function closePopup() {
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("popup").style.display = "none";
+    }
+
+    window.onload = function() {
+        showPopup();
+    };
+</script>
 </body>
 </html>
