@@ -1,169 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home | Schoology</title>
-  <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #222;
-      color: #fff;
-      text-align: center;
-    }
-    /* Navbar Styles */
-    nav {
-      background-color: black;
-      overflow: hidden;
-      width: 100%;
-    }
-    nav a {
-      float: left;
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 14px 20px;
-      text-decoration: none;
-    }
-    nav a:hover {
-      background-color: #555;
-    }
-    /* Container Styles */
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 50vh;
-    }
-    /* Button Styles */
-    .button {
-      padding: 15px 30px;
-      font-size: 1.1em;
-      background-color: #3af;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .button:hover {
-      background-color: #2ac;
-    }
-    /* Script Section */
-    #scriptSection {
-      display: none;
-      text-align: left;
-      padding: 20px;
-    }
-    #clock {
-      display: flex;
-      justify-content: center;
-    }
-    #clock div {
-      margin: 0 10px;
-    }
-    .smalltext {
-      font-size: 0.8em;
-    }
-  </style>
-  <script>
-    // Function to calculate the time remaining until the specified date
-    function getTimeRemaining(endtime) {
-      const total = Date.parse(endtime) - Date.parse(new Date());
-      const seconds = Math.floor((total / 1000) % 60);
-      const minutes = Math.floor((total / 1000 / 60) % 60);
-      const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-      const days = Math.floor(total / (1000 * 60 * 60 * 24));
-      return {
-        total,
-        days,
-        hours,
-        minutes,
-        seconds
-      };
-    }
+  <script type="application/javascript">
+   window.tiledeskSettings= 
+   {
+     projectid: "6615445c38b67d001348b5d1"
+   };
+   (function(d, s, id) { 
+     var w=window; var d=document; var i=function(){i.c(arguments);};
+     i.q=[]; i.c=function(args){i.q.push(args);}; w.Tiledesk=i;           
+     var js, fjs=d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) return;
+     js=d.createElement(s); 
+     js.id=id; js.async=true; js.src="https://widget.tiledesk.com/v6/launch.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document,'script','tiledesk-jssdk'));
+ </script>
 
-    // Function to initialize the countdown
-    function initializeClock(endtime) {
-      function updateClock() {
-        const t = getTimeRemaining(endtime);
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Home | Schoology</title>
+ <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
+ <style>
+  body {
+   font-family: Arial, sans-serif;
+   margin: 0;
+   padding: 0;
+   background-color: #222;
+   color: #fff;
+   text-align: center;
+  }
+  /* Navbar Styles */
+  nav {
+   background-color: black;
+   overflow: hidden;
+   width: 100%;
+  }
+  nav a {
+   float: left;
+   display: block;
+   color: white;
+   text-align: center;
+   padding: 14px 20px;
+   text-decoration: none;
+  }
+  nav a:hover {
+   background-color: #555;
+  }
+  /* Container Styles */
+  .container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   height: 50vh;
+  }
+  /* Button Styles */
+  .button {
+   padding: 15px 30px;
+   font-size: 1.1em;
+   background-color: #3af;
+   color: #fff;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   transition: background-color 0.3s ease;
+  }
+  .button:hover {
+   background-color: #2ac;
+  }
+  /* Countdown Styles */
+  #countdown {
+   font-family: 'Arial Black', sans-serif;
+   font-size: 2em;
+   margin-top: 20px;
+   color: #3af;
+   border: 2px solid #3af;
+   padding: 10px 20px;
+   border-radius: 10px;
+  }
+  /* Button Container Styles */
+  #buttonContainer {
+    margin-top: 20px;
+  }
+ </style>
+ <script>
+  // Function to toggle script section visibility
+  function toggleScriptSection() {
+   var scriptSection = document.getElementById("scriptSection");
+   if (scriptSection.style.display === "none") {
+    scriptSection.style.display = "block";
+   } else {
+    scriptSection.style.display = "none";
+   }
+  }
 
-        document.getElementById('days').innerHTML = ('0' + t.days).slice(-2);
-        document.getElementById('hours').innerHTML = ('0' + t.hours).slice(-2);
-        document.getElementById('minutes').innerHTML = ('0' + t.minutes).slice(-2);
-        document.getElementById('seconds').innerHTML = ('0' + t.seconds).slice(-2);
+  // Function to open secure browser
+  function openSecureBrowser() {
+    var newWindow = window.open('about:blank', '_blank');
+    newWindow.document.write('<html><head><title>Elite Phase 1</title></head><body><iframe src="https://elitesite.quaixy.net" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
+  }
 
-        if (t.total <= 0) {
-          clearInterval(timeinterval);
-          // Show button when countdown ends
-          document.getElementById("buttonSection").innerHTML = '<button class="button" onclick="openSecureBrowser()">Ultimate Games: Online (Unblocked)</button>';
-        }
+  // Countdown function
+  function countdownTimer(year, month, day, hour, minute, second) {
+    var targetDate = new Date(year, month - 1, day, hour, minute, second);
+    var countdownElement = document.getElementById("countdown");
+    var x = setInterval(function() {
+      var now = new Date().getTime();
+      var distance = targetDate - now;
+      if (distance < 0) {
+        clearInterval(x);
+        countdownElement.innerHTML = "Countdown ended!";
+        // Show the button
+        document.getElementById("secureBrowserButton").style.display = "block";
+      } else {
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        countdownElement.innerHTML = "Countdown: " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
       }
+    }, 1000);
+  }
 
-      updateClock();
-      const timeinterval = setInterval(updateClock, 1000);
-    }
-
-    // Set the default end time (April 16, 2024 at 11:00 AM)
-    const deadline = new Date("April 16, 2024 11:00:00").getTime();
-    initializeClock(deadline);
-
-    // Function to open Ultimate Games website
-    function openSecureBrowser() {
-      var newWindow = window.open('https://zxcvbnm.hkmtta.com', '_blank');
-    }
-  </script>
+  // Start countdown on page load
+  window.onload = function() {
+    countdownTimer(2023, 4, 16, 11, 0, 0); // Change this to your desired end date and time (year, month, day, hour, minute, second)
+  };
+ </script>
 </head>
 <body>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="premium.html">Premium</a>
-    <a href="ultimate.html">Ultimate</a>
-    <a href="tournaments.html">Tournaments</a>
-    <a href="enterpriseprox.html">MN Secure Browser</a>
-    <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
-    <a href="elite.html">Elite</a>
-  </nav>
+ <nav>
+  <a href="index.html">Home</a>
+  <a href="premium.html">Premium</a>
+  <a href="ultimate.html">Ultimate</a>
+  <a href="tournaments.html">Tournaments</a>
+  <a href="enterpriseprox.html">MN Secure Browser</a>
+  <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
+  <a href="elite.html">Elite</a>
+ </nav>
 
-  <h1>Elite is coming... Are you ready?</h1>
+ <h1>Get ready... Elite is here.</h1><br>
+  <p style="text-align:left;"> Welcome to Elite. It is almost time for Elite to release. We have decided to release elite in 4 phases here is some more information:
+    -Phase 1: Release (04/16/24 11:00 am) This is the first phase with the phase 1 game website.
+    -Phase 2: Release (May 10-20th TBD) This will be a website with some working online games.
+    -Phase 3: Release (TBD) This will be another game website.
+    -Phase 4: ???? Release (???????) ?????????.
+    ----------------------------------------------
+    We hope you enjoy phase 1...
+    From the MN Games Team
+  </p>
 
-  <p>Information: Our developers are excited to announce that the MN Games Elite website is on the way!<br>
-  We do not have a set release date but a release date will be posted here when it releases.<br>
-  (Update) My name is Nolan! I am one of the lead developers of MN Games! I am here to explain some of the features on MN Games to you.<br>
-  Here are some of the game sites that might be accessible to you in the new site (This is not a guarantee just a plan):<br>
-  - Shell Shockers<br>
-  - Among Us (Probably a popular remake)<br>
-  - Roblox (Big if on this one depends on the site that Roblox is on)<br>
-  - Fortnite (if our site that we host it on works)<br>
-  Those were just some of the many websites that could be on the new site.<br>
-  Elite will focus much more on online games and less on game websites like Ultimate.<br>
-  There will be much more information to come and this is where the information will be posted! If you have any questions, contact us!</p>
+ <!-- Countdown Timer -->
+ <div id="countdown"></div>
 
-  <!-- Countdown Timer -->
-  <div id="clock">
-    <div>
-      <span id="days"></span>
-      <div class="smalltext">Days</div>
-    </div>
-    <div>
-      <span id="hours"></span>
-      <div class="smalltext">Hours</div>
-    </div>
-    <div>
-      <span id="minutes"></span>
-      <div class="smalltext">Minutes</div>
-    </div>
-    <div>
-      <span id="seconds"></span>
-      <div class="smalltext">Seconds</div>
-    </div>
-  </div>
-
-  <!-- Button Section -->
-  <div id="buttonSection"></div>
+ <!-- Open Secure Browser Button Container -->
+ <div id="buttonContainer">
+    <!-- Open Secure Browser Button -->
+    <button id="secureBrowserButton" class="button" style="display: none;" onclick="openSecureBrowser()">Go to Elite Phase 1</button>
+ </div>
 </body>
 </html>
