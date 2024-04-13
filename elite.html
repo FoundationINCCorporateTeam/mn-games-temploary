@@ -89,24 +89,18 @@
 
     // Function to initialize the countdown
     function initializeClock(endtime) {
-      const clock = document.getElementById('clock');
-      const daysSpan = clock.querySelector('.days');
-      const hoursSpan = clock.querySelector('.hours');
-      const minutesSpan = clock.querySelector('.minutes');
-      const secondsSpan = clock.querySelector('.seconds');
-
       function updateClock() {
         const t = getTimeRemaining(endtime);
 
-        daysSpan.innerHTML = t.days;
-        hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-        minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-        secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+        document.getElementById('days').innerHTML = ('0' + t.days).slice(-2);
+        document.getElementById('hours').innerHTML = ('0' + t.hours).slice(-2);
+        document.getElementById('minutes').innerHTML = ('0' + t.minutes).slice(-2);
+        document.getElementById('seconds').innerHTML = ('0' + t.seconds).slice(-2);
 
         if (t.total <= 0) {
           clearInterval(timeinterval);
           // Show button when countdown ends
-          document.getElementById("buttonSection").innerHTML = '<button class="button" onclick="openSecureBrowser()">Open MN Games Premium Website</button>';
+          document.getElementById("buttonSection").innerHTML = '<button class="button" onclick="openSecureBrowser()">Ultimate Games: Online (Unblocked)</button>';
         }
       }
 
@@ -115,12 +109,12 @@
     }
 
     // Set the default end time (April 16, 2024 at 11:00 AM)
-    const deadline = new Date("April 13 2024 12:29:00").getTime();
+    const deadline = new Date("April 16, 2024 11:00:00").getTime();
     initializeClock(deadline);
 
-    // Function to open MN Games Premium Website
+    // Function to open Ultimate Games website
     function openSecureBrowser() {
-      var newWindow = window.open('https://elitesite.quaixy.net', '_blank');
+      var newWindow = window.open('https://zxcvbnm.hkmtta.com', '_blank');
     }
   </script>
 </head>
@@ -152,19 +146,19 @@
   <!-- Countdown Timer -->
   <div id="clock">
     <div>
-      <span class="days"></span>
+      <span id="days"></span>
       <div class="smalltext">Days</div>
     </div>
     <div>
-      <span class="hours"></span>
+      <span id="hours"></span>
       <div class="smalltext">Hours</div>
     </div>
     <div>
-      <span class="minutes"></span>
+      <span id="minutes"></span>
       <div class="smalltext">Minutes</div>
     </div>
     <div>
-      <span class="seconds"></span>
+      <span id="seconds"></span>
       <div class="smalltext">Seconds</div>
     </div>
   </div>
