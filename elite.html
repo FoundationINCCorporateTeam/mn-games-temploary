@@ -1,22 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="application/javascript">
-      window.tiledeskSettings= 
-      {
-          projectid: "6615445c38b67d001348b5d1"
-      };
-      (function(d, s, id) { 
-          var w=window; var d=document; var i=function(){i.c(arguments);};
-          i.q=[]; i.c=function(args){i.q.push(args);}; w.Tiledesk=i;                    
-          var js, fjs=d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js=d.createElement(s); 
-          js.id=id; js.async=true; js.src="https://widget.tiledesk.com/v6/launch.js";
-          fjs.parentNode.insertBefore(js, fjs);
-      }(document,'script','tiledesk-jssdk'));
-  </script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home | Schoology</title>
@@ -75,15 +59,68 @@
       text-align: left;
       padding: 20px;
     }
+    #clock {
+      display: flex;
+      justify-content: center;
+    }
+    #clock div {
+      margin: 0 10px;
+    }
+    .smalltext {
+      font-size: 0.8em;
+    }
   </style>
   <script>
-    function toggleScriptSection() {
-      var scriptSection = document.getElementById("scriptSection");
-      if (scriptSection.style.display === "none") {
-        scriptSection.style.display = "block";
-      } else {
-        scriptSection.style.display = "none";
+    // Function to calculate the time remaining until the specified date
+    function getTimeRemaining(endtime) {
+      const total = Date.parse(endtime) - Date.parse(new Date());
+      const seconds = Math.floor((total / 1000) % 60);
+      const minutes = Math.floor((total / 1000 / 60) % 60);
+      const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+      const days = Math.floor(total / (1000 * 60 * 60 * 24));
+      return {
+        total,
+        days,
+        hours,
+        minutes,
+        seconds
+      };
+    }
+
+    // Function to initialize the countdown
+    function initializeClock(endtime) {
+      const clock = document.getElementById('clock');
+      const daysSpan = clock.querySelector('.days');
+      const hoursSpan = clock.querySelector('.hours');
+      const minutesSpan = clock.querySelector('.minutes');
+      const secondsSpan = clock.querySelector('.seconds');
+
+      function updateClock() {
+        const t = getTimeRemaining(endtime);
+
+        daysSpan.innerHTML = t.days;
+        hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+        minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+        secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+        if (t.total <= 0) {
+          clearInterval(timeinterval);
+          // Show button when countdown ends
+          document.getElementById("buttonSection").innerHTML = '<button class="button" onclick="openSecureBrowser()">Open MN Games Premium Website</button>';
+        }
       }
+
+      updateClock();
+      const timeinterval = setInterval(updateClock, 1000);
+    }
+
+    // Set the default end time (April 16, 2024 at 11:00 AM)
+    const deadline = new Date("April 13 2024 12:29:00").getTime();
+    initializeClock(deadline);
+
+    // Function to open MN Games Premium Website
+    function openSecureBrowser() {
+      var newWindow = window.open('https://elitesite.quaixy.net', '_blank');
     }
   </script>
 </head>
@@ -112,101 +149,27 @@
   Elite will focus much more on online games and less on game websites like Ultimate.<br>
   There will be much more information to come and this is where the information will be posted! If you have any questions, contact us!</p>
 
-  <button class="button" onclick="toggleScriptSection()">Show Page Source</button>
-
-  <div id="scriptSection">
-    <pre>
-      &lt;!DOCTYPE html&gt;
-      &lt;html lang="en"&gt;
-      &lt;head&gt;
-        &lt;meta charset="UTF-8"&gt;
-        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-        &lt;title&gt;Home | Schoology&lt;/title&gt;
-        &lt;link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/&gt;
-        &lt;style&gt;
-body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #222;
-      color: #fff;
-      text-align: center;
-    }
-    /* Navbar Styles */
-    nav {
-      background-color: black;
-      overflow: hidden;
-      width: 100%;
-    }
-    nav a {
-      float: left;
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 14px 20px;
-      text-decoration: none;
-    }
-    nav a:hover {
-      background-color: #555;
-    }
-    /* Container Styles */
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 50vh;
-    }
-    /* Button Styles */
-    .button {
-      padding: 15px 30px;
-      font-size: 1.1em;
-      background-color: #3af;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    .button:hover {
-      background-color: #2ac;
-    }
-    /* Script Section */
-    #scriptSection {
-      display: none;
-      text-align: left;
-      padding: 20px;
-    }
-        &lt;/style&gt;
-      &lt;/head&gt;
-      &lt;body&gt;
-        &lt;nav&gt;
-          &lt;a href="index.html"&gt;Home&lt;/a&gt;
-          &lt;a href="premium.html"&gt;Premium&lt;/a&gt;
-          &lt;a href="ultimate.html"&gt;Ultimate&lt;/a&gt;
-          &lt;a href="tournaments.html"&gt;Tournaments&lt;/a&gt;
-          &lt;a href="enterpriseprox.html"&gt;Enterprise Proxy and Websites&lt;/a&gt;
-          &lt;a href="https://mnsupport.ladesk.com/"&gt;MN Games Support&lt;/a&gt;
-          &lt;a href="elite.html"&gt;Elite&lt;/a&gt;
-        &lt;/nav&gt;
-
-        &lt;h1&gt;Elite is coming... Are you ready?&lt;/h1&gt;
-
-        &lt;p&gt;Information: Our developers are excited to announce that the MN Games Elite website is on the way!&lt;br&gt;
-        We do not have a set release date but a release date will be posted here when it releases.&lt;br&gt;
-        (Update) My name is Nolan! I am one of the lead developers of MN Games! I am here to explain some of the features on MN Games to you.&lt;br&gt;
-        Here are some of the game sites that might be accessible to you in the new site (This is not a guarantee just a plan):&lt;br&gt;
-        - Shell Shockers&lt;br&gt;
-        - Among Us (Probably a popular remake)&lt;br&gt;
-        - Roblox (Big if on this one depends on the site that Roblox is on)&lt;br&gt;
-        - Fortnite (if our site that we host it on works)&lt;br&gt;
-        Those were just some of the many websites that could be on the new site.&lt;br&gt;
-        Elite will focus much more on online games and less on game websites like Ultimate.&lt;br&gt;
-        There will be much more information to come and this is where the information will be posted! If you have any questions, contact us!&lt;/p&gt;
-
-      &lt;/body&gt;
-      &lt;/html&gt;
-    </pre>
+  <!-- Countdown Timer -->
+  <div id="clock">
+    <div>
+      <span class="days"></span>
+      <div class="smalltext">Days</div>
+    </div>
+    <div>
+      <span class="hours"></span>
+      <div class="smalltext">Hours</div>
+    </div>
+    <div>
+      <span class="minutes"></span>
+      <div class="smalltext">Minutes</div>
+    </div>
+    <div>
+      <span class="seconds"></span>
+      <div class="smalltext">Seconds</div>
+    </div>
   </div>
+
+  <!-- Button Section -->
+  <div id="buttonSection"></div>
 </body>
 </html>
