@@ -131,10 +131,10 @@
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
         
         // Hide days and hours when less than 1 minute
-        if (distance < 60000) {
-          countdownElement.innerHTML = "Countdown: " + minutes + "m " + seconds + "s ";
+        if (distance < 600000) {
+          countdownElement.innerHTML = "Releases In: " + minutes + "m " + seconds + "s ";
         } else {
-          countdownElement.innerHTML = "Countdown: " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+          countdownElement.innerHTML = "Releases In: " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
         }
       }
     }, 1000);
