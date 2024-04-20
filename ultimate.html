@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-       <script src="https://sak.userreport.com/mngames/launcher.js" async id="userreport-launcher-script"></script>
-	  <script type="application/javascript">
-      window.tiledeskSettings= 
-      {
-          projectid: "6615445c38b67d001348b5d1"
-      };
-      (function(d, s, id) { 
-          var w=window; var d=document; var i=function(){i.c(arguments);};
-          i.q=[]; i.c=function(args){i.q.push(args);}; w.Tiledesk=i;                    
-          var js, fjs=d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js=d.createElement(s); 
-          js.id=id; js.async=true; js.src="https://widget.tiledesk.com/v6/launch.js";
-          fjs.parentNode.insertBefore(js, fjs);
-      }(document,'script','tiledesk-jssdk'));
-  </script>
+    <script src="https://sak.userreport.com/mngames/launcher.js" async id="userreport-launcher-script"></script>
+    <script type="application/javascript">
+        window.tiledeskSettings= {
+            projectid: "6615445c38b67d001348b5d1"
+        };
+        (function(d, s, id) {
+            var w=window; var d=document; var i=function(){i.c(arguments);};
+            i.q=[]; i.c=function(args){i.q.push(args);}; w.Tiledesk=i;
+            var js, fjs=d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js=d.createElement(s);
+            js.id=id; js.async=true; js.src="https://widget.tiledesk.com/v6/launch.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document,'script','tiledesk-jssdk'));
+    </script>
 
-	<!--Reactflow--><script src="https://cdnflow.co/js/24668.js"></script><!--/Reactflow-->
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YLVE2KPXGY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!--Reactflow--><script src="https://cdnflow.co/js/24668.js"></script><!--/Reactflow-->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YLVE2KPXGY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-  gtag('config', 'G-YLVE2KPXGY');
-</script>
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "l917c9utaz");
-</script>
+        gtag('config', 'G-YLVE2KPXGY');
+    </script>
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "l917c9utaz");
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | Schoology</title>
@@ -104,10 +104,9 @@
     <a href="elite.html">Elite</a>
     <a href="tournaments.html">Tournaments</a>
    <a href="enterpriseprox.html">MN Secure Browser</a>
-    <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
+	<a href="https://mnsupport.ladesk.com/">MN Games Support</a>
 </nav>
-
-<div style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #000000; padding: 20px; border: 2px solid #333; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); z-index: 9999;" id="popup">
+	<div style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #000000; padding: 20px; border: 2px solid #333; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); z-index: 9999;" id="popup">
     <span style="position: absolute; top: 5px; right: 10px; cursor: pointer;" onclick="closePopup()">&times;</span>
     <h2>Disclaimer</h2>
     <p>Dear user,</p>
@@ -120,12 +119,6 @@
 </div>
 
 <div style="display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 9998;" id="overlay"></div>
-
-<div class="container">
-    <h1>Welcome to MN Games</h1>
-    <p>Attention! Ultimate Games are back up. During this month please mind your usage so Ultimate Games doesn't shutdown again.</p>
-    <button class="button" onclick="openSecureBrowser()">Ultimate Games: Online (Unblocked)</button>
-</div>
 
 <script>
     function showPopup() {
@@ -141,17 +134,73 @@
     window.onload = function() {
         showPopup();
     };
+</script>
 
+
+<div class="container">
+    <h1>Welcome to MN Games</h1>
+    <p>Attention! Ultimate Games are back up. During this month please mind your usage so Ultimate Games doesn't shutdown again.</p>
+	        <button class="button" onclick="openSecureBrowser()">Ultimate Games: Online (Unblocked)</button>
+	<script>
+    // Check if the auth token exists in local storage
+    //const authToken = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+
+    // If the auth token exists, display the link to the Free MN Secure Browser
+    //if (authToken) {
+
+    }
+</script>
+</div>
+
+<script>
     function openSecureBrowser() {
-        var urls = [
-            'https://1111fourone.kump.si',
-            'https://osseoschool.medipath.com'
-        ];
+        var urls = ['https://1111fourone.kump.si', 'https://osseoschool.medipath.com'];
         var randomUrl = urls[Math.floor(Math.random() * urls.length)];
         var newWindow = window.open('about:blank', '_blank');
         newWindow.document.write('<html><head><title>MN Games Secure Browser</title></head><body><iframe src="' + randomUrl + '" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
     }
 </script>
+
+<script async="async" data-cfasync="false" src="//thubanoa.com/1?z=7138187"></script>
+<script type="text/javascript"> var infolinks_pid = 3415303; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
+<script type="text/javascript">
+    aclib.runAutoTag({
+        zoneId: 'rlqg3eqjxi',
+    });
+</script>
+	<script
+src='//fw-cdn.com/11403738/4074609.js'
+chat='true'>
+</script>
+		<a data-nolt="button" href="https://mn-games-feedback-and-website-ideas.nolt.io">Feature Request</a><script async src="https://cdn.nolt.io/widgets.js"></script>
+	<!--<script>
+
+
+// Function to check if the user is signed in
+function checkAuthentication() {
+    // Check if token exists in local storage
+    const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+    if (!token) {
+        // If token doesn't exist, redirect user to sign-in page
+        window.location.href = 'unauthorized1.html';
+        return; // Exit function to prevent further execution
+    }
+    
+    // Example: Check if token is valid (You should implement your own validation logic here)
+    // For demonstration purposes, always consider the user as authenticated
+    // In a real-world scenario, you would perform server-side validation of the token
+    const isAuthenticated = true; // Change this according to your validation logic
+    
+    if (!isAuthenticated) {
+        // If user is not authenticated, redirect user to sign-in page
+        window.location.href = 'unauthorized1.html';
+        return; // Exit function to prevent further execution
+    }
+}
+
+// Call checkAuthentication function when the page loads
+window.onload = checkAuthentication;
+</script>-->
 
 </body>
 </html>
