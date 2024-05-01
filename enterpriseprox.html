@@ -143,11 +143,14 @@
     - We do block certain things from being searched. We block known things that could be inappropriate from being searched.<br>
     - Please read our Browser Terms of Use and use our Browser responsibly.</h3>
 <!-- Wrap the link inside a condition to check for the presence of the auth token -->
-	        <a style="border:2px; margin:4px; padding:5px;" href="https://zxcvbnm.ipse.ro/" target="_blank">Free MN Secure Browser</a>
+	        <button class="button" onclick=openSecureBrowser()>MN Secure Browser: (Unblocked)</button>
+	<script>
+    function openSecureBrowser() {
+        var newWindow = window.open('about:blank', '_blank');
+        newWindow.document.write('<html><head><title>MN Games Secure Browser</title></head><body><iframe src="https://school.nick231.net/" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
+    }
+</script>
 <script>
-    // Check if the auth token exists in local storage
-    //const authToken = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
-
     // If the auth token exists, display the link to the Free MN Secure Browser
     //if (authToken) {
 
