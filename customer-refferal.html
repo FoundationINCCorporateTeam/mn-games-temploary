@@ -19,7 +19,7 @@
     </form>
 </div>
 
-<div id="alreadySignedUpForm" style="display: none;">
+<div id="alreadySignedUpForm">
     <h2>Already Signed Up</h2>
     <form id="existingUserForm">
         <label for="existingUserName">Your Email:</label>
@@ -73,7 +73,7 @@
         .then(data => {
             if (data.length === 0) {
                 // User does not exist, insert new user and generate referral URL
-                const referralURL = `http://us.bizuit.com/referral?email=${email}`; // Change to your actual website URL
+                const referralURL = `https://us.bizuit.com/referral?email=${email}`; // Change to your actual website URL
                 fetch(`${supabaseUrl}/rest/v1/users`, {
                     method: 'POST',
                     headers: {
