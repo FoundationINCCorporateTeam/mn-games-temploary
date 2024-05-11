@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Link Generator</title>
+</head>
+<body>
+    <div id="referralLinkContainer">
+        <p>Your referral link:</p>
+        <input type="text" id="referralLink" readonly>
+    </div>
+
+    <script>
+        // Generate a unique referral link for the user
+        function generateReferralLink() {
+            // Generate a unique identifier (e.g., UUID)
+            const uuid = generateUUID();
+
+            // Construct the referral link
+            const referralLink = `http://us.bizuit.com/referral?ref=${uuid}`;
+
+            // Display the referral link
+            document.getElementById("referralLink").value = referralLink;
+            document.getElementById("referralLinkContainer").style.display = "block";
+        }
+
+        // Generate a UUID (Universally Unique Identifier)
+        function generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0,
+                    v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        // Call the function to generate referral link when the page loads
+        generateReferralLink();
+    </script>
+</body>
+</html>
