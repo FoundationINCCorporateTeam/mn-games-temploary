@@ -3,39 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Referral Link Generator</title>
+    <title>User Registration</title>
 </head>
 <body>
-    <div id="referralLinkContainer">
-        <p>Your referral link:</p>
-        <input type="text" id="referralLink" readonly>
-    </div>
 
-    <script>
-        // Generate a unique referral link for the user
-        function generateReferralLink() {
-            // Generate a unique identifier (e.g., UUID)
-            const uuid = generateUUID();
+<div id="registrationForm">
+    <h2>User Registration</h2>
+    <form id="userForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <button type="submit">Submit</button>
+    </form>
+</div>
 
-            // Construct the referral link
-            const referralLink = `http://us.bizuit.com/referral?ref=${uuid}`;
+<div id="alreadySignedUpForm" style="display: none;">
+    <h2>Already Signed Up</h2>
+    <form id="existingUserForm">
+        <label for="existingUserName">Your Name:</label>
+        <input type="text" id="existingUserName" name="existingUserName" required><br><br>
+        <button type="button" id="getReferralURLBtn">Get Referral URL</button>
+        <p id="referralURL"></p>
+    </form>
+</div>
 
-            // Display the referral link
-            document.getElementById("referralLink").value = referralLink;
-            document.getElementById("referralLinkContainer").style.display = "block";
-        }
+<script>
+    // Function to handle form submission
+    document.getElementById("userForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
 
-        // Generate a UUID (Universally Unique Identifier)
-        function generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                const r = Math.random() * 16 | 0,
-                    v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
 
-        // Call the function to generate referral link when the page loads
-        generateReferralLink();
-    </script>
+        // Make a POST request to Supabase to insert a new user
+        const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
+        fetch(`${supabaseUrl}/rest/v1/users?email=eq.${email}`, {
+            method: 'GET',
+            headers: {
+                'apikey': supabaseAnonKey
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to check if user exists in Supabase');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.length === 0) {
+                // User does not exist, insert new user and generate referral URL
+                const referralURL = `http://yourwebsite.com/referral?email=${email}`; // Change to your actual website URL
+                fetch(`${supabaseUrl}/rest/v1/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': supabaseAnonKey
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        referral_url: referralURL
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to insert user into Supabase');
+                    }
+                    console.log('User inserted into Supabase successfully');
+                    // Redirect or display a success message
+                })
+                .catch(error => {
+                    console.error('Error:', error.message);
+                    // Display an error message
+                });
+            } else {
+                // User already exists, display the already signed up form
+                document.getElementById("registrationForm").style.display = "none";
+                document.getElementById("alreadySignedUpForm").style.display = "block";
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+        });
+    });
+
+    // Function to handle click on "Get Referral URL" button
+    document.getElementById("getReferralURLBtn").addEventListener("click", function(event) {
+        const existingUserName = document.getElementById("existingUserName").value;
+        // Make a GET request to Supabase to fetch the referral URL for the existing user
+        const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
+        fetch(`${supabaseUrl}/rest/v1/users?email=eq.${existingUserName}`, {
+            method: 'GET',
+            headers: {
+                'apikey': supabaseAnonKey
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data from Supabase');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.length === 1) {
+                const referralURL = data[0].referral_url;
+                document.getElementById("referralURL").textContent = `Your referral URL: ${referralURL}`;
+            } else {
+                console.error('User not found in Supabase');
+                // Display an error message or handle accordingly
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+        });
+    });
+</script>
+
 </body>
 </html>
