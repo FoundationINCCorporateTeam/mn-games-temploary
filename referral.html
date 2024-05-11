@@ -31,7 +31,7 @@
 
         // Function to increment referral count
         function incrementReferralCount(userId) {
-            fetch(`${supabaseUrl}/rest/v1/share-users?id=eq.${name}`, {
+            fetch(`${supabaseUrl}/rest/v1/users?id=eq.${userId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,7 +105,7 @@
         }
 
         // Make a GET request to Supabase to fetch user with the provided email
-        fetch(`${supabaseUrl}/rest/v1/share-users?email=eq.${name}`, {
+        fetch(`${supabaseUrl}/rest/v1/users?email=eq.${email}`, {
             method: 'GET',
             headers: {
                 'apikey': supabaseAnonKey
@@ -121,19 +121,16 @@
             if (data.length === 1) {
                 const userId = data[0].id;
                 const referralCount = data[0].referral_count;
-                const userName = data[0].name;
+                const userName = document.getElementById("userName").value;
 
-                // Display verification form
-                const verificationForm = document.getElementById("verificationForm");
-                verificationForm.style.display = "block";
+                // Show the verification form
+                document.getElementById("verificationForm").style.display = "block";
 
-                // Function to handle form submission
+                // Handle form submission
                 document.getElementById("verificationUserForm").addEventListener("submit", function(event) {
-                    event.preventDefault(); // Prevent default form submission
-                    const userName = document.getElementById("userName").value;
+                    event.preventDefault();
                     checkUserReferral(userName);
                 });
-
             } else {
                 console.error('User not found');
             }
