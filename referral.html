@@ -67,22 +67,29 @@
         .success-message {
             color: green;
         }
+
+        p {
+            text-align: center;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
 
-<h1>Welcome to MN Games!</h1>
-<p>It seems someone has referred you to MN Games! Please enter your name below so the owner of the link can get credit!<br>Then go have fun at MN Games!</p>
+<div class="container">
+    <h1>Welcome to MN Games!</h1>
+    <p>It seems someone has referred you to MN Games! Please enter your name below so the owner of the link can get credit!<br>Then go have fun at MN Games!</p>
 
-<div id="verificationForm" style="display: none;">
-    <h2>Verification Form</h2>
-    <form id="verificationUserForm">
-        <label for="userName">Your Name:</label>
-        <input type="text" id="userName" name="userName" required><br><br>
-        <button type="submit">Verify</button>
-    </form>
+    <div id="verificationForm" style="display: none;">
+        <h2>Verification Form</h2>
+        <form id="verificationUserForm">
+            <label for="userName">Your Name:</label>
+            <input type="text" id="userName" name="userName" required><br><br>
+            <button type="submit">Verify</button>
+        </form>
+    </div>
+    <button onclick="window.location.href='/'" style="margin-top: 20px;">Check out MN Games!</button>
 </div>
-<button onclick="window.location.href='/'">Check out MN Games!</button>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
