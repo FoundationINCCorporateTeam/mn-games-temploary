@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referral Page</title>
+</head>
+<body>
+
+<script>
+    // Function to extract query parameters from URL
+    function getQueryVariable(variable) {
+        const query = window.location.search.substring(1);
+        const vars = query.split("&");
+        for (let i = 0; i < vars.length; i++) {
+            const pair = vars[i].split("=");
+            if (pair[0] === variable) {
+                return pair[1];
+            }
+        }
+        return null;
+    }
+
+    // Get referral ID/email from URL query parameters
+    const referralID = getQueryVariable('referralID');
+    const email = getQueryVariable('email');
+
+    // If referral ID/email is present, make a request to update referral count
+    if (referralID || email) {
+        const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
+
+        // Make a GET request to Supabase to fetch user with the provided referral ID/email
+        fetch(`${supabaseUrl}/rest/v1/users?referral_id=eq.${referralID}&email=eq.${email}`, {
+            method: 'GET',
+            headers: {
+                'apikey': supabaseAnonKey
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data from Supabase');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.length === 1) {
+                // Increment the referral count of the user
+                const userId = data[0].id;
+                const referralCount = data[0].referral_count + 1;
+                fetch(`${supabaseUrl}/rest/v1/users?id=eq.${userId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': supabaseAnonKey
+                    },
+                    body: JSON.stringify({
+                        referral_count: referralCount
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to update referral count');
+                    }
+                    console.log('Referral count updated successfully');
+                })
+                .catch(error => {
+                    console.error('Error:', error.message);
+                });
+            } else {
+                console.error('User not found');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+        });
+    }
+</script>
+
+<h1>Thank you for visiting!</h1>
+
+</body>
+</html>
