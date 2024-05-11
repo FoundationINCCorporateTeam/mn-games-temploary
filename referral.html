@@ -5,73 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Referral Page</title>
     <style>
-    body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-.container {
-    max-width: 400px;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        .container {
+            max-width: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-h1 {
-    text-align: center;
-    color: #333;
-}
+        h1 {
+            text-align: center;
+            color: #333;
+        }
 
-form {
-    margin-top: 20px;
-}
+        form {
+            margin-top: 20px;
+        }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-}
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
 
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-button:hover {
-    background-color: #0056b3;
-}
+        button:hover {
+            background-color: #0056b3;
+        }
 
-.error-message {
-    color: red;
-}
+        .error-message {
+            color: red;
+        }
 
-.success-message {
-    color: green;
-}
-</style>
+        .success-message {
+            color: green;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Welcome to MN Games!e</h1>
+<h1>Welcome to MN Games!</h1>
 <p>It seems someone has referred you to MN Games! Please enter your name below so the owner of the link can get credit!<br>Then go have fun at MN Games!</p>
 
 <div id="verificationForm" style="display: none;">
@@ -82,7 +82,8 @@ button:hover {
         <button type="submit">Verify</button>
     </form>
 </div>
-<button onlick=window.location.herf="/">Check out MN Games!</button>
+<button onclick="window.location.href='/'">Check out MN Games!</button>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         // Function to extract query parameters from URL
