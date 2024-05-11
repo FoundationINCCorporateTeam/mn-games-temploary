@@ -1,1 +1,1 @@
-const maintenanceMode = true; // Set this to true to enable maintenance mode
+const maintenanceMode = false; // Set this to true to enable maintenance mode
