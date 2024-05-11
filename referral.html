@@ -78,5 +78,82 @@
 
 <h1>Thank you for visiting!</h1>
 
+<div id="verificationForm">
+    <h2>Verification</h2>
+    <form id="verificationUserForm">
+        <label for="userName">Your Name:</label>
+        <input type="text" id="userName" name="userName" required><br><br>
+        <button type="submit">Verify</button>
+        <p id="verificationMessage"></p>
+    </form>
+</div>
+
+<script>
+    // Function to display error message
+    function showErrorMessage(message) {
+        const messageElement = document.getElementById("verificationMessage");
+        messageElement.textContent = message;
+        messageElement.style.color = "red";
+    }
+
+    // Function to handle form submission
+    document.getElementById("verificationUserForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const userName = document.getElementById("userName").value;
+
+        // Make a GET request to Supabase to check if user has already used a referral link
+        const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
+        fetch(`${supabaseUrl}/rest/v1/share-users?name=eq.${userName}`, {
+            method: 'GET',
+            headers: {
+                'apikey': supabaseAnonKey
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to check user in Supabase');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.length > 0) {
+                // User has already used a referral link
+                showErrorMessage('User has already used a referral link.');
+            } else {
+                // User hasn't used a referral link, add their name to share-users table
+                fetch(`${supabaseUrl}/rest/v1/share-users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': supabaseAnonKey
+                    },
+                    body: JSON.stringify({
+                        name: userName
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add user to share-users table');
+                    }
+                    console.log('User added to share-users table successfully');
+                    // Increment the referral count for the user who shared the link
+                    // This logic is similar to the existing script to increment referral count
+                    // You can integrate it here if needed
+                })
+                .catch(error => {
+                    console.error('Error:', error.message);
+                    showErrorMessage('Failed to add user. Please try again.');
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+            showErrorMessage('Failed to check user. Please try again.');
+        });
+    });
+</script>
+
 </body>
 </html>
