@@ -15,20 +15,39 @@
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required><br><br>
         <button type="submit">Submit</button>
+        <p id="registrationMessage"></p>
     </form>
 </div>
 
 <div id="alreadySignedUpForm" style="display: none;">
     <h2>Already Signed Up</h2>
     <form id="existingUserForm">
-        <label for="existingUserName">Your Name:</label>
-        <input type="text" id="existingUserName" name="existingUserName" required><br><br>
+        <label for="existingUserName">Your Email:</label>
+        <input type="email" id="existingUserName" name="existingUserName" required><br><br>
+        <button type="button" id="verifyExistingUserBtn">Verify</button>
+        <p id="verificationMessage"></p>
+    </form>
+    <div id="referralURLContainer" style="display: none;">
         <button type="button" id="getReferralURLBtn">Get Referral URL</button>
         <p id="referralURL"></p>
-    </form>
+    </div>
 </div>
 
 <script>
+    // Function to display success message
+    function showSuccessMessage(message) {
+        const messageElement = document.getElementById("registrationMessage");
+        messageElement.textContent = message;
+        messageElement.style.color = "green";
+    }
+
+    // Function to display error message
+    function showErrorMessage(message) {
+        const messageElement = document.getElementById("registrationMessage");
+        messageElement.textContent = message;
+        messageElement.style.color = "red";
+    }
+
     // Function to handle form submission
     document.getElementById("userForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent default form submission
@@ -72,11 +91,11 @@
                         throw new Error('Failed to insert user into Supabase');
                     }
                     console.log('User inserted into Supabase successfully');
-                    // Redirect or display a success message
+                    showSuccessMessage('User registered successfully. Your referral URL: ' + referralURL);
                 })
                 .catch(error => {
                     console.error('Error:', error.message);
-                    // Display an error message
+                    showErrorMessage('Failed to register user. Please try again.');
                 });
             } else {
                 // User already exists, display the already signed up form
@@ -86,16 +105,51 @@
         })
         .catch(error => {
             console.error('Error:', error.message);
+            showErrorMessage('Failed to check if user exists. Please try again.');
         });
     });
 
-    // Function to handle click on "Get Referral URL" button
+    // Function to handle click on "Verify" button for already signed up users
+    document.getElementById("verifyExistingUserBtn").addEventListener("click", function(event) {
+        const existingUserEmail = document.getElementById("existingUserName").value;
+
+        // Make a GET request to Supabase to verify existing user
+        const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
+        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
+        fetch(`${supabaseUrl}/rest/v1/users?email=eq.${existingUserEmail}`, {
+            method: 'GET',
+            headers: {
+                'apikey': supabaseAnonKey
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to verify user in Supabase');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.length === 1) {
+                showSuccessMessage('User verified successfully. Click "Get Referral URL" to see your referral URL.');
+                document.getElementById("referralURLContainer").style.display = "block";
+            } else {
+                showErrorMessage('User not found. Please check your email and try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error.message);
+            showErrorMessage('Failed to verify user. Please try again.');
+        });
+    });
+
+    // Function to handle click on "Get Referral URL" button for already signed up users
     document.getElementById("getReferralURLBtn").addEventListener("click", function(event) {
-        const existingUserName = document.getElementById("existingUserName").value;
+        const existingUserEmail = document.getElementById("existingUserName").value;
+
         // Make a GET request to Supabase to fetch the referral URL for the existing user
         const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
-        fetch(`${supabaseUrl}/rest/v1/users?email=eq.${existingUserName}`, {
+        fetch(`${supabaseUrl}/rest/v1/users?email=eq.${existingUserEmail}`, {
             method: 'GET',
             headers: {
                 'apikey': supabaseAnonKey
@@ -112,12 +166,12 @@
                 const referralURL = data[0].referral_url;
                 document.getElementById("referralURL").textContent = `Your referral URL: ${referralURL}`;
             } else {
-                console.error('User not found in Supabase');
-                // Display an error message or handle accordingly
+                showErrorMessage('User not found. Please check your email and try again.');
             }
         })
         .catch(error => {
             console.error('Error:', error.message);
+            showErrorMessage('Failed to fetch referral URL. Please try again.');
         });
     });
 </script>
