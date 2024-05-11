@@ -87,6 +87,7 @@
             <input type="text" id="userName" name="userName" required><br><br>
             <button type="submit">Verify</button>
         </form>
+        <p id="verificationMessage" class="error-message"></p>
     </div>
     <button onclick="window.location.href='/'" style="margin-top: 20px;">Check out MN Games!</button>
 </div>
@@ -178,16 +179,24 @@
                                 throw new Error('Failed to update referral count');
                             }
                             console.log('Referral count updated successfully');
+                            document.getElementById("verificationMessage").textContent = "User verified and referral count updated successfully!";
+                            document.getElementById("verificationMessage").className = "success-message";
                         })
                         .catch(error => {
                             console.error('Error:', error.message);
+                            document.getElementById("verificationMessage").textContent = "Error updating referral count!";
+                            document.getElementById("verificationMessage").className = "error-message";
                         });
                     } else {
                         console.error('User not found');
+                        document.getElementById("verificationMessage").textContent = "User not found!";
+                        document.getElementById("verificationMessage").className = "error-message";
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error.message);
+                    document.getElementById("verificationMessage").textContent = "Error fetching user data!";
+                    document.getElementById("verificationMessage").className = "error-message";
                 });
 
                 // Add the user's name to the share-users table
@@ -212,10 +221,14 @@
                 });
             } else {
                 console.error('User has already used a referral link');
+                document.getElementById("verificationMessage").textContent = "User has already used a referral link!";
+                document.getElementById("verificationMessage").className = "error-message";
             }
         })
         .catch(error => {
             console.error('Error:', error.message);
+            document.getElementById("verificationMessage").textContent = "Error verifying user!";
+            document.getElementById("verificationMessage").className = "error-message";
         });
     }
 </script>
