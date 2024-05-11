@@ -21,17 +21,16 @@
         return null;
     }
 
-    // Get referral ID/email from URL query parameters
-    const referralID = getQueryVariable('referralID');
+    // Get referral email from URL query parameters
     const email = getQueryVariable('email');
 
-    // If referral ID/email is present, make a request to update referral count
-    if (referralID || email) {
+    // If referral email is present, make a request to update referral count
+    if (email) {
         const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
 
-        // Make a GET request to Supabase to fetch user with the provided referral ID/email
-        fetch(`${supabaseUrl}/rest/v1/users?referral_id=eq.${referralID}&email=eq.${email}`, {
+        // Make a GET request to Supabase to fetch user with the provided email
+        fetch(`${supabaseUrl}/rest/v1/users?email=eq.${email}`, {
             method: 'GET',
             headers: {
                 'apikey': supabaseAnonKey
