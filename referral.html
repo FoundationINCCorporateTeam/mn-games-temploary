@@ -45,13 +45,13 @@
                 event.preventDefault();
                 const userName = document.getElementById("userName").value;
                 // Call a function to verify user and update referral count
-                verifyAndUpdateReferral(userName);
+                verifyAndUpdateReferral(email, userName);
             });
         }
     });
 
     // Function to verify user and update referral count
-    function verifyAndUpdateReferral(userName) {
+    function verifyAndUpdateReferral(email, userName) {
         // Add your Supabase URL and API key here
         const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
@@ -117,7 +117,7 @@
                     console.error('Error:', error.message);
                 });
             } else {
-                console.log('User already used a referral link');
+                console.error('User has already used a referral link');
             }
         })
         .catch(error => {
