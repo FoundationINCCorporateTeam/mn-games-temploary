@@ -19,7 +19,7 @@
     </form>
 </div>
 
-<div id="alreadySignedUpForm">
+<div id="alreadySignedUpForm" style="display: none;">
     <h2>Already Signed Up</h2>
     <form id="existingUserForm">
         <label for="existingUserName">Your Email:</label>
@@ -35,15 +35,15 @@
 
 <script>
     // Function to display success message
-    function showSuccessMessage(message) {
-        const messageElement = document.getElementById("registrationMessage");
+    function showSuccessMessage(elementId, message) {
+        const messageElement = document.getElementById(elementId);
         messageElement.textContent = message;
         messageElement.style.color = "green";
     }
 
     // Function to display error message
-    function showErrorMessage(message) {
-        const messageElement = document.getElementById("registrationMessage");
+    function showErrorMessage(elementId, message) {
+        const messageElement = document.getElementById(elementId);
         messageElement.textContent = message;
         messageElement.style.color = "red";
     }
@@ -91,21 +91,23 @@
                         throw new Error('Failed to insert user into Supabase');
                     }
                     console.log('User inserted into Supabase successfully');
-                    showSuccessMessage('User registered successfully. Your referral URL: ' + referralURL);
+                    showSuccessMessage('registrationMessage', 'User registered successfully. Please enter your email below to verify.');
+                    document.getElementById("registrationForm").style.display = "none";
+                    document.getElementById("alreadySignedUpForm").style.display = "block";
+                    document.getElementById("existingUserName").value = email;
                 })
                 .catch(error => {
                     console.error('Error:', error.message);
-                    showErrorMessage('Failed to register user. Please try again.');
+                    showErrorMessage('registrationMessage', 'Failed to register user. Please try again.');
                 });
             } else {
-                // User already exists, display the already signed up form
-                document.getElementById("registrationForm").style.display = "none";
-                document.getElementById("alreadySignedUpForm").style.display = "block";
+                // User already exists
+                showErrorMessage('registrationMessage', 'User already exists. Please log in or use a different email.');
             }
         })
         .catch(error => {
             console.error('Error:', error.message);
-            showErrorMessage('Failed to check if user exists. Please try again.');
+            showErrorMessage('registrationMessage', 'Failed to check if user exists. Please try again.');
         });
     });
 
@@ -130,15 +132,15 @@
         })
         .then(data => {
             if (data.length === 1) {
-                showSuccessMessage('User verified successfully. Click "Get Referral URL" to see your referral URL.');
+                showSuccessMessage('verificationMessage', 'User verified successfully. Click "Get Referral URL" to see your referral URL.');
                 document.getElementById("referralURLContainer").style.display = "block";
             } else {
-                showErrorMessage('User not found. Please check your email and try again.');
+                showErrorMessage('verificationMessage', 'User not found. Please check your email and try again.');
             }
         })
         .catch(error => {
             console.error('Error:', error.message);
-            showErrorMessage('Failed to verify user. Please try again.');
+            showErrorMessage('verificationMessage', 'Failed to verify user. Please try again.');
         });
     });
 
@@ -166,12 +168,12 @@
                 const referralURL = data[0].referral_url;
                 document.getElementById("referralURL").textContent = `Your referral URL: ${referralURL}`;
             } else {
-                showErrorMessage('User not found. Please check your email and try again.');
+                showErrorMessage('verificationMessage', 'User not found. Please check your email and try again.');
             }
         })
         .catch(error => {
             console.error('Error:', error.message);
-            showErrorMessage('Failed to fetch referral URL. Please try again.');
+            showErrorMessage('verificationMessage', 'Failed to fetch referral URL. Please try again.');
         });
     });
 </script>
