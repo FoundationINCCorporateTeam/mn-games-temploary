@@ -116,6 +116,27 @@
                 .catch(error => {
                     console.error('Error:', error.message);
                 });
+
+                // Add the user's name to the share-users table
+                fetch(`${supabaseUrl}/rest/v1/share-users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': supabaseAnonKey
+                    },
+                    body: JSON.stringify({
+                        name: userName
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add user to share-users table');
+                    }
+                    console.log('User added to share-users table');
+                })
+                .catch(error => {
+                    console.error('Error:', error.message);
+                });
             } else {
                 console.error('User has already used a referral link');
             }
