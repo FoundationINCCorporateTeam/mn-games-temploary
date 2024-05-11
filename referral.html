@@ -31,7 +31,7 @@
 
         // Function to increment referral count
         function incrementReferralCount(userId) {
-            fetch(`${supabaseUrl}/rest/v1/users?id=eq.${userId}`, {
+            fetch(`${supabaseUrl}/rest/v1/share-users?id=eq.${name}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -105,7 +105,7 @@
         }
 
         // Make a GET request to Supabase to fetch user with the provided email
-        fetch(`${supabaseUrl}/rest/v1/users?email=eq.${email}`, {
+        fetch(`${supabaseUrl}/rest/v1/share-users?email=eq.${name}`, {
             method: 'GET',
             headers: {
                 'apikey': supabaseAnonKey
