@@ -30,22 +30,45 @@
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
 
         // Function to increment referral count
-        function incrementReferralCount(userId) {
-            fetch(`${supabaseUrl}/rest/v1/users?id=eq.${userId}`, {
-                method: 'PATCH',
+        function incrementReferralCount(ownerName) {
+            fetch(`${supabaseUrl}/rest/v1/users?name=eq.${ownerName}`, {
+                method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
                     'apikey': supabaseAnonKey
-                },
-                body: JSON.stringify({
-                    referral_count: referralCount + 1
-                })
+                }
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Failed to update referral count');
+                    throw new Error('Failed to fetch user data from Supabase');
                 }
-                console.log('Referral count updated successfully');
+                return response.json();
+            })
+            .then(data => {
+                if (data.length === 1) {
+                    const referralCount = data[0].referral_count + 1;
+                    const userId = data[0].id;
+                    fetch(`${supabaseUrl}/rest/v1/users?id=eq.${userId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': supabaseAnonKey
+                        },
+                        body: JSON.stringify({
+                            referral_count: referralCount
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to update referral count');
+                        }
+                        console.log('Referral count updated successfully');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error.message);
+                    });
+                } else {
+                    console.error('User not found');
+                }
             })
             .catch(error => {
                 console.error('Error:', error.message);
@@ -93,7 +116,7 @@
                 if (data.length === 0) {
                     // User hasn't used a referral link
                     addUserToShareUsers(userName);
-                    incrementReferralCount(userId);
+                    incrementReferralCount(userName);
                 } else {
                     // User has already used a referral link
                     console.error('User has already used a referral link.');
@@ -104,39 +127,14 @@
             });
         }
 
-        // Make a GET request to Supabase to fetch user with the provided email
-        fetch(`${supabaseUrl}/rest/v1/users?email=eq.${email}`, {
-            method: 'GET',
-            headers: {
-                'apikey': supabaseAnonKey
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch user data from Supabase');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.length === 1) {
-                const userId = data[0].id;
-                const referralCount = data[0].referral_count;
-                const userName = document.getElementById("userName").value;
+        // Show the verification form
+        document.getElementById("verificationForm").style.display = "block";
 
-                // Show the verification form
-                document.getElementById("verificationForm").style.display = "block";
-
-                // Handle form submission
-                document.getElementById("verificationUserForm").addEventListener("submit", function(event) {
-                    event.preventDefault();
-                    checkUserReferral(userName);
-                });
-            } else {
-                console.error('User not found');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error.message);
+        // Handle form submission
+        document.getElementById("verificationUserForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const userName = document.getElementById("userName").value;
+            checkUserReferral(userName);
         });
     }
 </script>
