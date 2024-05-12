@@ -1,76 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MN Games+</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 20px 0;
-            position: fixed;
-            width: 100%;
-            z-index: 9999; /* Ensure header stays on top */
-        }
-
-        .logo {
-            width: 50px;
-            height: 50px;
-        }
-
-        nav ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        nav ul li {
-            display: inline;
-            margin-right: 20px;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .tally-embed {
-            position: absolute;
-            top: 70px; /* Adjust this value based on your navbar height */
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: calc(100% - 70px); /* Adjust this value based on your navbar height */
-            width: 100%; /* Ensure iframe covers the entire width */
-        }
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>MN Games+ Application Form</title>
+    <script async src="https://tally.so/widgets/embed.js"></script>
+    <style type="text/css">
+      html { margin: 0; height: 100%; overflow: hidden; }
+      iframe { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; }
     </style>
-</head>
-<body>
-    <header>
-        <div class="container">
-            <img src="/mnpluslogo.png" alt="MN Games Plus/+ Logo" class="logo">
-            <nav>
-                <ul>
-                    <li><a href="/">Website Home</a></li>
-                    <li><a href="/mngamesplus/mngamesplus">MN Games+ Home</a></li>
-                    <li><a href="/mngamesplus/features">Features</a></li>
-                    <li><a href="/mngamesplus/benefits">Benefits</a></li>
-                    <li><a href="/mngamesplus/apply">Apply</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <iframe class="tally-embed" src="https://tally.so/embed/w5d5MN?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" frameborder="0" scrolling="no"></iframe>
-</body>
+  </head>
+  <body>
+    <iframe data-tally-src="https://tally.so/r/w5d5MN?transparentBackground=1" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" title="MN Games+ Application Form"></iframe>
+  </body>
 </html>
