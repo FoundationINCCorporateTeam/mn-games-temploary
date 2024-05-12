@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile Editing</title>
+</head>
+<body>
+
+<h1>User Profile</h1>
+
+<div id="profileForm">
+    <label for="displayName">Display Name:</label>
+    <input type="text" id="displayName"><br><br>
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber"><br><br>
+    <button onclick="updateProfile()">Update Profile</button>
+</div>
+
+<script>
+const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
+
+async function fetchUserProfile() {
+    const response = await fetch(`${supabaseUrl}/rest/v1/auth`, {
+        method: 'GET',
+        headers: {
+            'apikey': supabaseKey
+        }
+    });
+    const data = await response.json();
+    return data[0];
+}
+
+async function updateProfile() {
+    const displayName = document.getElementById('displayName').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
+
+    const userProfile = await fetchUserProfile();
+    userProfile.display_name = displayName;
+    userProfile.phone_number = phoneNumber;
+
+    const response = await fetch(`${supabaseUrl}/rest/v1/auth`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'apikey': supabaseKey
+        },
+        body: JSON.stringify(userProfile)
+    });
+
+    if (response.ok) {
+        alert('Profile updated successfully!');
+    } else {
+        alert('Failed to update profile');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const userProfile = await fetchUserProfile();
+    document.getElementById('displayName').value = userProfile.display_name || '';
+    document.getElementById('phoneNumber').value = userProfile.phone_number || '';
+});
+</script>
+
+</body>
+</html>
