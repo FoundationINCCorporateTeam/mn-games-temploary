@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Referral Qualification</title>
+</head>
+<body>
+    <button onclick="checkReferralQualification()">Check Referral Qualification</button>
+
+    <script>
+        async function checkReferralQualification() {
+            // Get the email from local storage
+            const userEmail = localStorage.getItem("email");
+
+            // Check if email is present
+            if (!userEmail) {
+                console.log("No email found in local storage.");
+                return;
+            }
+
+            // Fetch user data from Supabase
+            const response = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/share-users?email=eq.' + userEmail, {
+                headers: {
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+
+            // Check if user data exists
+            if (data.length === 0) {
+                console.log("User not found in the database.");
+                return;
+            }
+
+            // Check if referral count is over 4
+            const referralCount = data[0].referral_count;
+            if (referralCount > 4) {
+                console.log("Congratulations! You qualify.");
+            } else {
+                console.log("Sorry, you do not qualify.");
+            }
+        }
+    </script>
+</body>
+</html>
