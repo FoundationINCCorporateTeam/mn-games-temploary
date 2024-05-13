@@ -3,71 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Email Qualification Checker</title>
+<title>Date Checker</title>
 </head>
 <body>
-
-<button id="checkQualification">Check Qualification</button>
-<p id="qualificationResult"></p>
+<button id="checkDateBtn">Check Date</button>
+<p id="result"></p>
 
 <script>
-document.getElementById('checkQualification').addEventListener('click', async function() {
-    try {
-        // Get user data from Supabase
-        const { data: { user } } = await supabase.auth.getUser();
+document.getElementById("checkDateBtn").addEventListener("click", async function() {
+    const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
+    const anonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
+    
+    // Get user email from local storage
+    const userEmail = localStorage.getItem('email');
+    if (!userEmail) {
+        alert('Email not found in local storage');
+        return;
+    }
 
-        // If user exists
-        if (user) {
-            // Get email from user metadata
-            let metadata = user.user_metadata;
-            if (metadata && metadata.email) {
-                var email = metadata.email;
-
-                // Send GET request to Supabase authentication table
-                fetch('https://tdsxayxnjomnoiestnmj.supabase.co/auth?email=' + email, {
-                    headers: {
-                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Check if data contains the email and date created
-                    if (data.email && data.date_created) {
-                        // Convert date created to milliseconds
-                        var dateCreatedMilliseconds = new Date(data.date_created).getTime();
-                        
-                        // Calculate current date
-                        var currentDateMilliseconds = new Date().getTime();
-
-                        // Calculate difference in milliseconds
-                        var differenceInMilliseconds = currentDateMilliseconds - dateCreatedMilliseconds;
-
-                        // Convert milliseconds to months
-                        var monthsDifference = differenceInMilliseconds / (1000 * 60 * 60 * 24 * 30.4375);
-
-                        // Check if the difference is more than 2 months
-                        if (monthsDifference >= 2) {
-                            document.getElementById('qualificationResult').textContent = "Congratulations! You qualify!";
-                        } else {
-                            document.getElementById('qualificationResult').textContent = "Sorry, you don't qualify.";
-                        }
-                    } else {
-                        document.getElementById('qualificationResult').textContent = "Email not found in database.";
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('qualificationResult').textContent = "An error occurred while processing your request.";
-                });
-            } else {
-                document.getElementById('qualificationResult').textContent = "Email not found in user metadata.";
-            }
-        } else {
-            document.getElementById('qualificationResult').textContent = "User data not found.";
+    // Fetch user from auth table
+    const authResponse = await fetch(`${supabaseUrl}/rest/v1/auth?email=eq.${userEmail}`, {
+        headers: {
+            'apikey': anonKey,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
         }
-    } catch (error) {
-        console.error('Error:', error.message);
-        document.getElementById('qualificationResult').textContent = "An error occurred while processing your request.";
+    });
+    const authData = await authResponse.json();
+    const user = authData[0];
+    if (!user) {
+        alert('User not found');
+        return;
+    }
+
+    // Calculate difference in months between current date and user creation date
+    const creationDate = new Date(user.created_at);
+    const currentDate = new Date();
+    const diffMonths = (currentDate.getFullYear() - creationDate.getFullYear()) * 12 + currentDate.getMonth() - creationDate.getMonth();
+
+    // Display result
+    const resultElement = document.getElementById('result');
+    if (diffMonths >= 2) {
+        resultElement.textContent = 'Yay! Your account is 2 months or older.';
+    } else {
+        resultElement.textContent = 'Your account is less than 2 months old.';
     }
 });
 </script>
