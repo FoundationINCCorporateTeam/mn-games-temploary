@@ -32,8 +32,8 @@ document.getElementById("checkDateBtn").addEventListener("click", async function
             return;
         }
 
-        // Extract and parse the date string to create a Date object
-        const createdAtString = user.created_at ? user.created_at.split(' ')[0] : '';
+        // Parse and format the date string using toISOString()
+        const createdAtString = user.created_at ? user.created_at.split('T')[0] : '';
         if (!createdAtString) {
             throw new Error('Invalid date format');
         }
