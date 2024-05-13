@@ -92,7 +92,7 @@
 
             if (email) {
                 // Make a GET request to check if the user has used a referral link before
-                fetch(`${supabaseUrl}/rest/v1/share-users?email=eq.${email}`, {
+                fetch(`${supabaseUrl}/rest/v1/share-users?name=eq.${email}`, {
                     method: 'GET',
                     headers: {
                         'apikey': supabaseAnonKey
@@ -114,7 +114,7 @@
                                 'apikey': supabaseAnonKey
                             },
                             body: JSON.stringify({
-                                email: email
+                                name: email
                             })
                         })
                         .then(response => {
