@@ -11,23 +11,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
-const createClient = (supabaseUrl, supabaseKey) => {
-    return new window.SupabaseClient(supabaseUrl, supabaseKey);
-};
+const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 document.getElementById("checkDateBtn").addEventListener("click", async function() {
-    const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
-    
     // Get user email from local storage
     const userEmail = localStorage.getItem('email');
     if (!userEmail) {
         alert('Email not found in local storage');
         return;
     }
-
-    // Initialize Supabase client
-    const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Fetch user from auth table
     const { data: user, error } = await supabase
