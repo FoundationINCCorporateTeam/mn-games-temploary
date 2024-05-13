@@ -34,10 +34,10 @@ document.getElementById("checkDateBtn").addEventListener("click", async function
 
         // Display result
         const resultElement = document.getElementById('result');
-        if (diffMonths >= 1) {
-            resultElement.textContent = 'Yay! Your account is 1 months or older.';
+        if (diffMonths >= 2) {
+            resultElement.textContent = `Yay! Your account is 2 months or older. Created on: ${creationDate.toDateString()}`;
         } else {
-            resultElement.textContent = 'Your account is less than 1 months old.';
+            resultElement.textContent = `Your account is less than 2 months old. Created on: ${creationDate.toDateString()}`;
         }
     } catch (error) {
         console.error('Error:', error.message);
