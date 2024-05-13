@@ -22,13 +22,21 @@ document.getElementById("checkDateBtn").addEventListener("click", async function
         // Get current user
         const { data: user, error } = await supabase.auth.getUser();
 
-        if (error || !user) {
+        if (error) {
+            console.error('Error:', error.message);
+            return;
+        }
+
+        if (!user) {
             alert('User not found');
             return;
         }
 
         // Extract and parse the date string to create a Date object
-        const createdAtString = user.created_at.split(' ')[0];
+        const createdAtString = user.created_at ? user.created_at.split(' ')[0] : '';
+        if (!createdAtString) {
+            throw new Error('Invalid date format');
+        }
         const creationDate = new Date(createdAtString);
 
         if (isNaN(creationDate.getTime())) {
