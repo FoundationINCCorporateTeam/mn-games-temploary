@@ -79,7 +79,7 @@
             localStorage.setItem('email', email);
 
             // Authenticate the user
-            const { user, error } = await supabase.auth.signIn({
+            const { user, error } = await supabase.auth.signInWithPassword({
                 email: email,
                 password: password,
             });
