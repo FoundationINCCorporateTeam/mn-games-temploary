@@ -28,7 +28,9 @@ document.getElementById("checkDateBtn").addEventListener("click", async function
         }
 
         // Parse and format user creation date
-        const creationDate = new Date(user.created_at);
+        const createdAt = new Date(user.created_at);
+        const creationDate = new Date(createdAt.getUTCFullYear(), createdAt.getUTCMonth(), createdAt.getUTCDate());
+
         if (isNaN(creationDate.getTime())) {
             throw new Error('Invalid date format');
         }
