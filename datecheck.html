@@ -13,9 +13,16 @@
 <script>
 const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+// Define the createClient function
+function createClient(supabaseUrl, supabaseKey) {
+    return new window.SupabaseClient(supabaseUrl, supabaseKey);
+}
 
 document.getElementById("checkDateBtn").addEventListener("click", async function() {
+    // Initialize Supabase client
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
     // Get user email from local storage
     const userEmail = localStorage.getItem('email');
     if (!userEmail) {
@@ -23,29 +30,33 @@ document.getElementById("checkDateBtn").addEventListener("click", async function
         return;
     }
 
-    // Fetch user from auth table
-    const { data: user, error } = await supabase
-        .from('auth.users')
-        .select('created_at')
-        .eq('email', userEmail)
-        .single();
+    try {
+        // Fetch user from auth table
+        const { data: user, error } = await supabase
+            .from('auth.users')
+            .select('created_at')
+            .eq('email', userEmail)
+            .single();
 
-    if (error || !user) {
-        alert('User not found');
-        return;
-    }
+        if (error || !user) {
+            alert('User not found');
+            return;
+        }
 
-    // Calculate difference in months between current date and user creation date
-    const creationDate = new Date(user.created_at);
-    const currentDate = new Date();
-    const diffMonths = (currentDate.getFullYear() - creationDate.getFullYear()) * 12 + currentDate.getMonth() - creationDate.getMonth();
+        // Calculate difference in months between current date and user creation date
+        const creationDate = new Date(user.created_at);
+        const currentDate = new Date();
+        const diffMonths = (currentDate.getFullYear() - creationDate.getFullYear()) * 12 + currentDate.getMonth() - creationDate.getMonth();
 
-    // Display result
-    const resultElement = document.getElementById('result');
-    if (diffMonths >= 2) {
-        resultElement.textContent = 'Yay! Your account is 2 months or older.';
-    } else {
-        resultElement.textContent = 'Your account is less than 2 months old.';
+        // Display result
+        const resultElement = document.getElementById('result');
+        if (diffMonths >= 2) {
+            resultElement.textContent = 'Yay! Your account is 2 months or older.';
+        } else {
+            resultElement.textContent = 'Your account is less than 2 months old.';
+        }
+    } catch (error) {
+        console.error('Error:', error.message);
     }
 });
 </script>
