@@ -72,7 +72,7 @@
         // Initialize Supabase client
         const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
         const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
-        const supabase = createClient(supabaseUrl, supabaseAnonKey);
+        const { createClient } = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
         // Function to verify user and update referral count
         function verifyAndUpdateReferral() {
