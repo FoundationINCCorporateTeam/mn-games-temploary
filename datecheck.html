@@ -18,27 +18,16 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 document.getElementById("checkDateBtn").addEventListener("click", async function() {
-    // Get user email from local storage
-    const userEmail = localStorage.getItem('email');
-    if (!userEmail) {
-        alert('Email not found in local storage');
-        return;
-    }
-
     try {
-        // Fetch user from auth table
-        const { data: user, error } = await supabase
-            .from('auth.users')
-            .select('created_at')
-            .eq('email', userEmail)
-            .single();
+        // Get current user
+        const { data: user, error } = await supabase.auth.getUser();
 
         if (error || !user) {
             alert('User not found');
             return;
         }
 
-        // Calculate difference in months between current date and user creation date
+        // Fetch user creation date
         const creationDate = new Date(user.created_at);
         const currentDate = new Date();
         const diffMonths = (currentDate.getFullYear() - creationDate.getFullYear()) * 12 + currentDate.getMonth() - creationDate.getMonth();
