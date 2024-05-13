@@ -27,8 +27,13 @@ document.getElementById("checkDateBtn").addEventListener("click", async function
             return;
         }
 
-        // Fetch user creation date
+        // Parse and format user creation date
         const creationDate = new Date(user.created_at);
+        if (isNaN(creationDate.getTime())) {
+            throw new Error('Invalid date format');
+        }
+
+        // Calculate difference in months between current date and user creation date
         const currentDate = new Date();
         const diffMonths = (currentDate.getFullYear() - creationDate.getFullYear()) * 12 + currentDate.getMonth() - creationDate.getMonth();
 
