@@ -27,7 +27,7 @@ document.getElementById("checkDateBtn").addEventListener("click", async function
             return;
         }
 
-        // Parse and format user creation date
+        // Parse and format user creation date to only include year, month, and day
         const createdAt = new Date(user.created_at);
         const creationDate = new Date(createdAt.getUTCFullYear(), createdAt.getUTCMonth(), createdAt.getUTCDate());
 
