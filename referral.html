@@ -29,21 +29,9 @@
             color: #333;
         }
 
-        form {
+        p {
+            text-align: center;
             margin-top: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
         }
 
         button {
@@ -67,29 +55,15 @@
         .success-message {
             color: green;
         }
-
-        p {
-            text-align: center;
-            margin-top: 20px;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Welcome to MN Games!</h1>
-    <p>It seems someone has referred you to MN Games! Please enter your name below so the owner of the link can get credit!<br>Then go have fun at MN Games!</p>
-
-    <div id="verificationForm" style="display: none;">
-        <h2>Verification Form</h2>
-        <form id="verificationUserForm">
-            <label for="userName">Your Name:</label>
-            <input type="text" id="userName" name="userName" required><br><br>
-            <button type="submit">Verify</button>
-        </form>
-        <p id="verificationMessage" class="error-message"></p>
-    </div>
-    <button onclick="window.location.href='/'" style="margin-top: 20px;">Check out MN Games!</button>
+    <p>It seems someone has referred you to MN Games! Please go have fun at MN Games!</p>
+    <button onclick="verifyAndUpdateReferral()">Check out MN Games!</button>
+    <p id="verificationMessage" class="error-message"></p>
 </div>
 
 <script>
@@ -107,47 +81,18 @@
             return null;
         }
 
-        // Get referral email from URL query parameters
-        const email = getQueryVariable('email');
+        // Function to verify user and update referral count
+        function verifyAndUpdateReferral() {
+            // Add your Supabase URL and API key here
+            const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
+            const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
 
-        // If referral email is present, show the verification form
-        if (email) {
-            document.getElementById("verificationForm").style.display = "block";
+            // Get email from local storage
+            const email = localStorage.getItem('email');
 
-            // Handle form submission
-            document.getElementById("verificationUserForm").addEventListener("submit", function(event) {
-                event.preventDefault();
-                const userName = document.getElementById("userName").value;
-                // Call a function to verify user and update referral count
-                verifyAndUpdateReferral(email, userName);
-            });
-        }
-    });
-
-    // Function to verify user and update referral count
-    function verifyAndUpdateReferral(email, userName) {
-        // Add your Supabase URL and API key here
-        const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
-        const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
-
-        // Make a GET request to check if the user has used a referral link before
-        fetch(`${supabaseUrl}/rest/v1/share-users?name=eq.${userName}`, {
-            method: 'GET',
-            headers: {
-                'apikey': supabaseAnonKey
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to check user in Supabase');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // If user is not found in share-users table, update referral count
-            if (data.length === 0) {
-                // Make a GET request to fetch user with the provided email
-                fetch(`${supabaseUrl}/rest/v1/users?email=eq.${email}`, {
+            if (email) {
+                // Make a GET request to check if the user has used a referral link before
+                fetch(`${supabaseUrl}/rest/v1/share-users?email=eq.${email}`, {
                     method: 'GET',
                     headers: {
                         'apikey': supabaseAnonKey
@@ -155,82 +100,54 @@
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to fetch user data from Supabase');
+                        throw new Error('Failed to check user in Supabase');
                     }
                     return response.json();
                 })
-                .then(userData => {
-                    if (userData.length === 1) {
-                        const userId = userData[0].id;
-                        const referralCount = userData[0].referral_count + 1;
-                        // Update referral count for the user
-                        fetch(`${supabaseUrl}/rest/v1/users?id=eq.${userId}`, {
-                            method: 'PATCH',
+                .then(data => {
+                    if (data.length === 0) {
+                        // If user is not found in share-users table, add the user
+                        fetch(`${supabaseUrl}/rest/v1/share-users`, {
+                            method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                                 'apikey': supabaseAnonKey
                             },
                             body: JSON.stringify({
-                                referral_count: referralCount
+                                email: email
                             })
                         })
                         .then(response => {
                             if (!response.ok) {
-                                throw new Error('Failed to update referral count');
+                                throw new Error('Failed to add user to share-users table');
                             }
-                            console.log('Referral count updated successfully');
-                            document.getElementById("verificationMessage").textContent = "User verified and referral count updated successfully!";
+                            console.log('User added to share-users table');
+                            document.getElementById("verificationMessage").textContent = "Referral tracked successfully!";
                             document.getElementById("verificationMessage").className = "success-message";
                         })
                         .catch(error => {
                             console.error('Error:', error.message);
-                            document.getElementById("verificationMessage").textContent = "Error updating referral count!";
+                            document.getElementById("verificationMessage").textContent = "Error tracking referral!";
                             document.getElementById("verificationMessage").className = "error-message";
                         });
                     } else {
-                        console.error('User not found');
-                        document.getElementById("verificationMessage").textContent = "User not found!";
+                        console.error('User has already used a referral link');
+                        document.getElementById("verificationMessage").textContent = "Looks like you have already used your referral for this link will not be counted.";
                         document.getElementById("verificationMessage").className = "error-message";
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error.message);
-                    document.getElementById("verificationMessage").textContent = "Error fetching user data!";
+                    document.getElementById("verificationMessage").textContent = "Error verifying referral!";
                     document.getElementById("verificationMessage").className = "error-message";
                 });
-
-                // Add the user's name to the share-users table
-                fetch(`${supabaseUrl}/rest/v1/share-users`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': supabaseAnonKey
-                    },
-                    body: JSON.stringify({
-                        name: userName
-                    })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Failed to add user to share-users table');
-                    }
-                    console.log('User added to share-users table');
-                })
-                .catch(error => {
-                    console.error('Error:', error.message);
-                });
             } else {
-                console.error('User has already used a referral link');
-                document.getElementById("verificationMessage").textContent = "Looks like you have already used your referral for this link will not be counted.";
+                console.error('Email not found in local storage');
+                document.getElementById("verificationMessage").textContent = "Email not found!";
                 document.getElementById("verificationMessage").className = "error-message";
             }
-        })
-        .catch(error => {
-            console.error('Error:', error.message);
-            document.getElementById("verificationMessage").textContent = "Error verifying user!";
-            document.getElementById("verificationMessage").className = "error-message";
-        });
-    }
+        }
+    });
 </script>
 
 </body>
