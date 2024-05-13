@@ -37,7 +37,7 @@
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home | Schoology</title>
+    <title>Autoplay Video Ad | Schoology</title>
     <link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
     <style>
         body {
@@ -55,6 +55,9 @@
             background-color: black;
             overflow: hidden;
             width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 9999;
         }
 
         nav a {
@@ -77,6 +80,7 @@
             align-items: center;
             justify-content: center;
             height: 50vh;
+            margin-top: 50px; /* Adjusted margin to account for navbar height */
         }
 
         /* Button Styles */
@@ -94,9 +98,34 @@
         .button:hover {
             background-color: #2ac;
         }
+
+        .video-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 800px;
+            z-index: 9998; /* Ensure the video appears above the content */
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="premium.html">Premium</a>
+    <a href="ultimate.html">Ultimate</a>
+    <a href="elite.html">Elite</a>
+    <a href="tournaments.html">Tournaments</a>
+    <a href="enterpriseprox.html">MN Secure Browser</a>
+    <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
+</nav>
 
 <div class="video-container">
     <video autoplay muted controls onended="showContent()">
@@ -106,15 +135,6 @@
 </div>
 
 <div class="container" id="content">
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="premium.html">Premium</a>
-        <a href="ultimate.html">Ultimate</a>
-        <a href="elite.html">Elite</a>
-        <a href="tournaments.html">Tournaments</a>
-        <a href="enterpriseprox.html">MN Secure Browser</a>
-        <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
-    </nav>
     <div style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #000000; padding: 20px; border: 2px solid #333; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); z-index: 9999;" id="popup">
         <span style="position: absolute; top: 5px; right: 10px; cursor: pointer;" onclick="closePopup()">&times;</span>
         <h2>Disclaimer</h2>
