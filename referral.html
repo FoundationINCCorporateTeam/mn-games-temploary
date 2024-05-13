@@ -62,12 +62,12 @@
 <div class="container">
     <h1>Welcome to MN Games!</h1>
     <p>It seems someone has referred you to MN Games! Please go have fun at MN Games!</p>
-    <button onclick="verifyAndUpdateReferral()">Check out MN Games!</button>
+    <button id="verifyButton">Check out MN Games!</button>
     <p id="verificationMessage" class="error-message"></p>
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("verifyButton").addEventListener("click", function() {
         // Function to retrieve email from local storage
         function getEmailFromLocalStorage() {
             return localStorage.getItem('email');
@@ -188,6 +188,9 @@
                 document.getElementById("verificationMessage").className = "error-message";
             }
         }
+
+        // Call the function to verify and update referral when the button is clicked
+        verifyAndUpdateReferral();
     });
 </script>
 
