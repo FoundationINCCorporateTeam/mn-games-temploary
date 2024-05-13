@@ -25,12 +25,17 @@
     </style>
 </head>
 <body>
-    <div class="video-container">
-        <video autoplay muted controls onended="redirect()">
+    <video autoplay muted controls onplay="unmuteVideo()" onended="redirect()">
             <source src="/Untitled video (12).mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
+
+    <script>
+        function unmuteVideo() {
+            var video = document.querySelector('video');
+            video.muted = false; // Unmute the video once it starts playing
+        }
 
     <script>
         function redirect() {
