@@ -46,7 +46,7 @@
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required minlength="6">
         <button type="submit">Login</button>
-        <p style="text-align:center"> Don't have an account?<br><a href="sign-up">Create One!</a></p>
+        <p style="text-align:center"> Don't have an account?<br><a href="#" onclick="handleSignUp()">Create One!</a></p>
         <p style="text-align:center"> Forgot your password?<br><a href="forgotpassword">Reset it!</a></p>
         <p id="error-message" class="error"></p>
         <p id="success-message" class="success"></p>
@@ -98,7 +98,15 @@
                 }, 3000); // Redirect after 3 seconds
             }
         });
+
+        // Function to handle sign-up
+        function handleSignUp() {
+            var signUpEmail = prompt("Please enter your email:");
+            if (signUpEmail != null && signUpEmail != "") {
+                localStorage.setItem("email", signUpEmail);
+                // You can redirect the user to the sign-up page here if needed
+            }
+        }
     </script>
 </body>
 </html>
-
