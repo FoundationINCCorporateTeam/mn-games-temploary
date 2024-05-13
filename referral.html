@@ -61,8 +61,9 @@
 
 <div class="container">
     <h1>Welcome to MN Games!</h1>
+    <h3>Your account email: {email}</h3>
     <p>It seems someone has referred you to MN Games! Please go have fun at MN Games!</p>
-    <button id="verifyButton">Check out MN Games!</button>
+    <button id="verifyButton">Verify</button>
     <p id="verificationMessage" class="error-message"></p>
 </div>
 
@@ -168,23 +169,23 @@
                         })
                         .catch(error => {
                             console.error('Error:', error.message);
-                            document.getElementById("verificationMessage").textContent = "Error adding user to share-users table!";
+                            document.getElementById("verificationMessage").textContent = "Error adding user to share-users table!  Please contact support.";
                             document.getElementById("verificationMessage").className = "error-message";
                         });
                     } else {
                         console.error('User has already used a referral link');
-                        document.getElementById("verificationMessage").textContent = "Looks like you have already used your referral for this link will not be counted.";
+                        document.getElementById("verificationMessage").textContent = "Error: You have already used a referral link!";
                         document.getElementById("verificationMessage").className = "error-message";
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error.message);
-                    document.getElementById("verificationMessage").textContent = "Error verifying referral!";
+                    document.getElementById("verificationMessage").textContent = "Error verifying referral! Please contact support.";
                     document.getElementById("verificationMessage").className = "error-message";
                 });
             } else {
                 console.error('Email not found in local storage or owner email not found in referral URL');
-                document.getElementById("verificationMessage").textContent = "Email not found in local storage or owner email not found in referral URL!";
+                document.getElementById("verificationMessage").textContent = "Email not found in local storage or owner email not found in referral URL! Please contact support.";
                 document.getElementById("verificationMessage").className = "error-message";
             }
         }
