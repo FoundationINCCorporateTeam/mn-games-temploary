@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Qualification Checker</title>
+</head>
+<body>
+
+<button id="checkQualification">Check Qualification</button>
+<p id="qualificationResult"></p>
+
+<script>
+document.getElementById('checkQualification').addEventListener('click', function() {
+    // Get email from localStorage
+    var email = localStorage.getItem('email');
+
+    // If email exists in localStorage
+    if (email) {
+        // Send GET request to Supabase authentication table
+        fetch('https://your-supabase-url.com/auth?email=' + email)
+            .then(response => response.json())
+            .then(data => {
+                // Check if data contains the email and date created
+                if (data.email && data.date_created) {
+                    // Convert date created to milliseconds
+                    var dateCreatedMilliseconds = new Date(data.date_created).getTime();
+                    
+                    // Calculate current date
+                    var currentDateMilliseconds = new Date().getTime();
+
+                    // Calculate difference in milliseconds
+                    var differenceInMilliseconds = currentDateMilliseconds - dateCreatedMilliseconds;
+
+                    // Convert milliseconds to months
+                    var monthsDifference = differenceInMilliseconds / (1000 * 60 * 60 * 24 * 30.4375);
+
+                    // Check if the difference is more than 2 months
+                    if (monthsDifference >= 2) {
+                        document.getElementById('qualificationResult').textContent = "Congratulations! You qualify!";
+                    } else {
+                        document.getElementById('qualificationResult').textContent = "Sorry, you don't qualify.";
+                    }
+                } else {
+                    document.getElementById('qualificationResult').textContent = "Email not found in database.";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('qualificationResult').textContent = "An error occurred while processing your request.";
+            });
+    } else {
+        document.getElementById('qualificationResult').textContent = "No email found in localStorage.";
+    }
+});
+</script>
+
+</body>
+</html>
