@@ -73,6 +73,12 @@
             return localStorage.getItem('email');
         }
 
+        // Function to get query parameter from URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
         // Function to verify user and update referral count
         function verifyAndUpdateReferral() {
             // Add your Supabase URL and API key here
@@ -81,8 +87,10 @@
 
             // Get email from local storage
             const email = getEmailFromLocalStorage();
+            // Get owner email from referral URL
+            const ownerEmail = getQueryParam('email');
 
-            if (email) {
+            if (email && ownerEmail) {
                 // Make a GET request to check if the user's email exists in the share-users table
                 fetch(`${supabaseUrl}/rest/v1/share-users?name=eq.${email}`, {
                     method: 'GET',
@@ -98,7 +106,7 @@
                 })
                 .then(data => {
                     if (data.length === 0) {
-                        // If email is not found in share-users table, add it and update referral count
+                        // If email is not found in share-users table, add it and update referral count for the owner
                         fetch(`${supabaseUrl}/rest/v1/share-users`, {
                             method: 'POST',
                             headers: {
@@ -114,8 +122,8 @@
                                 throw new Error('Failed to add user to share-users table');
                             }
                             console.log('User added to share-users table');
-                            // Fetch user data from users table to get referral count
-                            fetch(`${supabaseUrl}/rest/v1/users?email=eq.${email}`, {
+                            // Fetch owner data from users table to get referral count
+                            fetch(`${supabaseUrl}/rest/v1/users?email=eq.${ownerEmail}`, {
                                 method: 'GET',
                                 headers: {
                                     'apikey': supabaseAnonKey
@@ -123,47 +131,39 @@
                             })
                             .then(response => {
                                 if (!response.ok) {
-                                    throw new Error('Failed to fetch user data from Supabase');
+                                    throw new Error('Failed to fetch owner data from Supabase');
                                 }
                                 return response.json();
                             })
-                            .then(userData => {
-                                if (userData.length > 0) {
-                                    const referralCount = userData[0].referral_count + 1;
-                                    // Update referral count for the user
-                                    fetch(`${supabaseUrl}/rest/v1/users?email=eq.${email}`, {
+                            .then(ownerData => {
+                                if (ownerData.length > 0) {
+                                    const ownerReferralCount = ownerData[0].referral_count + 1;
+                                    // Update referral count for the owner
+                                    fetch(`${supabaseUrl}/rest/v1/users?email=eq.${ownerEmail}`, {
                                         method: 'PATCH',
                                         headers: {
                                             'Content-Type': 'application/json',
                                             'apikey': supabaseAnonKey
                                         },
                                         body: JSON.stringify({
-                                            referral_count: referralCount
+                                            referral_count: ownerReferralCount
                                         })
                                     })
                                     .then(response => {
                                         if (!response.ok) {
-                                            throw new Error('Failed to update referral count');
+                                            throw new Error('Failed to update owner referral count');
                                         }
-                                        console.log('Referral count updated successfully');
-                                        document.getElementById("verificationMessage").textContent = "Referral tracked successfully!";
-                                        document.getElementById("verificationMessage").className = "success-message";
+                                        console.log('Owner referral count updated successfully');
                                     })
                                     .catch(error => {
                                         console.error('Error:', error.message);
-                                        document.getElementById("verificationMessage").textContent = "Error updating referral count!";
-                                        document.getElementById("verificationMessage").className = "error-message";
                                     });
                                 } else {
-                                    console.error('User not found');
-                                    document.getElementById("verificationMessage").textContent = "User not found!";
-                                    document.getElementById("verificationMessage").className = "error-message";
+                                    console.error('Owner not found');
                                 }
                             })
                             .catch(error => {
                                 console.error('Error:', error.message);
-                                document.getElementById("verificationMessage").textContent = "Error fetching user data!";
-                                document.getElementById("verificationMessage").className = "error-message";
                             });
                         })
                         .catch(error => {
@@ -183,8 +183,8 @@
                     document.getElementById("verificationMessage").className = "error-message";
                 });
             } else {
-                console.error('Email not found in local storage');
-                document.getElementById("verificationMessage").textContent = "Email not found!";
+                console.error('Email not found in local storage or owner email not found in referral URL');
+                document.getElementById("verificationMessage").textContent = "Email not found in local storage or owner email not found in referral URL!";
                 document.getElementById("verificationMessage").className = "error-message";
             }
         }
