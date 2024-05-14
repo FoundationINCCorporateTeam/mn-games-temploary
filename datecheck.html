@@ -41,8 +41,8 @@
                     throw new Error("Please enter a valid email.");
                 }
 
-                // Query user by email
-                const { data: user, error: userError } = await supabase.auth.api.getUserByEmail(email);
+                // Get user
+                const { data: user, error: userError } = await supabase.auth.getUser();
 
                 if (userError) {
                     throw userError;
