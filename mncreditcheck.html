@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Credits Check</title>
+</head>
+<body>
+    <button id="checkCreditsButton">Check Credits</button>
+    
+    <script>
+        // Function to retrieve user's credits
+        function getUserCredits() {
+            // Get user's email from local storage
+            const userEmail = localStorage.getItem('email');
+            
+            // If email is not found in local storage, return
+            if (!userEmail) {
+                console.error('User email not found in local storage');
+                return;
+            }
+            
+            // Fetch user from Supabase
+            fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+                method: 'GET',
+                headers: {
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // If user is found
+                if (data.length > 0) {
+                    const user = data[0];
+                    const credits = user.mn_credits;
+                    
+                    // Check if user qualifies
+                    if (credits >= 50) {
+                        alert('Congratulations! You qualify.');
+                    } else {
+                        alert('Sorry, you do not qualify.');
+                    }
+                } else {
+                    console.error('User not found');
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        }
+
+        // Function to be called when the button is pressed
+        function buttonPressed() {
+            getUserCredits();
+        }
+
+        // Attach event listener to the button
+        document.getElementById('checkCreditsButton').addEventListener('click', buttonPressed);
+    </script>
+</body>
+</html>
