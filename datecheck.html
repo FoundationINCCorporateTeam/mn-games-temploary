@@ -60,9 +60,9 @@
                 // Display result
                 const resultElement = document.getElementById("result");
                 if (diffMonths >= 2) {
-                    resultElement.textContent = `Yay! Account is 2 months or older. Created on: ${creationDate.toDateString()}`;
+                    resultElement.textContent = `Yay! Account is 2 months or older. Created on: ${creationDate.toUTCString()}`;
                 } else {
-                    resultElement.textContent = `Account is less than 2 months old. Created on: ${creationDate.toDateString()}`;
+                    resultElement.textContent = `Account is less than 2 months old. Created on: ${creationDate.toUTCString()}`;
                 }
                 document.getElementById("result-div").classList.remove("hidden");
             } catch (error) {
