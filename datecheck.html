@@ -20,10 +20,10 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 document.getElementById("checkDateBtn").addEventListener("click", async function() {
     try {
         // Get current user
-        const { data: user, error } = await supabase.auth.getUser();
+        const { data: user, error: userError } = await supabase.auth.getUser();
 
-        if (error) {
-            console.error('Error:', error.message);
+        if (userError) {
+            console.error('Error:', userError.message);
             return;
         }
 
@@ -32,11 +32,23 @@ document.getElementById("checkDateBtn").addEventListener("click", async function
             return;
         }
 
-        // Parse and format the date string using toISOString()
-        const createdAtString = user.created_at ? user.created_at.split('T')[0] : '';
-        if (!createdAtString) {
-            throw new Error('Invalid date format');
+        // Get current timestamp
+        const currentTimestamp = new Date().toISOString();
+
+        // Query the auth table using Supabase
+        const { data: userData, error: userDataError } = await supabase
+            .from('auth.users')
+            .select('created_at')
+            .eq('id', user.id)
+            .single();
+
+        if (userDataError) {
+            console.error('Error:', userDataError.message);
+            return;
         }
+
+        // Parse and format the creation date
+        const createdAtString = userData.created_at;
         const creationDate = new Date(createdAtString);
 
         if (isNaN(creationDate.getTime())) {
