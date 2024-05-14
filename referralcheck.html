@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check Referral Qualification</title>
+    <title>Check Referral and MN Credits Qualification</title>
 </head>
 <body>
-    <button onclick="checkReferralQualification()">Check Referral Qualification</button>
+    <button onclick="checkReferralAndMNQualification()">Check Referral and MN Credits Qualification</button>
 
     <script>
-        async function checkReferralQualification() {
+        async function checkReferralAndMNQualification() {
             // Get the email from local storage
             const userEmail = localStorage.getItem("email");
 
@@ -38,9 +38,17 @@
             // Check if referral count is over 4
             const referralCount = data[0].referral_count;
             if (referralCount > 2) {
-                console.log("Congratulations! You qualify.");
+                console.log("Referral count qualifies.");
+
+                // Check if MN Credits value is greater than 50
+                const mnCredits = data[0].mn_credits;
+                if (mnCredits > 50) {
+                    console.log("Congratulations! You qualify.");
+                } else {
+                    console.log("Sorry, your MN Credits are not sufficient.");
+                }
             } else {
-                console.log("Sorry, you do not qualify.");
+                console.log("Sorry, you do not qualify based on referral count.");
             }
         }
     </script>
