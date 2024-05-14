@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Supabase Email Lookup</title>
+    <title>Supabase Email & Date Checker</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
         .hidden {
@@ -12,47 +12,64 @@
     </style>
 </head>
 <body>
-    <h1>Get User Creation Date</h1>
+    <h1>Supabase Email & Date Checker</h1>
     <button id="open-input-btn">Enter Email</button>
     <div id="email-input-div" class="hidden">
         <input type="email" id="email-input" placeholder="Enter your email">
         <button id="submit-email-btn">Submit</button>
     </div>
     <div id="result-div" class="hidden">
-        <p id="result-text"></p>
+        <p id="result"></p>
     </div>
 
     <script>
-        const SUPABASE_URL = 'https://tdsxayxnjomnoiestnmj.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
 
-            document.getElementById('open-input-btn').addEventListener('click', () => {
-                document.getElementById('email-input-div').classList.remove('hidden');
-            });
+        // Initialize Supabase client
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-            document.getElementById('submit-email-btn').addEventListener('click', async () => {
-                const email = document.getElementById('email-input').value;
-                if (email) {
-                    try {
-                        const { data: user, error } = await supabase.from('auth.users').select('created_at').eq('email', email).single();
-                        if (error) {
-                            throw error;
-                        }
-                        const createdAt = user.created_at;
-                        document.getElementById('result-text').innerText = `User created at: ${createdAt}`;
-                        document.getElementById('result-div').classList.remove('hidden');
-                    } catch (error) {
-                        document.getElementById('result-text').innerText = `Error: ${error.message}`;
-                        document.getElementById('result-div').classList.remove('hidden');
-                    }
-                } else {
-                    document.getElementById('result-text').innerText = 'Please enter a valid email.';
-                    document.getElementById('result-div').classList.remove('hidden');
+        document.getElementById("open-input-btn").addEventListener("click", () => {
+            document.getElementById("email-input-div").classList.remove("hidden");
+        });
+
+        document.getElementById("submit-email-btn").addEventListener("click", async () => {
+            const email = document.getElementById("email-input").value.trim();
+
+            try {
+                if (!email) {
+                    throw new Error("Please enter a valid email.");
                 }
-            });
+
+                // Query user by email
+                const { data: user, error: userError } = await supabase.auth.api.getUserByEmail(email);
+
+                if (userError) {
+                    throw userError;
+                }
+
+                if (!user) {
+                    throw new Error("User not found.");
+                }
+
+                // Calculate difference in months between current date and user creation date
+                const currentDate = new Date();
+                const creationDate = new Date(user.created_at);
+                const diffMonths = (currentDate.getFullYear() - creationDate.getFullYear()) * 12 + currentDate.getMonth() - creationDate.getMonth();
+
+                // Display result
+                const resultElement = document.getElementById("result");
+                if (diffMonths >= 2) {
+                    resultElement.textContent = `Yay! Account is 2 months or older. Created on: ${creationDate.toDateString()}`;
+                } else {
+                    resultElement.textContent = `Account is less than 2 months old. Created on: ${creationDate.toDateString()}`;
+                }
+                document.getElementById("result-div").classList.remove("hidden");
+            } catch (error) {
+                console.error("Error:", error.message);
+                document.getElementById("result").textContent = `Error: ${error.message}`;
+                document.getElementById("result-div").classList.remove("hidden");
+            }
         });
     </script>
 </body>
