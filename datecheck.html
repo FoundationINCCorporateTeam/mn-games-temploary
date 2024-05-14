@@ -52,6 +52,11 @@
                     throw new Error("User not found.");
                 }
 
+                // Check if user has creation date
+                if (!user.created_at) {
+                    throw new Error("User creation date not available.");
+                }
+
                 // Extract and convert creation date string to Date object
                 const creationDateString = user.created_at.slice(0, 10);
                 const creationDate = new Date(creationDateString);
