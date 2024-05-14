@@ -37,11 +37,11 @@
                 const email = document.getElementById('email-input').value;
                 if (email) {
                     try {
-                        const { data, error } = await supabase.auth.api.getUserByEmail(email);
+                        const { data: user, error } = await supabase.from('auth.users').select('created_at').eq('email', email).single();
                         if (error) {
                             throw error;
                         }
-                        const createdAt = data.created_at;
+                        const createdAt = user.created_at;
                         document.getElementById('result-text').innerText = `User created at: ${createdAt}`;
                         document.getElementById('result-div').classList.remove('hidden');
                     } catch (error) {
