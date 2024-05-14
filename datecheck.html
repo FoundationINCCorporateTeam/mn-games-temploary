@@ -52,17 +52,20 @@
                     throw new Error("User not found.");
                 }
 
+                // Extract and convert creation date string to Date object
+                const creationDateString = user.created_at.slice(0, 10);
+                const creationDate = new Date(creationDateString);
+
                 // Calculate difference in months between current date and user creation date
                 const currentDate = new Date();
-                const creationDate = new Date(user.created_at);
                 const diffMonths = (currentDate.getFullYear() - creationDate.getFullYear()) * 12 + currentDate.getMonth() - creationDate.getMonth();
 
                 // Display result
                 const resultElement = document.getElementById("result");
                 if (diffMonths >= 2) {
-                    resultElement.textContent = `Yay! Account is 2 months or older. Created on: ${creationDate.toUTCString()}`;
+                    resultElement.textContent = `Yay! Account is 2 months or older. Created on: ${creationDateString}`;
                 } else {
-                    resultElement.textContent = `Account is less than 2 months old. Created on: ${creationDate.toUTCString()}`;
+                    resultElement.textContent = `Account is less than 2 months old. Created on: ${creationDateString}`;
                 }
                 document.getElementById("result-div").classList.remove("hidden");
             } catch (error) {
