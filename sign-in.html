@@ -53,61 +53,76 @@
     </form>
 
     <script>
-        // Initialize Supabase
-        var supabase = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
+    // Initialize Supabase
+    var supabase = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
 
-        // Get form elements
-        var form = document.getElementById('login-form');
-        var emailInput = document.getElementById('email');
-        var passwordInput = document.getElementById('password');
-        var errorMessage = document.getElementById('error-message');
-        var successMessage = document.getElementById('success-message');
+    // Get form elements
+    var form = document.getElementById('login-form');
+    var emailInput = document.getElementById('email');
+    var passwordInput = document.getElementById('password');
+    var errorMessage = document.getElementById('error-message');
+    var successMessage = document.getElementById('success-message');
 
-        // Handle form submission
-        form.addEventListener('submit', async function(event) {
-            event.preventDefault();
+    // Handle form submission
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
 
-            var email = emailInput.value;
-            var password = passwordInput.value;
+        var email = emailInput.value;
+        var password = passwordInput.value;
 
-            if (!email || !password) {
-                displayError('Please fill in all fields.');
-                return;
-            }
+        if (!email || !password) {
+            displayError('Please fill in all fields.');
+            return;
+        }
 
-            // Authenticate the user
-            const { user, error } = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
-
-            if (error) {
-                console.error('Error logging in:', error);
-                displayError('Invalid email or password.');
-            } else {
-                console.log('User logged in:', user);
-                // Store email in local storage only if login is successful
-                localStorage.setItem('email', email);
-                displaySuccess('Successfully logged in, redirecting...');
-                setTimeout(function() {
-                    window.location.href = '/dashboard';
-                }, 3000); // Redirect after 3 seconds
-            }
+        // Authenticate the user
+        const { user, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
         });
 
-        // Function to display error message
-        function displayError(message) {
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            successMessage.style.display = 'none';
-        }
+        if (error) {
+            console.error('Error logging in:', error);
+            displayError('Invalid email or password.');
+        } else {
+            console.log('User logged in:', user);
+            // Store email in local storage only if login is successful
+            localStorage.setItem('email', email);
+            displaySuccess('Successfully logged in, redirecting...');
 
-        // Function to display success message
-        function displaySuccess(message) {
-            successMessage.textContent = message;
-            successMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
+            // Retrieve user's mn_credits value and store it in local storage
+            const { data, error } = await supabase
+                .from('users')
+                .select('mn_credits')
+                .eq('email', email)
+                .single();
+
+            if (error) {
+                console.error('Error retrieving mn_credits:', error);
+            } else {
+                localStorage.setItem('mn_credits', data.mn_credits);
+                console.log('MN Credits retrieved:', data.mn_credits);
+            }
+
+            setTimeout(function() {
+                window.location.href = '/dashboard';
+            }, 3000); // Redirect after 3 seconds
         }
-    </script>
+    });
+
+    // Function to display error message
+    function displayError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+        successMessage.style.display = 'none';
+    }
+
+    // Function to display success message
+    function displaySuccess(message) {
+        successMessage.textContent = message;
+        successMessage.style.display = 'block';
+        errorMessage.style.display = 'none';
+    }
+</script>
 </body>
 </html>
