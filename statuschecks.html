@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check Referral and MN Credits Qualification</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 </head>
 <body>
     <button id="checkCreditsButton">Check Credits</button>
+
+    <div id="myDialog" title="MN Games Referral Program" style="display:none;">
+        You have not signed up for the MN Games referral program yet. Please sign-up and refer MN Games to at least 2 people.
+        <br>
+        Please go to the <a href="/customerreferral">MN Games Referral Program Page</a> to start.
+    </div>
 
     <script>
         async function checkReferralAndMNQualification() {
@@ -41,7 +50,14 @@
                 // Check if user data exists
                 if (referralData.length === 0) {
                     console.error("User not found in the referral database.");
-                    alert("User not found in the database.");
+                    $("#myDialog").dialog({
+                        modal: true,
+                        buttons: {
+                            OK: function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
                     return;
                 }
 
@@ -94,7 +110,9 @@
         }
 
         // Attach event listener to the button
-        document.getElementById('checkCreditsButton').addEventListener('click', checkReferralAndMNQualification);
+        $(document).ready(function() {
+            $('#checkCreditsButton').on('click', checkReferralAndMNQualification);
+        });
     </script>
 </body>
 </html>
