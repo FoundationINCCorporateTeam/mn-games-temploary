@@ -23,8 +23,8 @@
 
                 console.log("User email found in local storage:", userEmail);
 
-                // Fetch user data from Supabase
-                const response = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+                // Fetch user referral count from Supabase
+                const referralResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/users?email=eq.' + userEmail, {
                     headers: {
                         'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
                         'Content-Type': 'application/json'
@@ -32,27 +32,54 @@
                 });
 
                 // Check if the response is ok
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                if (!referralResponse.ok) {
+                    throw new Error(`Network response was not ok: ${referralResponse.statusText}`);
                 }
 
-                const data = await response.json();
+                const referralData = await referralResponse.json();
 
                 // Check if user data exists
-                if (data.length === 0) {
-                    console.error("User not found in the database.");
+                if (referralData.length === 0) {
+                    console.error("User not found in the referral database.");
                     alert("User not found in the database.");
                     return;
                 }
 
-                console.log("User data retrieved from the database:", data);
+                console.log("User referral data retrieved from the database:", referralData);
 
-                // Check referral count and MN Credits value
-                const referralCount = data[0].referral_count;
-                const mnCredits = data[0].mn_credits;
+                // Get referral count
+                const referralCount = referralData[0].referral_count;
+
+                // Fetch user MN credits from another table in Supabase
+                const creditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/user_credits?email=eq.' + userEmail, {
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                // Check if the response is ok
+                if (!creditsResponse.ok) {
+                    throw new Error(`Network response was not ok: ${creditsResponse.statusText}`);
+                }
+
+                const creditsData = await creditsResponse.json();
+
+                // Check if user data exists
+                if (creditsData.length === 0) {
+                    console.error("User not found in the credits database.");
+                    alert("User not found in the database.");
+                    return;
+                }
+
+                console.log("User MN credits data retrieved from the database:", creditsData);
+
+                // Get MN credits
+                const mnCredits = creditsData[0].mn_credits;
 
                 console.log(`Referral count: ${referralCount}, MN Credits: ${mnCredits}`);
 
+                // Check if user qualifies
                 if (referralCount > 2 && mnCredits > 50) {
                     console.log("User qualifies based on referral count and MN Credits.");
                     alert("Congratulations! You qualify.");
