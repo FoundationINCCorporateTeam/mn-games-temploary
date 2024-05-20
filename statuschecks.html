@@ -5,16 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Check Referral and MN Credits Qualification</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <style>
+        .success-message {
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+            color: #3c763d;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .error-message {
+            background-color: #f2dede;
+            border-color: #ebccd1;
+            color: #a94442;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .info-message {
+            background-color: #d9edf7;
+            border-color: #bce8f1;
+            color: #31708f;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 </head>
 <body>
     <button id="checkCreditsButton">Check Credits</button>
 
-    <div id="myDialog" title="MN Games Referral Program" style="display:none;">
+    <div id="successMessage" class="success-message" style="display:none;">Congratulations! You qualify.</div>
+    <div id="nonQualificationMessage" class="error-message" style="display:none;">Sorry, you do not qualify.</div>
+    <div id="errorMessage" class="error-message" style="display:none;">An error occurred while checking your qualification. Please try again later.</div>
+    <div id="referralMessage" class="info-message" style="display:none;">
         You have not signed up for the MN Games referral program yet. Please sign-up and refer MN Games to at least 2 people.
         <br>
-        Please go to the <a href="/customerreferral">MN Games Referral Program Page</a> to start.
+        Please go to the <a href="/customer-referral">MN Games Referral Program Page</a> to start.
     </div>
 
     <script>
@@ -26,7 +52,7 @@
                 // Check if email is present
                 if (!userEmail) {
                     console.error("User email not found in local storage.");
-                    alert("User email not found. Please log in.");
+                    $("#errorMessage").show();
                     return;
                 }
 
@@ -50,14 +76,7 @@
                 // Check if user data exists
                 if (referralData.length === 0) {
                     console.error("User not found in the referral database.");
-                    $("#myDialog").dialog({
-                        modal: true,
-                        buttons: {
-                            OK: function() {
-                                $(this).dialog("close");
-                            }
-                        }
-                    });
+                    $("#referralMessage").show();
                     return;
                 }
 
@@ -84,7 +103,7 @@
                 // Check if user data exists
                 if (creditsData.length === 0) {
                     console.error("User not found in the credits database.");
-                    alert("User not found in the database.");
+                    $("#errorMessage").show();
                     return;
                 }
 
@@ -98,14 +117,16 @@
                 // Check if user qualifies
                 if (referralCount > 2 && mnCredits > 50) {
                     console.log("User qualifies based on referral count and MN Credits.");
-                    alert("Congratulations! You qualify.");
+                    $("#successMessage").show();
+                    $("#nonQualificationMessage").hide();
                 } else {
                     console.log("User does not qualify. Referral count or MN Credits are insufficient.");
-                    alert("Sorry, you do not qualify.");
+                    $("#nonQualificationMessage").show();
+                    $("#successMessage").hide();
                 }
             } catch (error) {
                 console.error("Error occurred:", error);
-                alert("An error occurred while checking your qualification. Please try again later.");
+                $("#errorMessage").show();
             }
         }
 
