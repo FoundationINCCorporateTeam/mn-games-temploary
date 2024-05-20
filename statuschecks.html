@@ -121,26 +121,8 @@ const mnCredits = creditsData[0].mn_credits;
 
       if (referralCount > 2 && mnCredits > 50) {
     console.log("User qualifies based on referral count and MN Credits.");
-    
-    // Deduct 50 MN credits
-    const updatedMnCredits = mnCredits - 50;
-    
-    // Update MN credits in the users table
-    const updateCreditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
-        method: 'PATCH',
-        headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ mn_credits: updatedMnCredits })
-    });
 
-    // Check if the update was successful
-    if (!updateCreditsResponse.ok) {
-        throw new Error(`Failed to update MN credits: ${updateCreditsResponse.statusText}`);
-    }
-
-    // Add entry to the mngamesplus table
+        // Add entry to the mngamesplus table
     const mngamesplusResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/mngamesplus', {
         method: 'POST',
         headers: {
@@ -155,6 +137,21 @@ const mnCredits = creditsData[0].mn_credits;
         throw new Error(`Failed to add entry to mngamesplus: ${mngamesplusResponse.statusText}`);
     }
 
+    // Subtract 50 MN Credits
+    const creditsUpdateResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+        method: 'PATCH',
+        headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ mn_credits: mnCredits - 50 })
+    });
+
+    // Check if credits update was successful
+    if (!creditsUpdateResponse.ok) {
+        throw new Error(`Failed to update MN Credits: ${creditsUpdateResponse.statusText}`);
+    }
+
     // Show success message
     $("#successMessage").dialog({
         modal: true,
@@ -165,18 +162,6 @@ const mnCredits = creditsData[0].mn_credits;
         }
     });
     return;
-        } else {
-            console.log("User does not qualify. Referral count or MN Credits are insufficient.");
-            $("#nonQualificationMessage").dialog({
-                modal: true,
-                buttons: {
-                    OK: function() {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-            return;
-        }
     } catch (error) {
         console.error("Error occurred:", error);
         $("#error.errorDetail").text(error.message);
