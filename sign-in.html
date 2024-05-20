@@ -53,94 +53,94 @@
   </form>
 
   <script>
-  // Initialize Supabase for authentication and mn_credits
-  var supabaseAuth = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
+    // Initialize Supabase for authentication and mn_credits
+    var supabaseAuth = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
 
-  // Initialize Supabase for mngamesplus
-  var supabaseMngamesplus = supabase.createClient('https://dvsoyesscauzsirtjthh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk');
+    // Initialize Supabase for mngamesplus
+    var supabaseMngamesplus = supabase.createClient('https://dvsoyesscauzsirtjthh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk');
 
-  // Get form elements
-  var form = document.getElementById('login-form');
-  var emailInput = document.getElementById('email');
-  var passwordInput = document.getElementById('password');
-  var errorMessage = document.getElementById('error-message');
-  var successMessage = document.getElementById('success-message');
+    // Get form elements
+    var form = document.getElementById('login-form');
+    var emailInput = document.getElementById('email');
+    var passwordInput = document.getElementById('password');
+    var errorMessage = document.getElementById('error-message');
+    var successMessage = document.getElementById('success-message');
 
-  // Handle form submission
-  form.addEventListener('submit', async function(event) {
-    event.preventDefault();
+    // Handle form submission
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
 
-    var email = emailInput.value;
-    var password = passwordInput.value;
+      var email = emailInput.value;
+      var password = passwordInput.value;
 
-    if (!email || !password) {
-      displayError('Please fill in all fields.');
-      return;
-    }
+      if (!email || !password) {
+        displayError('Please fill in all fields.');
+        return;
+      }
 
-    // Authenticate the user with supabaseAuth
-    const { user, error } = await supabaseAuth.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
-
-    if (error) {
-      console.error('Error logging in:', error);
-      displayError('Invalid email or password.');
-    } else {
-      console.log('User logged in:', user);
-      // Store email in local storage only if login is successful
-      localStorage.setItem('email', email);
-      displaySuccess('Successfully logged in, redirecting...');
-
-      // Retrieve user's mn_credits value and store it in local storage
-      const { data, error } = await supabaseAuth
-        .from('users')
-        .select('mn_credits')
-        .eq('email', email)
-        .single();
+      // Authenticate the user with supabaseAuth
+      const { user, error } = await supabaseAuth.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
 
       if (error) {
-        console.error('Error retrieving mn_credits:', error);
+        console.error('Error logging in:', error);
+        displayError('Invalid email or password.');
       } else {
-        localStorage.setItem('mn_credits', data.mn_credits);
-        console.log('MN Credits retrieved:', data.mn_credits);
+        console.log('User logged in:', user);
+        // Store email in local storage only if login is successful
+        localStorage.setItem('email', email);
+        displaySuccess('Successfully logged in, redirecting...');
+
+        // Retrieve user's mn_credits value and store it in local storage
+        const { data, error } = await supabaseAuth
+          .from('users')
+          .select('mn_credits')
+          .eq('email', email)
+          .single();
+
+        if (error) {
+          console.error('Error retrieving mn_credits:', error);
+        } else {
+          localStorage.setItem('mn_credits', data.mn_credits);
+          console.log('MN Credits retrieved:', data.mn_credits);
+        }
+
+        // Check if the email exists in mngamesplus table with supabaseMngamesplus
+        const { data: mngamesData, error: mngamesError } = await supabaseMngamesplus
+          .from('mngamesplus')
+          .select('email')
+          .eq('email', email)
+          .single();
+
+        if (mngamesError) {
+          console.error('Error checking mngamesplus table:', mngamesError);
+        } else {
+          // Set ismngamesplus to true if email exists, otherwise false
+          const isMngamesplus = !!mngamesData;
+          localStorage.setItem('ismngamesplus', isMngamesplus);
+        }
+
+        setTimeout(function() {
+          window.location.href = '/dashboard';
+        }, 3000); // Redirect after 3 seconds
       }
+    });
 
-      // Check if the email exists in mngamesplus table with supabaseMngamesplus
-      const { data: mngamesData, error: mngamesError } = await supabaseMngamesplus
-        .from('mngamesplus')
-        .select('email')
-        .eq('email', email)
-        .single();
-
-      if (mngamesError) {
-        console.error('Error checking mngamesplus table:', mngamesError);
-      } else {
-        // Set ismngamesplus to true if email exists, otherwise false
-        const isMngamesplus = !!mngamesData;
-        localStorage.setItem('ismngamesplus', isMngamesplus);
-      }
-
-      setTimeout(function() {
-        window.location.href = '/dashboard';
-      }, 3000); // Redirect after 3 seconds
+    // Function to display error message
+    function displayError(message) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+      successMessage.style.display = 'none';
     }
-  });
 
-  // Function to display error message
-  function displayError(message) {
-    errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
-    successMessage.style.display = 'none';
-  }
-
-  // Function to display success message
-  function displaySuccess(message) {
-    successMessage.textContent = message;
-    successMessage.style.display = 'block';
-    errorMessage.style.display = 'none';
-  }
-</script>
+    // Function to display success message
+    function displaySuccess(message) {
+      successMessage.textContent = message;
+      successMessage.style.display = 'block';
+      errorMessage.style.display = 'none';
+    }
+  </script>
 </body>
 </html>
