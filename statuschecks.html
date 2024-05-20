@@ -28,13 +28,15 @@
   <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 </head>
 <body>
+  <h1 style="font-family: Arial;">MN Games+ Qualification</h1>
+  <h3 style="font-family: Arial;">Click the button below to see if you qualify for MN Games+</h3>
   <button id="checkCreditsButton">Check Credits</button>
 
   <div id="successMessage" title="Success" style="display:none;">
-    <p>Congratulations! You qualify.</p>
+    <p>Congratulations! You qualify for MN Games Plus! We have updated your status and you can now enjoy full member status. Please note that 50 MN Credits have been removed from your account to pay for the membership.</p>
   </div>
   <div id="nonQualificationMessage" title="Non-Qualification" style="display:none;">
-    <p>Sorry, you do not qualify.</p>
+    <p>Sorry, you do not qualify for MN Games Plus. Please check out this page: <a href="/mngamesplus/apply">Information Page</a> to find out more information on the criteria needed to subscribe.</p>
   </div>
   <div id="errorMessage" title="Error" style="display:none;">
     <p>An error occurred while checking your qualification: <span id="errorDetail"></span></p>
