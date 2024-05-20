@@ -123,30 +123,49 @@
 
         console.log(`Referral count: ${referralCount}, MN Credits: ${mnCredits}`);
 
-        // Check if user qualifies
-        if (referralCount > 2 && mnCredits > 50) {
-          console.log("User qualifies based on referral count and MN Credits.");
-          $("#successMessage").dialog({
-            modal: true,
-            buttons: {
-              OK: function() {
-                $(this).dialog("close");
-              }
-            }
-          });
-          return;
-        } else {
-          console.log("User does not qualify. Referral count or MN Credits are insufficient.");
-          $("#nonQualificationMessage").dialog({
-            modal: true,
-            buttons: {
-              OK: function() {
-                $(this).dialog("close");
-              }
-            }
-          });
-          return;
-        }
+// Check if user qualifies
+if (referralCount > 2 && mnCredits > 50) {
+  console.log("User qualifies based on referral count and MN Credits.");
+
+  // Deduct 50 MN credits
+  // Fetch user MN credits from another table in Supabase
+  const updateCreditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+    method: 'PUT',
+    headers: {
+      'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      mn_credits: mnCredits - 50
+    })
+  });
+
+  if (!updateCreditsResponse.ok) {
+    throw new Error(`Network response was not ok: ${updateCreditsResponse.statusText}`);
+  }
+
+  $("#successMessage").dialog({
+    modal: true,
+    buttons: {
+      OK: function() {
+        $(this).dialog("close");
+      }
+    }
+  });
+  return;
+} else {
+  console.log("User does not qualify. Referral count or MN Credits are insufficient.");
+  $("#nonQualificationMessage").dialog({
+    modal: true,
+    buttons: {
+      OK: function() {
+        $(this).dialog("close");
+      }
+    }
+  });
+  return;
+}
+
       } catch (error) {
         console.error("Error occurred:", error);
         $("#error.errorDetail").text(error.message);
