@@ -34,14 +34,14 @@
 <body>
     <button id="checkCreditsButton">Check Credits</button>
 
+    <div id="myDialog" title="MN Games Referral Program" style="display:none;">
+        <p>You have not signed up for the MN Games referral program yet. Please sign-up and refer MN Games to at least 2 people.</p>
+        <p>Please go to the <a href="/customerreferral">MN Games Referral Program Page</a> to start.</p>
+    </div>
+
     <div id="successMessage" class="success-message" style="display:none;">Congratulations! You qualify.</div>
     <div id="nonQualificationMessage" class="error-message" style="display:none;">Sorry, you do not qualify.</div>
     <div id="errorMessage" class="error-message" style="display:none;">An error occurred while checking your qualification. Please try again later.</div>
-    <div id="referralMessage" class="info-message" style="display:none;">
-        You have not signed up for the MN Games referral program yet. Please sign-up and refer MN Games to at least 2 people.
-        <br>
-        Please go to the <a href="/customer-referral">MN Games Referral Program Page</a> to start.
-    </div>
 
     <script>
         async function checkReferralAndMNQualification() {
@@ -76,7 +76,14 @@
                 // Check if user data exists
                 if (referralData.length === 0) {
                     console.error("User not found in the referral database.");
-                    $("#referralMessage").show();
+                    $("#myDialog").dialog({
+                        modal: true,
+                        buttons: {
+                            OK: function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
                     return;
                 }
 
