@@ -54,7 +54,7 @@
 
     <script>
     // Initialize Supabase
-    var supabase = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
+    var supabase = supabase.createClient('https://dvsoyesscauzsirtjthh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk');
 
     // Get form elements
     var form = document.getElementById('login-form');
@@ -91,17 +91,32 @@
             displaySuccess('Successfully logged in, redirecting...');
 
             // Retrieve user's mn_credits value and store it in local storage
-            const { data, error } = await supabase
+            const { data: userData, error: userError } = await supabase
                 .from('users')
                 .select('mn_credits')
                 .eq('email', email)
                 .single();
 
-            if (error) {
-                console.error('Error retrieving mn_credits:', error);
+            if (userError) {
+                console.error('Error retrieving mn_credits:', userError);
             } else {
-                localStorage.setItem('mn_credits', data.mn_credits);
-                console.log('MN Credits retrieved:', data.mn_credits);
+                localStorage.setItem('mn_credits', userData.mn_credits);
+                console.log('MN Credits retrieved:', userData.mn_credits);
+            }
+
+            // Check if the email exists in mngamesplus table
+            const { data: mngamesData, error: mngamesError } = await supabase
+                .from('mngamesplus')
+                .select('email')
+                .eq('email', email)
+                .single();
+
+            if (mngamesError) {
+                console.error('Error checking mngamesplus table:', mngamesError);
+            } else {
+                // Set ismngamesplus to true if email exists, otherwise false
+                const isMngamesplus = !!mngamesData;
+                localStorage.setItem('ismngamesplus', isMngamesplus);
             }
 
             setTimeout(function() {
