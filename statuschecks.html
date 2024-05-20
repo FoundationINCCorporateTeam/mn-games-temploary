@@ -1,189 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Check Referral and MN Credits Qualification</title>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-  <style>
-    .ui-dialog {
-      padding: 20px;
-    }
-    .ui-dialog-title {
-      font-size: 16px;
-    }
-    .ui-dialog-content {
-      font-size: 14px;
-    }
-    .ui-dialog-buttonset {
-      margin-top: 20px;
-      text-align: center;
-    }
-    .ui-button {
-      padding: 8px 16px;
-      margin: 0 10px;
-    }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Check Referral and MN Credits Qualification</title>
+ <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+ <style>
+  .ui-dialog {
+   padding: 20px;
+  }
+  .ui-dialog-title {
+   font-size: 16px;
+  }
+  .ui-dialog-content {
+   font-size: 14px;
+  }
+  .ui-dialog-buttonset {
+   margin-top: 20px;
+   text-align: center;
+  }
+  .ui-button {
+   padding: 8px 16px;
+   margin: 0 10px;
+  }
+ </style>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 </head>
 <body>
-  <h1 style="font-family: Arial;">MN Games+ Qualification</h1>
-  <h3 style="font-family: Arial;">Click the button below to see if you qualify for MN Games+</h3>
-  <button id="checkCreditsButton">Check Credits</button>
+ <h1 style="font-family: Arial;">MN Games+ Qualification</h1>
+ <h3 style="font-family: Arial;">Click the button below to see if you qualify for MN Games+</h3>
+ <button id="checkCreditsButton">Check Credits</button>
 
-  <div id="successMessage" title="Success" style="display:none;">
-    <p>Congratulations! You qualify for MN Games Plus! We have updated your status and you can now enjoy full member status. Please note that 50 MN Credits have been removed from your account to pay for the membership.</p>
-  </div>
-  <div id="nonQualificationMessage" title="Non-Qualification" style="display:none;">
-    <p>Sorry, you do not qualify for MN Games Plus. Please check out this page: <a href="/mngamesplus/apply">Information Page</a> to find out more information on the criteria needed to subscribe.</p>
-  </div>
-  <div id="errorMessage" title="Error" style="display:none;">
-    <p>An error occurred while checking your qualification: <span id="errorDetail"></span></p>
-    <p>Please contact support.</p>
-    <p><a href="https://mngames.freshdesk.com" target="_blank">Support Portal</a></p>
-  </div>
+ <div id="successMessage" title="Success" style="display:none;">
+  <p>Congratulations! You qualify for MN Games Plus! We have updated your status and you can now enjoy full member status. Please note that 50 MN Credits have been removed from your account to pay for the membership.</p>
+ </div>
+ <div id="nonQualificationMessage" title="Non-Qualification" style="display:none;">
+  <p>Sorry, you do not qualify for MN Games Plus. Please check out this page: <a href="/mngamesplus/apply">Information Page</a> to find out more information on the criteria needed to subscribe.</p>
+ </div>
+ <div id="errorMessage" title="Error" style="display:none;">
+  <p>An error occurred while checking your qualification: <span id="errorDetail"></span></p>
+  <p>Please contact support.</p>
+  <p><a href="https://mngames.freshdesk.com" target="_blank">Support Portal</a></p>
+ </div>
 
-  <div id="referralDialog" title="MN Games Referral Program" style="display:none;">
-    <p>You have not signed up for the MN Games referral program yet. Please sign-up and refer MN Games to at least 2 people.</p>
-    <p>Please go to the <a href="/customerreferral">MN Games Referral Program Page</a> to start.</p>
-  </div>
+ <div id="referralDialog" title="MN Games Referral Program" style="display:none;">
+  <p>You have not signed up for the MN Games referral program yet. Please sign-up and refer MN Games to at least 2 people.</p>
+  <p>Please go to the <a href="/customerreferral">MN Games Referral Program Page</a> to start.</p>
+ </div>
 
-  <script>
-    async function checkReferralAndMNQualification() {
-      try {
-        // Get the email from local storage
-        const userEmail = localStorage.getItem("email");
+ <script>
+  async function checkReferralAndMNQualification() {
+   try {
+    // Get the email from local storage
+    const userEmail = localStorage.getItem("email");
 
-        // Check if email is present
-        if (!userEmail) {
-          throw new Error("User email not found in local storage.");
-        }
-
-        console.log("User email found in local storage:", userEmail);
-
-        // Fetch user referral count from Supabase
-        const referralResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/users?email=eq.' + userEmail, {
-          headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
-            'Content-Type': 'application/json'
-          }
-        });
-
-        // Check if the response is ok
-        if (!referralResponse.ok) {
-          throw new Error(`Network response was not ok: ${referralResponse.statusText}`);
-        }
-
-        const referralData = await referralResponse.json();
-
-        // Check if user data exists
-        if (referralData.length === 0) {
-          console.error("User not found in the referral database.");
-          $("#referralDialog").dialog({
-            modal: true,
-            buttons: {
-              OK: function() {
-                $(this).dialog("close");
-              }
-            }
-          });
-          return;
-        }
-
-        console.log("User referral data retrieved from the database:", referralData);
-
-        // Get referral count
-        const referralCount = referralData[0].referral_count;
-
-        // Fetch user MN credits from another table in Supabase
-        const creditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
-          headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
-            'Content-Type': 'application/json'
-          }
-        });
-
-        // Check if the response is ok
-        if (!creditsResponse.ok) {
-          throw new Error(`Network response was not ok: ${creditsResponse.statusText}`);
-        }
-
-        const creditsData = await creditsResponse.json();
-
-        // Check if user data exists
-        if (creditsData.length === 0) {
-          throw new Error("User not found in the credits database.");
-        }
-
-        console.log("User MN credits data retrieved from the database:", creditsData);
-
-        // Get MN credits
-        const mnCredits = creditsData[0].mn_credits;
-
-        console.log(`Referral count: ${referralCount}, MN Credits: ${mnCredits}`);
-
-// Check if user qualifies
-if (referralCount > 2 && mnCredits > 50) {
-  console.log("User qualifies based on referral count and MN Credits.");
-
-  // Deduct 50 MN credits
-  // Fetch user MN credits from another table in Supabase
-  const updateCreditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
-    method: 'PUT',
-    headers: {
-      'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      mn_credits: mnCredits - 50
-    })
-  });
-
-  if (!updateCreditsResponse.ok) {
-    throw new Error(`Network response was not ok: ${updateCreditsResponse.statusText}`);
-  }
-
-  $("#successMessage").dialog({
-    modal: true,
-    buttons: {
-      OK: function() {
-        $(this).dialog("close");
-      }
-    }
-  });
-  return;
-} else {
-  console.log("User does not qualify. Referral count or MN Credits are insufficient.");
-  $("#nonQualificationMessage").dialog({
-    modal: true,
-    buttons: {
-      OK: function() {
-        $(this).dialog("close");
-      }
-    }
-  });
-  return;
-}
-
-      } catch (error) {
-        console.error("Error occurred:", error);
-        $("#error.errorDetail").text(error.message);
-        $("#errorMessage").dialog({
-          modal: true,
-          buttons: {
-            OK: function() {
-              $(this).dialog("close");
-            }
-          }
-        });
-      }
+    // Check if email is present
+    if (!userEmail) {
+     throw new Error("User email not found in local storage.");
     }
 
-    // Attach event listener to the button
-    $(document).ready(function() {
-      $('#checkCreditsButton').on('click', checkReferralAndMNQualification);
+    console.log("User email found in local storage:", userEmail);
+
+    // Fetch user referral count from Supabase
+    const referralResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+     headers: {
+      'apikey': 'YOUR_SUPABASE_ANON_KEY',
+      'Content-Type': 'application/json'
+     }
     });
-  </script>
+
+    // Check if the response is ok
+    if (!referralResponse.ok) {
+     throw new Error(`Network response was not ok: ${referralResponse.statusText}`);
+    }
+
+    const referralData = await referralResponse.json();
+
+    // Check if user data exists
+    if (referralData.length === 0) {
+     console.error("User not found in the referral database.");
+     $("#referralDialog").dialog({
+      modal: true,
+      buttons: {
+       OK: function() {
+        $(this).dialog("close");
+       }
+      }
+     });
+     return;
+    }
+
+    console.log("User referral data retrieved from the database:", referralData);
+
+    // Get referral count
+    const referralCount = referralData[0].referral_count;
+
+    // Fetch user MN credits from another table in Supabase
+    const creditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+     headers: {
+      'apikey': 'YOUR_SUPABASE_ANON_KEY',
+      'Content-Type': 'application/json'
+     }
+    });
+     // Check if the response is ok
+    if (!creditsResponse.ok) {
+     throw new Error(`Network response was not ok: ${creditsResponse.statusText}`);
+    }
+
+    const creditsData = await creditsResponse.json();
+
+    // Check if user data exists
+    if (creditsData.length === 0) {
+     throw new Error("User not found in the credits database.");
+    }
+
+    console.log("User MN credits data retrieved from the database:", creditsData);
+
+    // Get MN credits
+    const mnCredits = creditsData[0].mn_credits;
+
+    console.log(`Referral count: ${referralCount}, MN Credits: ${mnCredits}`);
+
+    // Check if user qualifies
+    if (referralCount > 2 && mnCredits > 50) {
+     console.log("User qualifies based on referral count and MN Credits.");
+     // Deduct 50 MN Credits from the user's balance
+     const updatedMNCredits = mnCredits - 50;
+
+     // Update user's MN credits in the database
+     const updateCreditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+      method: 'PATCH',
+      headers: {
+       'apikey': 'YOUR_SUPABASE_ANON_KEY',
+       'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ mn_credits: updatedMNCredits })
+     });
+
+     // Check if the update was successful
+     if (!updateCreditsResponse.ok) {
+       throw new Error(`Failed to update MN credits: ${updateCreditsResponse.statusText}`);
+     }
+
+     console.log("MN Credits deducted successfully.");
+
+     // Show success message
+     $("#successMessage").dialog({
+      modal: true,
+      buttons: {
+       OK: function() {
+        $(this).dialog("close");
+       }
+      }
+     });
+     return;
+    } else {
+     console.log("User does not qualify. Referral count or MN Credits are insufficient.");
+     $("#nonQualificationMessage").dialog({
+      modal: true,
+      buttons: {
+       OK: function() {
+        $(this).dialog("close");
+       }
+      }
+     });
+     return;
+    }
+   } catch (error) {
+    console.error("Error occurred:", error);
+    $("#error.errorDetail").text(error.message);
+    $("#errorMessage").dialog({
+     modal: true,
+     buttons: {
+      OK: function() {
+       $(this).dialog("close");
+      }
+     }
+    });
+   }
+  }
+
+  // Attach event listener to the button
+  $(document).ready(function() {
+   $('#checkCreditsButton').on('click', checkReferralAndMNQualification);
+  });
+ </script>
 </body>
 </html>
+
