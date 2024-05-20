@@ -96,29 +96,36 @@
         // Get referral count
         const referralCount = referralData[0].referral_count;
 
-        // Fetch user MN credits from another table in Supabase
-        const creditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
-            headers: {
-                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
-                'Content-Type': 'application/json'
-            }
-        });
+       // Fetch user MN credits from another table in Supabase
+const creditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+    headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
+        'Content-Type': 'application/json'
+    }
+});
 
-        // Check if the response is ok
-        if (!creditsResponse.ok) {
-            throw new Error(`Network response was not ok: ${creditsResponse.statusText}`);
-        }
+// Check if the response is ok
+if (!creditsResponse.ok) {
+    throw new Error(`Network response was not ok: ${creditsResponse.statusText}`);
+}
 
-        const creditsData = await creditsResponse.json();
+const creditsData = await creditsResponse.json();
 
-      // Check if user qualifies
-if (referralCount > 2 && mnCredits > 50) {
+// Check if user data exists
+if (creditsData.length === 0) {
+    throw new Error("User not found in the credits database.");
+}
+
+// Get MN credits
+const mnCredits = creditsData[0].mn_credits;
+
+      if (referralCount > 2 && mnCredits > 50) {
     console.log("User qualifies based on referral count and MN Credits.");
-
-    // Subtract 50 MN credits
-    let updatedMnCredits = mnCredits - 50;
-
-    // Update MN credits in the database
+    
+    // Deduct 50 MN credits
+    const updatedMnCredits = mnCredits - 50;
+    
+    // Update MN credits in the users table
     const updateCreditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
         method: 'PATCH',
         headers: {
@@ -133,30 +140,20 @@ if (referralCount > 2 && mnCredits > 50) {
         throw new Error(`Failed to update MN credits: ${updateCreditsResponse.statusText}`);
     }
 
-    console.log("MN credits updated successfully.");
-
-    // Prepare data for the new entry in the mngamesplus table
-    const mngamesplusData = {
-        email: userEmail // Using email from localStorage
-        // Add more fields here if needed
-    };
-
     // Add entry to the mngamesplus table
-    const addEntryResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/mngamesplus', {
+    const mngamesplusResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/mngamesplus', {
         method: 'POST',
         headers: {
             'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(mngamesplusData)
+        body: JSON.stringify({ email: userEmail })
     });
 
-    // Check if the entry was added successfully
-    if (!addEntryResponse.ok) {
-        throw new Error(`Failed to add entry to mngamesplus table: ${addEntryResponse.statusText}`);
+    // Check if adding entry to mngamesplus was successful
+    if (!mngamesplusResponse.ok) {
+        throw new Error(`Failed to add entry to mngamesplus: ${mngamesplusResponse.statusText}`);
     }
-
-    console.log("Entry added to mngamesplus table successfully.");
 
     // Show success message
     $("#successMessage").dialog({
