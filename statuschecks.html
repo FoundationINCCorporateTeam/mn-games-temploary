@@ -111,55 +111,63 @@
 
         const creditsData = await creditsResponse.json();
 
-        // Check if user data exists
-        if (creditsData.length === 0) {
-            throw new Error("User not found in the credits database.");
-        }
+       // Check if user qualifies
+if (referralCount > 2 && mnCredits > 50) {
+    console.log("User qualifies based on referral count and MN Credits.");
 
-        console.log("User MN credits data retrieved from the database:", creditsData);
+    // Subtract 50 MN credits
+    mnCredits -= 50;
 
-        // Get MN credits
-        const mnCredits = creditsData[0].mn_credits;
+    // Update MN credits in the database
+    const updateCreditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+        method: 'PATCH',
+        headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ mn_credits: mnCredits })
+    });
 
-        console.log(`Referral count: ${referralCount}, MN Credits: ${mnCredits}`);
+    // Check if the update was successful
+    if (!updateCreditsResponse.ok) {
+        throw new Error(`Failed to update MN credits: ${updateCreditsResponse.statusText}`);
+    }
 
-        // Check if user qualifies
-        if (referralCount > 2 && mnCredits > 50) {
-            console.log("User qualifies based on referral count and MN Credits.");
+    console.log("MN credits updated successfully.");
 
-            // Prepare data for the new entry in the mngamesplus table
-            const mngamesplusData = {
-                email: userEmail // Using email from localStorage
-                // Add more fields here if needed
-            };
+    // Prepare data for the new entry in the mngamesplus table
+    const mngamesplusData = {
+        email: userEmail // Using email from localStorage
+        // Add more fields here if needed
+    };
 
-            // Add entry to the mngamesplus table
-            const addEntryResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/mngamesplus', {
-                method: 'POST',
-                headers: {
-                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(mngamesplusData)
-            });
+    // Add entry to the mngamesplus table
+    const addEntryResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/mngamesplus', {
+        method: 'POST',
+        headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(mngamesplusData)
+    });
 
-            // Check if the entry was added successfully
-            if (!addEntryResponse.ok) {
-                throw new Error(`Failed to add entry to mngamesplus table: ${addEntryResponse.statusText}`);
+    // Check if the entry was added successfully
+    if (!addEntryResponse.ok) {
+        throw new Error(`Failed to add entry to mngamesplus table: ${addEntryResponse.statusText}`);
+    }
+
+    console.log("Entry added to mngamesplus table successfully.");
+
+    // Show success message
+    $("#successMessage").dialog({
+        modal: true,
+        buttons: {
+            OK: function() {
+                $(this).dialog("close");
             }
-
-            console.log("Entry added to mngamesplus table successfully.");
-
-            // Show success message
-            $("#successMessage").dialog({
-                modal: true,
-                buttons: {
-                    OK: function() {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-            return;
+        }
+    });
+    return;
         } else {
             console.log("User does not qualify. Referral count or MN Credits are insufficient.");
             $("#nonQualificationMessage").dialog({
