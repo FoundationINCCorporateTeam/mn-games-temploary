@@ -1,143 +1,129 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login Form</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
-    <style>
-        body {
-            text-align:center;
-            font-family: Arial, sans-serif;
-        }
-        form {
-            width: 300px;
-            margin: 0 auto;
-        }
-        input[type="email"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .error {
-            color: red;
-            display: none;
-        }
-        .success {
-            background-color: #90EE90;
-            color: #006400;
-            display: none;
-        }
-    </style>
+  <title>Login Form</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
+  <style>
+    body {
+      text-align:center;
+      font-family: Arial, sans-serif;
+    }
+    form {
+      width: 300px;
+      margin: 0 auto;
+    }
+    input[type="email"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .error {
+      color: red;
+      display: none;
+    }
+    .success {
+      background-color: #90EE90;
+      color: #006400;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <h2>MN Games Sign-in</h2>
-    <form id="login-form">
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required minlength="6">
-        <button type="submit">Login</button>
-        <p style="text-align:center"> Don't have an account?<br><a href="sign-up">Create One!</a></p>
-        <p style="text-align:center"> Forgot your password?<br><a href="forgotpassword">Reset it!</a></p>
-        <p id="error-message" class="error"></p>
-        <p id="success-message" class="success"></p>
-    </form>
+  <h2>MN Games Sign-in</h2>
+  <form id="login-form">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required minlength="6">
+    <button type="submit">Login</button>
+    <p style="text-align:center"> Don't have an account?<br><a href="sign-up">Create One!</a></p>
+    <p style="text-align:center"> Forgot your password?<br><a href="forgotpassword">Reset it!</a></p>
+    <p id="error-message" class="error"></p>
+    <p id="success-message" class="success"></p>
+  </form>
 
-    <script>
-    // Initialize Supabase
-    var supabase = supabase.createClient('https://dvsoyesscauzsirtjthh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk');
+  <script>
+  // Initialize Supabase for auth and mn_credits
+  var supabaseAuth = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY');
+  var supabaseMN = supabase.createClient('https://dvsoyesscauzsirtjthh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk');
 
-    // Get form elements
-    var form = document.getElementById('login-form');
-    var emailInput = document.getElementById('email');
-    var passwordInput = document.getElementById('password');
-    var errorMessage = document.getElementById('error-message');
-    var successMessage = document.getElementById('success-message');
+  // Get form elements
+  var form = document.getElementById('login-form');
+  var emailInput = document.getElementById('email');
+  var passwordInput = document.getElementById('password');
+  var errorMessage = document.getElementById('error-message');
+  var successMessage = document.getElementById('success-message');
 
-    // Handle form submission
-    form.addEventListener('submit', async function(event) {
-        event.preventDefault();
+  // Handle form submission
+  form.addEventListener('submit', async function(event) {
+    event.preventDefault();
 
-        var email = emailInput.value;
-        var password = passwordInput.value;
+    var email = emailInput.value;
+    var password = passwordInput.value;
 
-        if (!email || !password) {
-            displayError('Please fill in all fields.');
-            return;
-        }
+    if (!email || !password) {
+      displayError('Please fill in all fields.');
+      return;
+    }
 
-        // Authenticate the user
-        const { user, error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password,
-        });
+    // Authenticate the user using supabaseAuth
+    const { user, error } = await supabaseAuth.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
 
-        if (error) {
-            console.error('Error logging in:', error);
-            displayError('Invalid email or password.');
-        } else {
-            console.log('User logged in:', user);
-            // Store email in local storage only if login is successful
-            localStorage.setItem('email', email);
-            displaySuccess('Successfully logged in, redirecting...');
+    if (error) {
+      console.error('Error logging in:', error);
+      displayError('Invalid email or password.');
+    } else {
+      console.log('User logged in:', user);
+      // Store email in local storage only if login is successful
+      localStorage.setItem('email', email);
+      displaySuccess('Successfully logged in, redirecting...');
 
-            // Retrieve user's mn_credits value and store it in local storage
-            const { data: userData, error: userError } = await supabase
-                .from('users')
-                .select('mn_credits')
-                .eq('email', email)
-                .single();
+      // Check if email exists in mngamesplus table using supabaseMN
+      const { data: userData, error: userError } = await supabaseMN
+        .from('mngamesplus')
+        .select()
+        .eq('email', email)
+        .single();
 
-            if (userError) {
-                console.error('Error retrieving mn_credits:', userError);
-            } else {
-                localStorage.setItem('mn_credits', userData.mn_credits);
-                console.log('MN Credits retrieved:', userData.mn_credits);
-            }
+      if (userError) {
+        console.error('Error retrieving user data:', userError);
+      } else if (userData) {
+        localStorage.setItem('ismngamesplus', 'true');
+        console.log('User is MN Games Plus member.');
+      }
 
-            // Check if the email exists in mngamesplus table
-            const { data: mngamesData, error: mngamesError } = await supabase
-                .from('mngamesplus')
-                .select('email')
-                .eq('email', email)
-                .single();
+      setTimeout(function() {
+        window.location.href = '/dashboard';
+      }, 3000); // Redirect after 3 seconds
+    }
+  });
 
-            if (mngamesError) {
-                console.error('Error checking mngamesplus table:', mngamesError);
-            } else {
-                // Set ismngamesplus to true if email exists, otherwise false
-                const isMngamesplus = !!mngamesData;
-                localStorage.setItem('ismngamesplus', isMngamesplus);
-            }
+  // Function to display error message
+  function displayError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+    successMessage.style.display = 'none';
+  }
 
-            setTimeout(function() {
-                window.location.href = '/dashboard';
-            }, 3000); // Redirect after 3 seconds
-        }
-    });
-
-    // Function to display error message
-    function displayError(message) {
-        errorMessage.textContent = message;
-        errorMessage.style.display = 'block';
-        successMessage.style.display = 'none';
-    }
-
-    // Function to display success message
-    function displaySuccess(message) {
-        successMessage.textContent = message;
-        successMessage.style.display = 'block';
-        errorMessage.style.display = 'none';
-    }
+  // Function to display success message
+  function displaySuccess(message) {
+    successMessage.textContent = message;
+    successMessage.style.display = 'block';
+    errorMessage.style.display = 'none';
+  }
 </script>
 </body>
 </html>
