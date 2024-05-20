@@ -111,12 +111,12 @@
 
         const creditsData = await creditsResponse.json();
 
-       // Check if user qualifies
+      // Check if user qualifies
 if (referralCount > 2 && mnCredits > 50) {
     console.log("User qualifies based on referral count and MN Credits.");
 
     // Subtract 50 MN credits
-    mnCredits -= 50;
+    let updatedMnCredits = mnCredits - 50;
 
     // Update MN credits in the database
     const updateCreditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
@@ -125,7 +125,7 @@ if (referralCount > 2 && mnCredits > 50) {
             'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ mn_credits: mnCredits })
+        body: JSON.stringify({ mn_credits: updatedMnCredits })
     });
 
     // Check if the update was successful
