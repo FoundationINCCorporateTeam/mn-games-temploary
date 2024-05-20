@@ -65,7 +65,7 @@
     // Fetch user referral count from Supabase
     const referralResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/users?email=eq.' + userEmail, {
      headers: {
-      'apikey': 'YOUR_SUPABASE_ANON_KEY',
+      'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
       'Content-Type': 'application/json'
      }
     });
@@ -99,7 +99,7 @@
     // Fetch user MN credits from another table in Supabase
     const creditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
      headers: {
-      'apikey': 'YOUR_SUPABASE_ANON_KEY',
+      'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
       'Content-Type': 'application/json'
      }
     });
@@ -132,7 +132,7 @@
      const updateCreditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
       method: 'PATCH',
       headers: {
-       'apikey': 'YOUR_SUPABASE_ANON_KEY',
+       'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ mn_credits: updatedMNCredits })
