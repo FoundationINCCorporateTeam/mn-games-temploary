@@ -51,7 +51,7 @@
                 const referralCount = referralData[0].referral_count;
 
                 // Fetch user MN credits from another table in Supabase
-                const creditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/user_credits?email=eq.' + userEmail, {
+                const creditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
                     headers: {
                         'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
                         'Content-Type': 'application/json'
