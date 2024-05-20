@@ -6,26 +6,31 @@
     <title>Check Referral and MN Credits Qualification</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
     <style>
+        .message-container {
+            display: none;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
         .success-message {
             background-color: #dff0d8;
             border-color: #d6e9c6;
             color: #3c763d;
-            padding: 10px;
-            margin-bottom: 10px;
         }
         .error-message {
             background-color: #f2dede;
             border-color: #ebccd1;
             color: #a94442;
-            padding: 10px;
-            margin-bottom: 10px;
         }
         .info-message {
             background-color: #d9edf7;
             border-color: #bce8f1;
             color: #31708f;
-            padding: 10px;
-            margin-bottom: 10px;
+        }
+        .support-link {
+            font-weight: bold;
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -34,14 +39,18 @@
 <body>
     <button id="checkCreditsButton">Check Credits</button>
 
-    <div id="myDialog" title="MN Games Referral Program" style="display:none;">
-        <p>You have not signed up for the MN Games referral program yet. Please sign-up and refer MN Games to at least 2 people.</p>
-        <p>Please go to the <a href="/customerreferral">MN Games Referral Program Page</a> to start.</p>
+    <div id="successMessage" class="message-container success-message">
+        Congratulations! You qualify.
     </div>
-
-    <div id="successMessage" class="success-message" style="display:none;">Congratulations! You qualify.</div>
-    <div id="nonQualificationMessage" class="error-message" style="display:none;">Sorry, you do not qualify.</div>
-    <div id="errorMessage" class="error-message" style="display:none;">An error occurred while checking your qualification. Please try again later.</div>
+    <div id="nonQualificationMessage" class="message-container error-message">
+        Sorry, you do not qualify.
+    </div>
+    <div id="errorMessage" class="message-container error-message">
+        An error occurred while checking your qualification: <span id="errorDetail"></span><br>
+        Please contact support.
+        <br>
+        <span class="support-link" onclick="window.open('https://mngames.freshdesk.com', '_blank')">Support Portal</span>
+    </div>
 
     <script>
         async function checkReferralAndMNQualification() {
@@ -51,9 +60,7 @@
 
                 // Check if email is present
                 if (!userEmail) {
-                    console.error("User email not found in local storage.");
-                    $("#errorMessage").show();
-                    return;
+                    throw new Error("User email not found in local storage.");
                 }
 
                 console.log("User email found in local storage:", userEmail);
@@ -75,16 +82,7 @@
 
                 // Check if user data exists
                 if (referralData.length === 0) {
-                    console.error("User not found in the referral database.");
-                    $("#myDialog").dialog({
-                        modal: true,
-                        buttons: {
-                            OK: function() {
-                                $(this).dialog("close");
-                            }
-                        }
-                    });
-                    return;
+                    throw new Error("User not found in the referral database.");
                 }
 
                 console.log("User referral data retrieved from the database:", referralData);
@@ -109,9 +107,7 @@
 
                 // Check if user data exists
                 if (creditsData.length === 0) {
-                    console.error("User not found in the credits database.");
-                    $("#errorMessage").show();
-                    return;
+                    throw new Error("User not found in the credits database.");
                 }
 
                 console.log("User MN credits data retrieved from the database:", creditsData);
@@ -126,14 +122,19 @@
                     console.log("User qualifies based on referral count and MN Credits.");
                     $("#successMessage").show();
                     $("#nonQualificationMessage").hide();
+                    $("#errorMessage").hide();
                 } else {
                     console.log("User does not qualify. Referral count or MN Credits are insufficient.");
                     $("#nonQualificationMessage").show();
                     $("#successMessage").hide();
+                    $("#errorMessage").hide();
                 }
             } catch (error) {
                 console.error("Error occurred:", error);
+                $("#errorDetail").text(error.message);
                 $("#errorMessage").show();
+                $("#successMessage").hide();
+                $("#nonQualificationMessage").hide();
             }
         }
 
