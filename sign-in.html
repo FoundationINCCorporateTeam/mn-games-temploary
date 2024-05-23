@@ -54,10 +54,16 @@
 
   <script>
     // Initialize Supabase for authentication and mn_credits
-    var supabaseAuth = supabase.createClient('https://tdsxayxnjomnoiestnmj.supabase.co', 'YOUR_SUPABASE_KEY_AUTH');
+    var supabaseAuth = supabase.createClient(
+      'https://tdsxayxnjomnoiestnmj.supabase.co', 
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'
+    );
 
     // Initialize Supabase for mngamesplus
-    var supabaseMngamesplus = supabase.createClient('https://dvsoyesscauzsirtjthh.supabase.co', 'YOUR_SUPABASE_KEY_MNGAMESPLUS');
+    var supabaseMngamesplus = supabase.createClient(
+      'https://dvsoyesscauzsirtjthh.supabase.co', 
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk'
+    );
 
     // Get form elements
     var form = document.getElementById('login-form');
