@@ -127,7 +127,7 @@
     <a href="https://mnsupport.ladesk.com/">MN Games Support</a>
 </nav>
 
-<div class="video-container">
+<div class="video-container" id="video-container">
     <video autoplay muted controls onended="showContent()">
         <source src="/Untitled video (13).mp4" type="video/mp4">
         Your browser does not support the video tag.
@@ -167,28 +167,27 @@
             // Show the popup
             showPopup();
         }
+
+        // Check localStorage for noads or ismngamesplus
+        const noAds = localStorage.getItem('noads');
+        const isMnGamesPlus = localStorage.getItem('ismngamesplus');
+
+        // If noads or ismngamesplus is true, show the content immediately
+        if (noAds === 'true' || isMnGamesPlus === 'true') {
+            document.addEventListener('DOMContentLoaded', showContent);
+        }
     </script>
 
     <h1>Welcome to MN Games</h1>
     <p>Experience the future of gaming. Attention! We have put ads on our website to upgrade our hosting! You don't have to but if you would click on them that would earn us more revenue.</p>
     <button class="button" onclick="openSecureBrowser()">Open MN Games Premium Website</button>
     <script>
-        // Check if the auth token exists in local storage
-        //const authToken = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
-
-        // If the auth token exists, display the link to the Free MN Secure Browser
-        //if (authToken) {
-
+        function openSecureBrowser() {
+            var newWindow = window.open('about:blank', '_blank');
+            newWindow.document.write('<html><head><title>MN Games Secure Browser</title></head><body><iframe src="https://mnsecurebrowser.spoggi.com/" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
         }
     </script>
 </div>
-
-<script>
-    function openSecureBrowser() {
-        var newWindow = window.open('about:blank', '_blank');
-        newWindow.document.write('<html><head><title>MN Games Secure Browser</title></head><body><iframe src="https://mnsecurebrowser.spoggi.com/" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
-    }
-</script>
 
 <script type="text/javascript">
     aclib.runAutoTag({
