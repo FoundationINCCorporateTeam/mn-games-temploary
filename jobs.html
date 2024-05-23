@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        .form-container h2 {
+            margin-bottom: 1em;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 1em;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5em;
+            color: #555;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8em;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            color: #333;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 1em;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Job Application Form</h2>
+    <form id="jobApplicationForm">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+            <label for="jobchoice">Job Choice</label>
+            <select id="jobchoice" name="jobchoice" required>
+                <option value="" disabled selected>Select a job</option>
+                <option value="mngamesdeveloper">MN Games Website Developer</option>
+                <option value="adminteam">MN Games Administrative Team</option>
+                <option value="supportteam">MN Games Support Team</option>
+                <option value="salesteam">Sales Team</option>
+                <option value="humanresources">Human Resources</option>
+              <option value="customerrelations">Customer Relations Team</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="jobreason">Job Explanation</label>
+            <textarea id="jobreason" name="jobreason" placeholder="Explain why you are a good fit for the job" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Submit Application</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('jobApplicationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const data = {
+            fields: {
+                Name: formData.get('name'),
+                Email: formData.get('email'),
+                JobChoice: formData.get('jobchoice'),
+                JobReason: formData.get('jobreason')
+            }
+        };
+
+        fetch('https://api.airtable.com/v0/apppf4IoyxbMvdEYs/tblRdgaRNBqnDM9HC', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer keyevqKNKrDeac8J8',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.id) {
+                alert('Application submitted successfully!');
+                document.getElementById('jobApplicationForm').reset();
+            } else {
+                alert('There was an error submitting your application.');
+                console.error(data);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error submitting your application.');
+        });
+    });
+</script>
+
+</body>
+</html>
