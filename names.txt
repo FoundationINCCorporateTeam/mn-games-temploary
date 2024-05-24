@@ -1,1 +1,5 @@
 statuschecks=false
+home=false
+premium=false
+ultimate=false
+elite=true
