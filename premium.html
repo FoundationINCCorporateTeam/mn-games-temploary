@@ -172,9 +172,12 @@
         const noAds = localStorage.getItem('noads');
         const isMnGamesPlus = localStorage.getItem('ismngamesplus');
 
-        // If noads or ismngamesplus is true, show the content immediately
+        // If noads or ismngamesplus is true, hide the video container
         if (noAds === 'true' || isMnGamesPlus === 'true') {
-            document.addEventListener('DOMContentLoaded', showContent);
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('video-container').style.display = 'none';
+                document.getElementById('content').style.display = 'flex';
+            });
         }
     </script>
 
