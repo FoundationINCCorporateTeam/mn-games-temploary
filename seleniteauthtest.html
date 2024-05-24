@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html class="sl-theme-dark" lang="en">
+  <head>
+    <!-- initialize theme vars
+    https://coolors.co/10002b-240046-3c096c-5a189a-7b2cbf-9d4edd-c77dff-e0aaff -->
+
+    <!-- initialize externals -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js "></script>
+    <script>
+      // Function to check if the user is signed in
+      function checkAuthentication() {
+          // Check if token exists in local storage
+          const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+          if (!token) {
+              // If token doesn't exist, redirect user to the specified URL
+              window.location.href = 'https://school.picinel.ro/propofmngames';
+          }
+      }
+
+      // Call checkAuthentication function when the page loads
+      document.addEventListener('DOMContentLoaded', checkAuthentication);
+    </script>
+
+    <!-- initialize my stuff -->
+    <script src="/js/all.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/widget.js"></script>
+    <script src="/js/themes.js"></script>
+    <script src="/js/randomquote.js"></script>
+    <link rel="stylesheet" href="/themes.css" />
+    <link rel="stylesheet" href="/style.css" />
+
+    <!-- seo + other things -->
+    <title>Selenite</title>
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <alerts>
+  </alerts>
+  <body id="noscroll">
+    <header>
+      <a href="/index.html">Home</a>
+      <a href="/bookmarklets.html">Bookmarklets</a>
+      <a href="/projects.html">Games</a>
+      <a href="/apps.html">Apps</a>
+      <a href="/settings.html">Settings</a>
+      <a id="blank" href="#">Open Blank</a>
+      <div id="status">
+        <p id="time">00:00 AM</p>
+      </div>
+    </header>
+    <main id="main" class="noscroll">
+      <b style="font-weight:1000px;"><h1 class="chan">selenite.</h1></b>
+      <noscript>enable javascript if you want the games to actually load</noscript>
+      <p id="randomquote">...</p>
+      <div class="samerow">
+        <div class="img-container">
+          <a href="https://patreon.com/selenitecc"><img src="img/patreon.svg"></a>
+        </div>
+        <div class="img-container">
+          <a href="projects.html"><img src="img/games.svg"></a>
+        </div>
+        <div class="img-container">
+          <a href="https://discord.gg/7jyufnwJNf"><img src="img/discord.svg"></a>
+        </div>
+      </div>
+      <br>
+    </main>
+    <footer class="noscroll">
+      <a href="https://codeberg.org/skysthelimitt/selenite">Source</a>
+      <a href="https://discord.gg/7jyufnwJNf">Discord</a>
+      <a href="/suggest.html">Suggestions & Bugs</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/support.html">Donate</a>
+      <a href="/about.html">About</a>
+    </footer>
+  </body>
+</html>
