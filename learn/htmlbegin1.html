@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Tutorial System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        #container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        #tutorialArea, #inputArea, #outputArea {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        #tutorialArea {
+            flex: 0.5;
+        }
+        textarea {
+            width: 100%;
+            height: 100%;
+            font-family: monospace;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 10px;
+        }
+        #error {
+            color: red;
+            font-weight: bold;
+            display: none;
+        }
+        #success {
+            color: green;
+            font-weight: bold;
+            display: none;
+        }
+       pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="tutorialArea">
+            <h2>Comments</h2>
+            <p>First we will learn about comments.</p>
+            <p>Comments are a way of writing messages in your code that you can see but they have no effect on the webpage the user is creating. You make a comment like this: </p><pre><code>&lt;!--Comment Example--&gt;</code></pre>
+          <p>Your Task: Create a comment that says "This is a test comment"</p>
+            <div id="error">Error: Your solution is incorrect. Please try again.</div>
+            <div id="success">Congratulations! Your solution is correct.</div>
+        </div>
+        <div id="inputArea">
+            <textarea id="htmlInput" placeholder="Enter HTML code here..."></textarea>
+            <button onclick="compileAndCheckHTML()">Run Code</button>
+        </div>
+        <div id="outputArea">
+            <iframe id="output"></iframe>
+        </div>
+    </div>
+
+    <script>
+        const requiredElements = [
+            { tag: 'Comment', text: 'This is a test comment' },
+        ];
+
+        function compileAndCheckHTML() {
+            const htmlInput = document.getElementById('htmlInput').value;
+            const iframe = document.getElementById('output');
+            iframe.srcdoc = htmlInput;
+
+            checkSolution(htmlInput);
+        }
+
+        function checkSolution(htmlInput) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlInput, 'text/html');
+            const errorDiv = document.getElementById('error');
+            const successDiv = document.getElementById('success');
+            let allElementsFound = true;
+
+            requiredElements.forEach(el => {
+                const elements = doc.getElementsByTagName(el.tag);
+                const elementFound = Array.from(elements).some(e => e.textContent.trim() === el.text);
+                if (!elementFound) {
+                    allElementsFound = false;
+                }
+            });
+
+            if (allElementsFound) {
+                errorDiv.style.display = 'none';
+                successDiv.style.display = 'block';
+            } else {
+                errorDiv.style.display = 'block';
+                successDiv.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
