@@ -162,7 +162,8 @@
         .then(data => {
             if (data.length === 0) {
                 // User does not exist, insert new user and generate referral URL
-                const referralURL = `https://school.picinel.ro/referral?email=${email}`; // Change to your actual website URL
+                const currentURL = window.location.origin;
+                const referralURL = `${currentURL}/referral?email=${email}`; // Change to your actual website URL
                 fetch(`${supabaseUrl}/rest/v1/users`, {
                     method: 'POST',
                     headers: {
@@ -254,7 +255,8 @@
         })
         .then(data => {
             if (data.length === 1) {
-                const referralURL = data[0].referral_url;
+                const currentURL = window.location.origin;
+                const referralURL = `${currentURL}/referral?email=${existingUserEmail}`;
                 document.getElementById("referralURL").textContent = `Your referral URL: ${referralURL}`;
             } else {
                 showErrorMessage('verificationMessage', 'User not found. Please check your email and try again.');
