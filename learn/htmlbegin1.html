@@ -57,7 +57,7 @@
             font-weight: bold;
             display: none;
         }
-       pre {
+        pre {
             background-color: #f4f4f4;
             padding: 10px;
             border-radius: 5px;
@@ -73,8 +73,9 @@
         <div id="tutorialArea">
             <h2>Comments</h2>
             <p>First we will learn about comments.</p>
-            <p>Comments are a way of writing messages in your code that you can see but they have no effect on the webpage the user is creating. You make a comment like this: </p><pre><code>&lt;!--Comment Example--&gt;</code></pre>
-          <p>Your Task: Create a comment that says "This is a test comment"</p>
+            <p>Comments are a way of writing messages in your code that you can see but they have no effect on the webpage the user is creating. You make a comment like this:</p>
+            <pre><code>&lt;!-- Comment Example --&gt;</code></pre>
+            <p>Your Task: Create a comment that says "This is a test comment".</p>
             <div id="error">Error: Your solution is incorrect. Please try again.</div>
             <div id="success">Congratulations! Your solution is correct.</div>
         </div>
@@ -89,7 +90,7 @@
 
     <script>
         const requiredElements = [
-            { tag: 'comment', text: 'This is a test comment' },
+            { type: 'comment', text: 'This is a test comment' }
         ];
 
         function compileAndCheckHTML() {
@@ -101,17 +102,16 @@
         }
 
         function checkSolution(htmlInput) {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(htmlInput, 'text/html');
             const errorDiv = document.getElementById('error');
             const successDiv = document.getElementById('success');
             let allElementsFound = true;
 
             requiredElements.forEach(el => {
-                const elements = doc.getElementsByTagName(el.tag);
-                const elementFound = Array.from(elements).some(e => e.textContent.trim() === el.text);
-                if (!elementFound) {
-                    allElementsFound = false;
+                if (el.type === 'comment') {
+                    const commentPattern = new RegExp(`<!--\\s*${el.text}\\s*-->`);
+                    if (!commentPattern.test(htmlInput)) {
+                        allElementsFound = false;
+                    }
                 }
             });
 
