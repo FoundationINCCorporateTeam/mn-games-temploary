@@ -3,54 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Check Referral and MN Credits Qualification</title>
+    <title>Check Referral Qualification</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <style>
+        .ui-dialog {
+            padding: 20px;
+        }
+        .ui-dialog-title {
+            font-size: 16px;
+        }
+        .ui-dialog-content {
+            font-size: 14px;
+        }
+        .ui-dialog-buttonset {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .ui-button {
+            padding: 8px 16px;
+            margin: 0 10px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
 </head>
 <body>
-    <button onclick="checkReferralAndMNQualification()">Check Referral and MN Credits Qualification</button>
+    <h1 style="font-family: Arial;">MN Games+ Qualification</h1>
+    <h3 style="font-family: Arial;">Click the button below to see if you qualify for MN Games+</h3>
+    <button id="checkReferralButton">Check Referral Qualification</button>
+
+    <div id="successMessage" title="Success" style="display:none;">
+        <p>Congratulations! You qualify for MN Games Plus!</p>
+    </div>
+    <div id="nonQualificationMessage" title="Non-Qualification" style="display:none;">
+        <p>Sorry, you do not qualify for MN Games Plus. Please check out this page: <a href="/mngamesplus/apply">Information Page</a> to find out more information on the criteria needed to subscribe.</p>
+    </div>
+    <div id="errorMessage" title="Error" style="display:none;">
+        <p>An error occurred while checking your qualification: <span id="errorDetail"></span></p>
+        <p>Please contact support.</p>
+        <p><a href="https://mngamessupport.zohodesk.com" target="_blank">Support Portal</a></p>
+    </div>
 
     <script>
-        async function checkReferralAndMNQualification() {
-            // Get the email from local storage
-            const userEmail = localStorage.getItem("email");
+        async function checkReferralQualification() {
+            try {
+                // Get the email from local storage
+                const userEmail = localStorage.getItem("email");
 
-            // Check if email is present
-            if (!userEmail) {
-                console.log("No email found in local storage.");
-                return;
-            }
-
-            // Fetch user data from Supabase
-            const response = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/users?email=eq.' + userEmail, {
-                headers: {
-                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
-                    'Content-Type': 'application/json'
+                // Check if email is present
+                if (!userEmail) {
+                    throw new Error("User email not found in local storage.");
                 }
-            });
 
-            const data = await response.json();
+                // Fetch user data from Supabase
+                const response = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+                    headers: {
+                        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-            // Check if user data exists
-            if (data.length === 0) {
-                console.log("User not found in the database.");
-                return;
-            }
+                const data = await response.json();
 
-            // Check if referral count is over 4
-            const referralCount = data[0].referral_count;
-            if (referralCount > 2) {
-                console.log("Referral count qualifies.");
+                // Check if user data exists
+                if (data.length === 0) {
+                    throw new Error("User not found in the database.");
+                }
 
-                // Check if MN Credits value is greater than 50
-                const mnCredits = data[0].mn_credits;
-                if (mnCredits > 50) {
-                    console.log("Congratulations! You qualify.");
+                // Check if referral count is over 2
+                const referralCount = data[0].referral_count;
+                if (referralCount > 2) {
+                    // Show success message
+                    $("#successMessage").dialog({
+                        modal: true,
+                        buttons: {
+                            OK: function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
                 } else {
-                    console.log("Sorry, your MN Credits are not sufficient.");
+                    // Show non-qualification message
+                    $("#nonQualificationMessage").dialog({
+                        modal: true,
+                        buttons: {
+                            OK: function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
                 }
-            } else {
-                console.log("Sorry, you do not qualify based on referral count.");
+            } catch (error) {
+                console.error("Error occurred:", error);
+                $("#errorDetail").text(error.message);
+                $("#errorMessage").dialog({
+                    modal: true,
+                    buttons: {
+                        OK: function() {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
             }
         }
+
+        // Attach event listener to the button
+        $(document).ready(function() {
+            $('#checkReferralButton').on('click', checkReferralQualification);
+        });
     </script>
 </body>
 </html>
