@@ -99,44 +99,42 @@
         </div>
     </div>
 
-    <script>
-        const requiredElements = [
-            { type: 'h1', text: 'Largest Heading' },
-            { type: 'h2', text: 'Second Largest Heading' },
-            { type: 'h3', text: 'Medium Heading' },
-            { type: 'p', text: 'This is a paragraph on an HTML Page' }
-        ];
+<script>
+    const requiredElements = [
+        { type: 'h1', text: 'Largest Heading' },
+        { type: 'h2', text: 'Second Largest Heading' },
+        { type: 'h3', text: 'Medium Heading' },
+        { type: 'p', text: 'This is a paragraph on an HTML Page' }
+    ];
 
-        function compileAndCheckHTML() {
-            const htmlInput = document.getElementById('htmlInput').value;
-            const iframe = document.getElementById('output');
-            iframe.srcdoc = htmlInput;
+    function compileAndCheckHTML() {
+        const htmlInput = document.getElementById('htmlInput').value.replace(/\s+/g, ''); // Remove all spaces
+        const iframe = document.getElementById('output');
+        iframe.srcdoc = htmlInput;
 
-            checkSolution(htmlInput);
-        }
+        checkSolution(htmlInput);
+    }
 
-        function checkSolution(htmlInput) {
-            const errorDiv = document.getElementById('error');
-            const successDiv = document.getElementById('success');
-            let allElementsFound = true;
+    function checkSolution(htmlInput) {
+        const errorDiv = document.getElementById('error');
+        const successDiv = document.getElementById('success');
+        let allElementsFound = true;
 
-            requiredElements.forEach(el => {
-                if (el.type === 'comment') {
-                    const commentPattern = new RegExp(`<!--\\s*${el.text}\\s*-->`);
-                    if (!commentPattern.test(htmlInput)) {
-                        allElementsFound = false;
-                    }
-                }
-            });
-
-            if (allElementsFound) {
-                errorDiv.style.display = 'none';
-                successDiv.style.display = 'block';
-            } else {
-                errorDiv.style.display = 'block';
-                successDiv.style.display = 'none';
+        requiredElements.forEach(el => {
+            const textWithoutSpaces = el.text.replace(/\s+/g, ''); // Remove all spaces from required element text
+            if (htmlInput.indexOf(textWithoutSpaces) === -1) {
+                allElementsFound = false;
             }
+        });
+
+        if (allElementsFound) {
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'block';
+        } else {
+            errorDiv.style.display = 'block';
+            successDiv.style.display = 'none';
         }
-    </script>
+    }
+</script>
 </body>
 </html>
