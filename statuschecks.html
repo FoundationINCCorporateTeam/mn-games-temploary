@@ -3,9 +3,9 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Check Referral and MN Credits Qualification</title>
+ <title>Check MN Credits Qualification</title>
  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
-        <script src="redirect.js"></script>
+ <script src="redirect.js"></script>
  <style>
   .ui-dialog {
    padding: 20px;
@@ -45,13 +45,8 @@
   <p><a href="https://mngamessupport.zohodesk.com" target="_blank">Support Portal</a></p>
  </div>
 
- <div id="referralDialog" title="MN Games Referral Program" style="display:none;">
-  <p>You have not signed up for the MN Games referral program yet. Please sign-up and refer MN Games to at least 2 people.</p>
-  <p>Please go to the <a href="/customerreferral">MN Games Referral Program Page</a> to start.</p>
- </div>
-
  <script>
- async function checkReferralAndMNQualification() {
+ async function checkMNQualification() {
     try {
         // Get the email from local storage
         const userEmail = localStorage.getItem("email");
@@ -63,25 +58,75 @@
 
         console.log("User email found in local storage:", userEmail);
 
-        // Fetch user referral count from Supabase
-        const referralResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+        // Fetch user MN credits from Supabase
+        const creditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
             headers: {
-                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
                 'Content-Type': 'application/json'
             }
         });
 
         // Check if the response is ok
-        if (!referralResponse.ok) {
-            throw new Error(`Network response was not ok: ${referralResponse.statusText}`);
+        if (!creditsResponse.ok) {
+            throw new Error(`Network response was not ok: ${creditsResponse.statusText}`);
         }
 
-        const referralData = await referralResponse.json();
+        const creditsData = await creditsResponse.json();
 
         // Check if user data exists
-        if (referralData.length === 0) {
-            console.error("User not found in the referral database.");
-            $("#referralDialog").dialog({
+        if (creditsData.length === 0) {
+            throw new Error("User not found in the credits database.");
+        }
+
+        // Get MN credits
+        const mnCredits = creditsData[0].mn_credits;
+
+        if (mnCredits > 50) {
+            console.log("User qualifies based on MN Credits.");
+
+            // Add entry to the mngamesplus table
+            const mngamesplusResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/mngamesplus', {
+                method: 'POST',
+                headers: {
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: userEmail })
+            });
+
+            // Check if adding entry to mngamesplus was successful
+            if (!mngamesplusResponse.ok) {
+                throw new Error(`Failed to add entry to mngamesplus: ${mngamesplusResponse.statusText}`);
+            }
+
+            // Subtract 50 MN Credits
+            const creditsUpdateResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+                method: 'PATCH',
+                headers: {
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ mn_credits: mnCredits - 50 })
+            });
+
+            // Check if credits update was successful
+            if (!creditsUpdateResponse.ok) {
+                throw new Error(`Failed to update MN Credits: ${creditsUpdateResponse.statusText}`);
+            }
+
+            // Show success message
+            $("#successMessage").dialog({
+                modal: true,
+                buttons: {
+                    OK: function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            return;
+        } else {
+            // Show non-qualification message
+            $("#nonQualificationMessage").dialog({
                 modal: true,
                 buttons: {
                     OK: function() {
@@ -91,82 +136,9 @@
             });
             return;
         }
-
-        console.log("User referral data retrieved from the database:", referralData);
-
-        // Get referral count
-        const referralCount = referralData[0].referral_count;
-
-       // Fetch user MN credits from another table in Supabase
-const creditsResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
-    headers: {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
-        'Content-Type': 'application/json'
-    }
-});
-
-// Check if the response is ok
-if (!creditsResponse.ok) {
-    throw new Error(`Network response was not ok: ${creditsResponse.statusText}`);
-}
-
-const creditsData = await creditsResponse.json();
-
-// Check if user data exists
-if (creditsData.length === 0) {
-    throw new Error("User not found in the credits database.");
-}
-
-// Get MN credits
-const mnCredits = creditsData[0].mn_credits;
-
-      if (referralCount > 2 && mnCredits > 50) {
-    console.log("User qualifies based on referral count and MN Credits.");
-
-        // Add entry to the mngamesplus table
-    const mngamesplusResponse = await fetch('https://dvsoyesscauzsirtjthh.supabase.co/rest/v1/mngamesplus', {
-        method: 'POST',
-        headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: userEmail })
-    });
-
-    // Check if adding entry to mngamesplus was successful
-    if (!mngamesplusResponse.ok) {
-        throw new Error(`Failed to add entry to mngamesplus: ${mngamesplusResponse.statusText}`);
-    }
-
-    // Subtract 50 MN Credits
-    const creditsUpdateResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
-        method: 'PATCH',
-        headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ mn_credits: mnCredits - 50 })
-    });
-
-    // Check if credits update was successful
-    if (!creditsUpdateResponse.ok) {
-        throw new Error(`Failed to update MN Credits: ${creditsUpdateResponse.statusText}`);
-    }
-
-    // Show success message
-    $("#successMessage").dialog({
-        modal: true,
-        buttons: {
-            OK: function() {
-                $(this).dialog("close");
-            }
-        }
-    });
-    return;
-      }
     } catch (error) {
         console.error("Error occurred:", error);
-        $("#error.errorDetail").text(error.message);
+        $("#errorDetail").text(error.message);
         $("#errorMessage").dialog({
             modal: true,
             buttons: {
@@ -178,10 +150,9 @@ const mnCredits = creditsData[0].mn_credits;
     }
 }
 
-
   // Attach event listener to the button
   $(document).ready(function() {
-   $('#checkCreditsButton').on('click', checkReferralAndMNQualification);
+   $('#checkCreditsButton').on('click', checkMNQualification);
   });
  </script>
 </body>
