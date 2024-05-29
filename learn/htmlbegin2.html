@@ -16,6 +16,7 @@
         }
         #container {
             display: flex;
+            flex-direction: column;
             width: 100%;
             max-width: 1200px;
             border: 1px solid #ccc;
@@ -24,19 +25,18 @@
         }
         #tutorialArea, #inputArea, #outputArea {
             flex: 1;
-            display: flex;
-            flex-direction: column;
             padding: 10px;
         }
         #tutorialArea {
-            flex: 0.5;
+            overflow-y: auto;
         }
         textarea {
-            width: 100%;
-            height: 100%;
+            width: calc(100% - 20px);
+            height: 200px; /* Set a fixed height or adjust as needed */
             font-family: monospace;
             font-size: 14px;
             box-sizing: border-box;
+            margin-bottom: 10px;
         }
         iframe {
             width: 100%;
@@ -71,11 +71,22 @@
 <body>
     <div id="container">
         <div id="tutorialArea">
-            <h2>Comments</h2>
-            <p>HTML Text</p>
-            <p>HTML Text is a way to show text on the page.<br> There are many different types of text and here are the elements: h1, h2, h3, h4, h5, h6, and p.<br> H1 is heading 1 with it being the biggest and H6 being the smallest heading.<br> Also p stands for paragraph.<br> Here is how you would write the elements:</p>
-            <pre><code>&lt;h1&lt;Heading&lt;/h1&gt;<br> &lt;h2&lt;Heading&lt;/h2&gt;<br> &lt;h3&lt;Heading&lt;/h3&gt;<br> &lt;h4&lt;Heading&lt;/h4&gt;<br> &lt;h5&lt;Heading&lt;/h5&gt;<br> &lt;h6&lt;Heading&lt;/h6&gt;<br> &lt;p&lt;Paragrapah&lt;/p&gt;</code></pre>
-            <p>Your Task: Create and h1, h2, h3 and p text and put the following things in the fields,<br> h1: Largest Heading,<br> h2: Second Largest Heading,<br> h3: Medium Heading,<br> p: This is a paragraph on an HTML Page.</p>
+            <h2>HTML Text</h2>
+            <p>HTML Text is a way to show text on the page. There are many different types of text and here are the elements: h1, h2, h3, h4, h5, h6, and p. H1 is heading 1 with it being the biggest and H6 being the smallest heading. Also p stands for paragraph. Here is how you would write the elements:</p>
+            <pre><code>&lt;h1&gt;Heading&lt;/h1&gt;
+&lt;h2&gt;Heading&lt;/h2&gt;
+&lt;h3&gt;Heading&lt;/h3&gt;
+&lt;h4&gt;Heading&lt;/h4&gt;
+&lt;h5&gt;Heading&lt;/h5&gt;
+&lt;h6&gt;Heading&lt;/h6&gt;
+&lt;p&gt;Paragraph&lt;/p&gt;</code></pre>
+            <p>Your Task: Create an h1, h2, h3, and p text and put the following things in the fields,</p>
+            <ul>
+                <li>h1: Largest Heading</li>
+                <li>h2: Second Largest Heading</li>
+                <li>h3: Medium Heading</li>
+                <li>p: This is a paragraph on an HTML Page.</li>
+            </ul>
             <div id="error">Error: Your solution is incorrect. Please try again.</div>
             <div id="success">Congratulations! Your solution is correct.</div>
         </div>
@@ -91,9 +102,9 @@
     <script>
         const requiredElements = [
             { type: 'h1', text: 'Largest Heading' },
-          { type: 'h2', text: 'Second Largest Heading' },
-      { type: 'h3', text: 'Medium Heading' },
-      { type: 'p', text: 'This is a paragraph on an HTML Page' }
+            { type: 'h2', text: 'Second Largest Heading' },
+            { type: 'h3', text: 'Medium Heading' },
+            { type: 'p', text: 'This is a paragraph on an HTML Page' }
         ];
 
         function compileAndCheckHTML() {
