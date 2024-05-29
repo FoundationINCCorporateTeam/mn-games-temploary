@@ -108,7 +108,7 @@
     ];
 
     function compileAndCheckHTML() {
-        const htmlInput = document.getElementById('htmlInput').value.replace(/\s+/g, ''); // Remove all spaces
+        const htmlInput = document.getElementById('htmlInput').value; // Remove all spaces
         const iframe = document.getElementById('output');
         iframe.srcdoc = htmlInput;
 
@@ -120,9 +120,19 @@
         const successDiv = document.getElementById('success');
         let allElementsFound = true;
 
+        const tempElement = document.createElement('div');
+        tempElement.innerHTML = htmlInput;
+
         requiredElements.forEach(el => {
-            const textWithoutSpaces = el.text.replace(/\s+/g, ''); // Remove all spaces from required element text
-            if (htmlInput.indexOf(textWithoutSpaces) === -1) {
+            const elements = tempElement.getElementsByTagName(el.type);
+            let found = false;
+            for (let i = 0; i < elements.length; i++) {
+                if (elements[i].textContent.trim() === el.text) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
                 allElementsFound = false;
             }
         });
