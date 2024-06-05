@@ -36,7 +36,6 @@
     <h4 style="text-align: center;">Search for games:</h4>
     <input type="text" id="searchInput" placeholder="Search...">
     <div id="gameContainer"></div>
-
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const games = [
@@ -339,13 +338,6 @@
 
         const container = document.getElementById("gameContainer");
 
-        // Function to render cards based on game names array
-        function renderCards(gameNames) {
-            container.innerHTML = ""; // Clear previous cards
-            
-                    // Function to open game URL in fullscreen iframe
-        function openGameInFullscreen(url) {const container = document.getElementById("gameContainer");
-
         // Function to open game URL in fullscreen iframe
         function openGameInFullscreen(url) {
             const iframe = document.createElement("iframe");
@@ -389,4 +381,3 @@
 </script>
 </body>
 </html>
-
