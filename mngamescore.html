@@ -409,7 +409,7 @@
         // Event listener for search input
         const searchInput = document.getElementById("searchInput");
         searchInput.addEventListener("input", function() {
-            const searchTerm = this.value.toLowerCase();
+            const searchTerm = this.value.toLowerCase().replace(/ /g, '-');
             const filteredGames = games.filter(function(gameName) {
                 return gameName.toLowerCase().includes(searchTerm);
             });
