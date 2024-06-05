@@ -336,16 +336,7 @@
             "zombs-royale"
         ];
 
-const container = document.getElementById("gameContainer");
-
-        // Function to open game URL in fullscreen iframe
-        function openGameInFullscreen(url) {
-            window.open("about:blank", "_blank", "fullscreen=yes");
-            const iframe = document.createElement("iframe");
-            iframe.setAttribute("src", url);
-            iframe.setAttribute("style", "position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 999999;");
-            document.body.appendChild(iframe);
-        }
+        const container = document.getElementById("gameContainer");
 
         // Function to render cards based on game names array
         function renderCards(gameNames) {
@@ -364,6 +355,11 @@ const container = document.getElementById("gameContainer");
                 });
                 container.appendChild(card);
             });
+        }
+
+        // Function to open game URL in fullscreen iframe
+        function openGameInFullscreen(url) {
+            window.open(url, "_blank", "fullscreen=yes");
         }
 
         // Initial render of cards
