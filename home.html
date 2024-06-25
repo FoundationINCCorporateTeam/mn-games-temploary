@@ -1,30 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-      <!-- Appzi: Capture Insightful Feedback -->
-
-<script async src="https://w.appzi.io/w.js?token=vi6HE"></script>
-        <script src="redirect.js"></script>
-<!-- End Appzi -->
-      <!--<script type="application/javascript">
-      window.tiledeskSettings= 
-      {
-          projectid: "6615445c38b67d001348b5d1"
-      };
-      (function(d, s, id) { 
-          var w=window; var d=document; var i=function(){i.c(arguments);};
-          i.q=[]; i.c=function(args){i.q.push(args);}; w.Tiledesk=i;                    
-          var js, fjs=d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js=d.createElement(s); 
-          js.id=id; js.async=true; js.src="https://widget.tiledesk.com/v6/launch.js";
-          fjs.parentNode.insertBefore(js, fjs);
-      }(document,'script','tiledesk-jssdk'));
-  </script>-->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home | MN Games</title>
-<link rel="shortcut icon" type="image/png" href="/schoology-logo.png"/>
+<link rel="shortcut icon" type="image/png" href="/mn-games-logo.png"/>
+
+<!-- External Scripts -->
+<script src="https://sak.userreport.com/mngames/launcher.js" async id="userreport-launcher-script"></script>
+<script src="redirect.js"></script>
+
+<!-- Custom CSS Styles -->
 <style>
     /* Global Styles */
     body {
@@ -36,7 +22,7 @@
         text-align: center;
     }
 
-    /* New styles for the announcement bar */
+    /* Announcement bar styles */
     .announcement-bar {
         background-color: white;
         color: purple;
@@ -175,9 +161,10 @@
         border: 2px solid #333;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
         z-index: 9999;
-        width: 80%; /* Adjust width as needed */
-        max-width: 600px; /* Limit maximum width */
-        color: #fff; /* Text color */
+        width: 80%; /* Adjusted width */
+        max-width: 600px; /* Added max-width */
+        color: #fff;
+        text-align: left; /* Adjusted text alignment */
     }
 
     .popup button {
@@ -222,15 +209,19 @@
     .disclaimer-content input[type="checkbox"] {
         display: none; /* Hide checkbox */
     }
+
 </style>
 </head>
 <body>
 
+<!-- Announcement Bar -->
 <div class="announcement-bar">
-    <button class="futuristic-button premium-button" onclick=window.location.href="https://mngames.cronitorstatus.com">View Status Page</button><p> Click here to view the 2024-2025 school year trailer: <a href="">MN Games Feature Trailer</a></p>
-<p>MN Games Shuts Down on Wednesday, May 29 at 2:10pm.Please finish all of your gaming needs by Wednesday, May 29 at 2:10pm. Thank you so much for all of your loyalty this year and have a great summer! -Nolan I. MN Games Founder and Owner</p>
+    <button class="futuristic-button premium-button" onclick="window.location.href='https://mngames.cronitorstatus.com'">View Status Page</button>
+    <p>Click here to view the 2024-2025 school year trailer: <a href="https://1drv.ms/v/s!AkHowQZNCOF2ax3U37bxPsgplJ0?e=AG9NTP">MN Games Feature Trailer</a></p>
+    <p>MN Games Shuts Down on Wednesday, May 29 at 2:10pm. Please finish all of your gaming needs by Wednesday, May 29 at 2:10pm. Thank you so much for all of your loyalty this year and have a great summer! -Nolan I. MN Games Founder and Owner</p>
 </div>
 
+<!-- Navigation Bar -->
 <nav>
     <a href="index.html">Home</a>
     <a href="/mngamesplus/mngamesplus">MN Games+</a>
@@ -245,68 +236,102 @@
     <a href="sign-in">Sign-in</a>
 </nav>
 
-<div class="popup" id="popup1">
+<!-- Popup for Disclaimer / Daily Rewards -->
+<div class="popup" id="popup">
     <div class="disclaimer-content">
-        <h4> MN Games honors all US veterans and active personnel in the military. To anyone who served and to anyone who died in the line of duty, we thank you for your service. Have a great Memorial Day.</h4>
+        <h4>MN Games honors all US veterans and active personnel in the military. To anyone who served and to anyone who died in the line of duty, we thank you for your service. Have a great Memorial Day.</h4>
         <h2>Disclaimer</h2>
         <p>Dear user,</p>
         <p>Welcome to our game website. Before you proceed, we kindly ask you to carefully read and acknowledge the following:</p>
         <p>1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.</p>
         <p>2. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.</p>
         <p>3. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.</p>
-        <p>4. We reserve the right to restrict access to our website. Our website is aimed towards kids and family's. If you are a teacher or educator you are prohibited from accessing our website. We are restricting access because we need to save our server resources.</p>
-        <button onclick="closePopupAndCollect()">Close and Collect Daily Rewards</button>
+        <p>4. We reserve the right to restrict access to our website. Our website is aimed towards kids and families. If you are a teacher or educator, you are prohibited from accessing our website. We are restricting access because we need to save our server resources.</p>
+        <button onclick="closePopup()">Close</button>
     </div>
 </div>
 
+<!-- Overlay for Popup -->
 <div class="overlay" id="overlay"></div>
 
+<!-- Main Content Container -->
 <div class="container">
     <h1>Welcome to MN Games</h1>
-    <p>Experience the future of gaming. Attention! We have put ads on our website to upgrade our hosting! You don't have to worry, we are still able to have games that will get you excited. We need money for 2023-2024 and 2024-2025 in the future.</p>
+    <p>Experience the future of gaming. Attention! We have put ads on our website to upgrade our hosting! You don't have to, but if you would click on them that would earn us more revenue.</p>
+    <h3>Sign-up for an MN Games account for free!</h3>
+    <button class="futuristic-button premium-button" onclick="window.location.href='sign-up'">Sign-up</button>
+    <button class="futuristic-button ultimate-button" onclick="window.location.href='sign-in'">Sign-in</button>
+    <a style="color: white;" href="terms-of-service">View Terms of Service</a>
+    
+    <h2>Reviews</h2>
+    <p style="text-align: left;">
+        Lance: So, I just scoped out this game site called MN Games, and let me tell ya, it's pretty sweet! First off, it's one of those unblocked game sites, so you can sneak in some gaming action even when you're supposed to be studying algebra or whatever. The homepage is like a neon sign calling out to all the gamers out there. It's got this slick layout with flashy buttons and cool game thumbnails that make you wanna click on everything! Navigating around MN Games is a breeze. You can find games sorted by categories like action, puzzle, and sports. Plus, they've got this handy-dandy search bar in case you're looking for something specific, like that one game your buddy told you about. But the real gem of MN Games is their game collection. They've got all the classics and some hidden gems too. And the best part? It's all unblocked, so you can play to your heart's content without worrying about pesky restrictions. Overall, MN Games gets a big thumbs-up from me. It's like a secret clubhouse for gamers, where you can kick back, relax, and play some awesome games without anyone breathing down your neck. So, if you're looking for a rad way to kill some time, definitely give MN Games a shot! (Thanks for the review from ChatGPT/Lance)
+    </p>
 
+    <h2>Meet The Creators!</h2>
+
+    <!-- Cards for Team Members -->
     <div class="card-container">
         <div class="card">
-            <h1> MN Games+</h1>
-            <p> MN Games+ has awesome website games. Our homepage is a perfect, you could play all of our games, and it is so amazing. There is no better time to come and check out our website than to join MN Games today. Visit our website for more information, including our website: <a href="mngames.cronitorstatus.com">Click here for more information</a>.</p>
+            <h1>Nolan</h1>
+            <p class="title">CEO, Lead Developer, and Founder</p>
+            <p>Hi, I am the owner and founder of MN Games!</p>
         </div>
-
         <div class="card">
-            <h1> MN Games Premium</h1>
-            <p> MN Games' premium website is the ultimate website to experience website games, and there is a huge deal about a new website. They are making progress, and there is no better time than to come and check out our website than to join MN Games today. There is no better way to visit our website for more information about a website at a time.</p>
+            <h1>Vinny</h1>
+            <p class="title">Chief Administrative Officer</p>
+            <p></p>
         </div>
-
         <div class="card">
-            <h1> MN Games Ultimate</h1>
-            <p> MN Games' Ultimate website is the best website for a year in the past. You will not find the best time for an interesting and helpful website. There is no better time to join MN Games today than today, so visit our website for more information. Click here for more information, and also click here for our website.</p>
+            <h1>MN Games Official</h1>
+            <p class="title">Automation Robot</p>
+            <p></p>
         </div>
     </div>
+
+    <!-- Button to View More Team Members -->
+    <button class="futuristic-button ultimate-button" onclick="window.location.href='/ourteam.html'">View more of our leaders!</button>
 </div>
 
+<!-- Additional Call to Action and Status Embed -->
+<h2> Hello! I have two favors to ask! If you would do this for me it would mean the world to me!</h2>
+<p>One, if you could share this with your friends to get more people on our website I would appreciate it. This would help me with ad revenue and help me fund our site.</p>
+<p>Two, if you would click on ads that would also really help me fund our site!</p>
+<h3>Thank you so much!</h3>
+
+<!-- Embed for Status -->
+<iframe 
+  src="https://mn-games.instatus.com/embed-status/c4693cdc/light-md" 
+  width="230" 
+  height="61" 
+  frameBorder="0" 
+  scrolling="no" 
+  style="border: none;">
+</iframe>
+
+<!-- Scripts Section -->
 <script>
-    // Function to show popup
+    // Function to show the popup on page load
     function showPopup() {
-        document.getElementById('popup1').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("popup").style.display = "block";
     }
 
-    // Function to close popup and collect daily rewards
-    function closePopupAndCollect() {
-        alert('Daily rewards collected!');
-        document.getElementById('popup1').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
-
-    // Function to close popup without collecting daily rewards
+    // Function to close the popup
     function closePopup() {
-        document.getElementById('popup1').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("popup").style.display = "none";
     }
+
+    // Show the popup when the window is fully loaded
+    window.onload = function() {
+        showPopup();
+    };
 </script>
+
+<!-- External Scripts (continued) -->
 <script src="maintenance.js"></script>
-      <script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script><script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq02f8433ca113e1f752d622733d14184cf579c98b0ae35336845045f5dfe520c2" defer></script>
-        
-<!-- Start of OpenWidget (www.openwidget.com) code -->
+<script>window.$zoho=window.$zoho||{};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script><script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq02f8433ca113e1f752d622733d14184cf579c98b0ae35336845045f5dfe520c2" defer></script>
 <script>
   window.__ow = window.__ow || {};
   window.__ow.organizationId = "cf87084b-7a08-47c4-8885-716aaf1c60c1";
@@ -315,6 +340,5 @@
   ;(function(n,t,c){function i(n){return e._h?e._h.apply(null,n):e._q.push(n)}var e={_q:[],_h:null,_v:"2.0",on:function(){i(["on",c.call(arguments)])},once:function(){i(["once",c.call(arguments)])},off:function(){i(["off",c.call(arguments)])},get:function(){if(!e._h)throw new Error("[OpenWidget] You can't use getters before load.");return i(["get",c.call(arguments)])},call:function(){i(["call",c.call(arguments)])},init:function(){var n=t.createElement("script");n.async=!0,n.type="text/javascript",n.src="https://cdn.openwidget.com/openwidget.js",t.head.appendChild(n)}};!n.__ow.asyncInit&&e.init(),n.OpenWidget=n.OpenWidget||e}(window,document,[].slice))
 </script>
 <noscript>You need to <a href="https://www.openwidget.com/enable-javascript" rel="noopener nofollow">enable JavaScript</a> to use the communication tool powered by <a href="https://www.openwidget.com/" rel="noopener nofollow" target="_blank">OpenWidget</a></noscript>
-<!-- End of OpenWidget code -->
 </body>
 </html>
