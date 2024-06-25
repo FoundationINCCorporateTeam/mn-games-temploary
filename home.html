@@ -323,7 +323,7 @@ Overall, MN Games gets a big thumbs-up from me. It's like a secret clubhouse for
     // Function to add credits if not previously added
     async function addDailyCredit() {
         // Retrieve email from localStorage
-        const userEmail = localStorage.getItem('userEmail');
+        const userEmail = localStorage.getItem('email');
 
         if (userEmail) {
             // Check if credit has already been given today (using localStorage)
@@ -335,7 +335,7 @@ Overall, MN Games gets a big thumbs-up from me. It's like a secret clubhouse for
                 localStorage.setItem('lastCreditDate', today);
 
                 // Perform API call to update credits in Supabase
-                const token = 'YOUR_SUPABASE_API_TOKEN';
+                const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
                 const url = `https://tdsxayxnjomnoiestnmj.supabase.co/users?email=eq.${encodeURIComponent(userEmail)}`;
 
                 try {
