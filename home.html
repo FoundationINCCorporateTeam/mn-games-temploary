@@ -320,6 +320,10 @@ Overall, MN Games gets a big thumbs-up from me. It's like a secret clubhouse for
 >
 </iframe>
   <script>
+         const supabaseUrl = "https://tdsxayxnjomnoiestnmj.supabase.co"; // Replace with your Supabase URL
+  const supabaseAnonKey = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY"; // Replace with your Supabase Anon Key
+
+  const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
     // Function to get the email from localStorage
 function getEmailFromLocalStorage() {
   return localStorage.getItem("email");
@@ -341,10 +345,6 @@ function hasDailyRewardPassed() {
 
 // Function to update user's mn_credits in Supabase
 async function updateMnCredits(email) {
-  const supabaseUrl = "https://tdsxayxnjomnoiestnmj.supabase.co"; // Replace with your Supabase URL
-  const supabaseAnonKey = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY"; // Replace with your Supabase Anon Key
-
-  const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
   const { data, error } = await supabase
     .from("users")
