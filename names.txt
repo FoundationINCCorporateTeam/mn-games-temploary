@@ -1,5 +1,5 @@
 statuschecks=false
-home=true
+home=false
 premium=true
 ultimate=true
 elite=true
