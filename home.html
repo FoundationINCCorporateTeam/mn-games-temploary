@@ -320,31 +320,66 @@ Overall, MN Games gets a big thumbs-up from me. It's like a secret clubhouse for
 >
 </iframe>
   <script>
-    async function claimDailyReward() {
-  const user = supabase.auth.user(); // Get currently logged-in user
-
-  if (!user) {
-    throw new Error("You must be logged in to claim rewards!");
-  }
-
-  try {
-    // Call a server-side function to handle reward logic (see below)
-    const claimResponse = await fetch('/claim-reward', {
-      method: 'POST',
-      body: JSON.stringify({ userId: user.id }),
-    });
-
-    const data = await claimResponse.json();
-
-    if (data.error) {
-      throw new Error(data.error);
-    }
-
-    console.log("Claimed reward:", data.reward);
-  } catch (error) {
-    console.error("Failed to claim reward:", error.message);
-  }
+    // Function to get the email from localStorage
+function getEmailFromLocalStorage() {
+  return localStorage.getItem("email");
 }
+
+// Function to check if 24 hours have passed since the last reward
+function hasDailyRewardPassed() {
+  const lastRewardTime = localStorage.getItem("lastRewardTime");
+  if (!lastRewardTime) {
+    return true; // No last reward time stored, so grant reward
+  }
+
+  const currentTime = Date.now();
+  const DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
+  const timeDifference = currentTime - lastRewardTime;
+
+  return timeDifference >= DAY_IN_MILLISECONDS;
+}
+
+// Function to update user's mn_credits in Supabase
+async function updateMnCredits(email) {
+  const supabaseUrl = "https://tdsxayxnjomnoiestnmj.supabase.co"; // Replace with your Supabase URL
+  const supabaseAnonKey = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY"; // Replace with your Supabase Anon Key
+
+  const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+
+  const { data, error } = await supabase
+    .from("users")
+    .update({ mn_credits: supabase.raw("mn_credits + 1") })
+    .match({ email });
+
+  if (error) {
+    console.error("Error updating mn_credits:", error);
+    return;
+  }
+
+  console.log("Successfully updated mn_credits for", email);
+}
+
+// Main function that runs on page load
+async function dailyRewards() {
+  const email = getEmailFromLocalStorage();
+
+  if (!email) {
+    console.warn("No email found in localStorage");
+    return;
+  }
+
+  if (!hasDailyRewardPassed()) {
+    console.log("Daily reward already claimed, waiting for next 24 hours");
+    return;
+  }
+
+  await updateMnCredits(email);
+
+  // Update last reward time in localStorage
+  localStorage.setItem("lastRewardTime", Date.now());
+}
+
+dailyRewards();
 
   </script>
 </script>
