@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home | MN Games</title>
 <link rel="shortcut icon" type="image/png" href="/mn-games-logo.png"/>
+<!-- Appzi: Capture Insightful Feedback -->
 
+<script async src="https://w.appzi.io/w.js?token=vi6HE"></script>
+        <script src="redirect.js"></script>
+<!-- End Appzi -->
 <!-- External Scripts -->
 <script src="https://sak.userreport.com/mngames/launcher.js" async id="userreport-launcher-script"></script>
 <script src="redirect.js"></script>
@@ -246,8 +250,13 @@
         <p>1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.</p>
         <p>2. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.</p>
         <p>3. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.</p>
-        <p>4. We reserve the right to restrict access to our website. Our website is aimed towards kids and families. If you are a teacher or educator, you are prohibited from accessing our website. We are restricting access because we need to save our server resources.</p>
-        <button onclick="closePopup()">Close</button>
+        <p>4. We reserve the right to restrict access to our website. Our website is aimed towards kids and families. If you are a teacher or educator, or anyone who can have us banned, you should leave this site now.</p>
+        <p>5. If you have any questions or concerns regarding these terms, please do not hesitate to <a href="mailto:ceo@mn-games.com">contact us</a>.</p>
+        <label for="acknowledge">
+            <input type="checkbox" id="acknowledge" required>
+            I acknowledge that I have read and understood the disclaimer.
+        </label>
+        <button onclick="acknowledgeDisclaimer()">Continue</button>
     </div>
 </div>
 
@@ -311,16 +320,31 @@
 
 <!-- Scripts Section -->
 <script>
-    // Function to show the popup on page load
+    // Function to show the popup on page load and daily
     function showPopup() {
-        document.getElementById("overlay").style.display = "block";
-        document.getElementById("popup").style.display = "block";
+        var lastPopupDate = localStorage.getItem('lastPopupDate');
+        var today = new Date().toLocaleDateString();
+
+        if (!lastPopupDate || lastPopupDate !== today) {
+            localStorage.setItem('lastPopupDate', today);
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("popup").style.display = "block";
+        }
     }
 
     // Function to close the popup
     function closePopup() {
         document.getElementById("overlay").style.display = "none";
         document.getElementById("popup").style.display = "none";
+    }
+
+    // Function to acknowledge disclaimer and close popup
+    function acknowledgeDisclaimer() {
+        if (document.getElementById("acknowledge").checked) {
+            closePopup();
+        } else {
+            alert("Please acknowledge the disclaimer before continuing.");
+        }
     }
 
     // Show the popup when the window is fully loaded
