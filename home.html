@@ -10,6 +10,7 @@
 <script async src="https://w.appzi.io/w.js?token=vi6HE"></script>
         <script src="redirect.js"></script>
 <!-- End Appzi -->
+
 <!-- External Scripts -->
 <script src="https://sak.userreport.com/mngames/launcher.js" async id="userreport-launcher-script"></script>
 <script src="redirect.js"></script>
@@ -243,8 +244,10 @@
 <!-- Popup for Disclaimer / Daily Rewards -->
 <div class="popup" id="popup">
     <div class="disclaimer-content">
-        <h4>MN Games honors all US veterans and active personnel in the military. To anyone who served and to anyone who died in the line of duty, we thank you for your service. Have a great Memorial Day.</h4>
+        <h2>Daily Rewards</h2>
+        <p>Congratulations! You've earned 1 MN credit today.</p>
         <h2>Disclaimer</h2>
+            <h4><b>BY PROCCEDING YOU AGREE TO THE FOLLOWING DISCLAIMER</b></h4>
         <p>Dear user,</p>
         <p>Welcome to our game website. Before you proceed, we kindly ask you to carefully read and acknowledge the following:</p>
         <p>1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.</p>
@@ -252,11 +255,7 @@
         <p>3. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.</p>
         <p>4. We reserve the right to restrict access to our website. Our website is aimed towards kids and families. If you are a teacher or educator, or anyone who can have us banned, you should leave this site now.</p>
         <p>5. If you have any questions or concerns regarding these terms, please do not hesitate to <a href="mailto:ceo@mn-games.com">contact us</a>.</p>
-        <label for="acknowledge">
-            <input type="checkbox" id="acknowledge" required>
-            I acknowledge that I have read and understood the disclaimer.
-        </label>
-        <button onclick="acknowledgeDisclaimer()">Continue</button>
+        <button onclick="closePopup()">Close</button>
     </div>
 </div>
 
@@ -320,25 +319,67 @@
 
 <!-- Scripts Section -->
 <script>
-    // Function to show the popup on page load and daily
-    function showPopup() {
-        var lastPopupDate = localStorage.getItem('lastPopupDate');
-        var today = new Date().toLocaleDateString();
+    // Function to add daily credit and show popup
+    async function addDailyCreditAndShowPopup() {
+        // Retrieve email from localStorage
+        const userEmail = localStorage.getItem('userEmail');
 
-        if (!lastPopupDate || lastPopupDate !== today) {
-            localStorage.setItem('lastPopupDate', today);
-            document.getElementById("overlay").style.display = "block";
-            document.getElementById("popup").style.display = "block";
+        if (userEmail) {
+            // Check if credit has already been given today (using localStorage)
+            const lastCreditDate = localStorage.getItem('lastCreditDate');
+            const today = new Date().toISOString().split('T')[0]; // Get current date
+
+            if (lastCreditDate !== today) {
+                // Update localStorage to mark credit given today
+                localStorage.setItem('lastCreditDate', today);
+
+                // Perform API call to update credits in Supabase
+                const token = 'YOUR_SUPABASE_API_TOKEN';
+                const url = `https://tdsxayxnjomnoiestnmj.supabase.co/users?email=eq.${encodeURIComponent(userEmail)}`;
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'apikey': token
+                        },
+                        body: JSON.stringify({
+                            mn_credits: {
+                                $increment: 1
+                            }
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to update credits');
+                    }
+
+                    console.log('Credits updated successfully');
+
+                    // Show the popup
+                    showPopup();
+                } catch (error) {
+                    console.error('Error updating credits:', error);
+                }
+            } else {
+                console.log('Credit already given today');
+            }
+        } else {
+            console.warn('User email not found in localStorage');
         }
     }
 
-    // Function to close the popup
+    function showPopup() {
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("popup").style.display = "block";
+    }
+
     function closePopup() {
         document.getElementById("overlay").style.display = "none";
         document.getElementById("popup").style.display = "none";
     }
 
-    // Function to acknowledge disclaimer and close popup
     function acknowledgeDisclaimer() {
         if (document.getElementById("acknowledge").checked) {
             closePopup();
@@ -349,7 +390,7 @@
 
     // Show the popup when the window is fully loaded
     window.onload = function() {
-        showPopup();
+        addDailyCreditAndShowPopup(); // Call function to add daily credit and show popup
     };
 </script>
 
