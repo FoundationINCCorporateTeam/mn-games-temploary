@@ -319,69 +319,71 @@ Overall, MN Games gets a big thumbs-up from me. It's like a secret clubhouse for
   style="border: none;"
 >
 </iframe>
-        <script>
-    // Supabase client initialization
-    const SUPABASE_URL = 'https://tdsxayxnjomnoiestnmj.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
-    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Supabase client initialization
+      const SUPABASE_URL = 'https://tdsxayxnjomnoiestnmj.supabase.co';
+      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
+      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Function to add daily reward
-    async function addDailyReward() {
-      const email = localStorage.getItem('email');
-      if (!email) {
-        console.log('No email found in local storage.');
-        return;
+      // Function to add daily reward
+      async function addDailyReward() {
+        const email = localStorage.getItem('email');
+        if (!email) {
+          console.log('No email found in local storage.');
+          return;
+        }
+
+        // Get the current timestamp
+        const now = new Date().getTime();
+
+        // Get the last reward timestamp from local storage
+        const lastRewardTimestamp = localStorage.getItem('lastRewardTimestamp');
+
+        // Check if 24 hours have passed
+        if (lastRewardTimestamp && now - lastRewardTimestamp < 24 * 60 * 60 * 1000) {
+          console.log('24 hours have not passed since the last reward.');
+          return;
+        }
+
+        // Query the Supabase database to get the user's current mn_credits
+        const { data: user, error } = await supabase
+          .from('users')
+          .select('mn_credits')
+          .eq('email', email)
+          .single();
+
+        if (error) {
+          console.error('Error fetching user data:', error);
+          return;
+        }
+
+        // Increment the mn_credits by 1
+        const updatedCredits = user.mn_credits + 1;
+
+        // Update the user's mn_credits in the database
+        const { data, updateError } = await supabase
+          .from('users')
+          .update({ mn_credits: updatedCredits })
+          .eq('email', email);
+
+        if (updateError) {
+          console.error('Error updating mn_credits:', updateError);
+          return;
+        }
+
+        // Store the current timestamp as the last reward time
+        localStorage.setItem('lastRewardTimestamp', now);
+
+        console.log('Daily reward added successfully.');
       }
 
-      // Get the current timestamp
-      const now = new Date().getTime();
+      // Call the addDailyReward function
+      addDailyReward();
 
-      // Get the last reward timestamp from local storage
-      const lastRewardTimestamp = localStorage.getItem('lastRewardTimestamp');
-
-      // Check if 24 hours have passed
-      if (lastRewardTimestamp && now - lastRewardTimestamp < 24 * 60 * 60 * 1000) {
-        console.log('24 hours have not passed since the last reward.');
-        return;
-      }
-
-      // Query the Supabase database to get the user's current mn_credits
-      const { data: user, error } = await supabase
-        .from('users')
-        .select('mn_credits')
-        .eq('email', email)
-        .single();
-
-      if (error) {
-        console.error('Error fetching user data:', error);
-        return;
-      }
-
-      // Increment the mn_credits by 1
-      const updatedCredits = user.mn_credits + 1;
-
-      // Update the user's mn_credits in the database
-      const { data, updateError } = await supabase
-        .from('users')
-        .update({ mn_credits: updatedCredits })
-        .eq('email', email);
-
-      if (updateError) {
-        console.error('Error updating mn_credits:', updateError);
-        return;
-      }
-
-      // Store the current timestamp as the last reward time
-      localStorage.setItem('lastRewardTimestamp', now);
-
-      console.log('Daily reward added successfully.');
-    }
-
-    // Call the addDailyReward function
-    addDailyReward();
-
-    // Set up a timer to check every 24 hours
-    setInterval(addDailyReward, 24 * 60 * 60 * 1000);
+      // Set up a timer to check every 24 hours
+      setInterval(addDailyReward, 24 * 60 * 60 * 1000);
+    });
   </script>
 </script>
 <script>
