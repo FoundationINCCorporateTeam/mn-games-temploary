@@ -34,7 +34,7 @@
  <button id="checkCreditsButton">Check Status</button>
 
  <div id="successMessage" title="Success" style="display:none;">
-  <p>Congratulations! You qualify for MN Games Plus! We have updated your status and you can now enjoy full member status. Please note that 50 MN Credits have been removed from your account to pay for the membership.</p>
+  <p>Congratulations! You qualify for MN Games Plus! We have updated your status and you can now enjoy full member status. If you paid in MN Credits 25 Credits have been removed from your account to pay for the MN Games+ Subscription. If you have the minimum number of referrals note that there was no change to your MN Credit count. </p>
  </div>
  <div id="nonQualificationMessage" title="Non-Qualification" style="display:none;">
   <p>Sorry, you do not qualify for MN Games Plus. Please check out this page: <a href="/mngamesplus/apply">Information Page</a> to find out more information on the criteria needed to subscribe.</p>
@@ -81,7 +81,7 @@
         // Get MN credits
         const mnCredits = creditsData[0].mn_credits;
 
-        if (mnCredits > 50) {
+        if (mnCredits > 25) {
             console.log("User qualifies based on MN Credits.");
 
             // Add entry to the mngamesplus table
@@ -106,7 +106,7 @@
                     'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ mn_credits: mnCredits - 50 })
+                body: JSON.stringify({ mn_credits: mnCredits - 25 })
             });
 
             // Check if credits update was successful
