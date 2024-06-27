@@ -42,7 +42,7 @@
       // Supabase client initialization
       const SUPABASE_URL = 'https://tdsxayxnjomnoiestnmj.supabase.co';
       const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
-      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
       const rewardButton = document.getElementById('rewardButton');
       const rewardStatus = document.getElementById('rewardStatus');
@@ -68,7 +68,7 @@
         }
 
         // Query the Supabase database to get the user's current mn_credits
-        const { data: user, error } = await supabase
+        const { data: user, error } = await supabaseClient
           .from('users')
           .select('mn_credits')
           .eq('email', email)
@@ -83,7 +83,7 @@
         const updatedCredits = user.mn_credits + 1;
 
         // Update the user's mn_credits in the database
-        const { data, updateError } = await supabase
+        const { data, updateError } = await supabaseClient
           .from('users')
           .update({ mn_credits: updatedCredits })
           .eq('email', email);
