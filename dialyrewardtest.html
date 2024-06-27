@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Reward System</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.28.1/dist/umd/supabase.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    .container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .reward-status {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Daily Reward System</h1>
+    <p>Click the button below to check your daily reward:</p>
+    <button id="rewardButton">Get Daily Reward</button>
+    <div id="rewardStatus" class="reward-status"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Supabase client initialization
+      const SUPABASE_URL = 'https://tdsxayxnjomnoiestnmj.supabase.co';
+      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
+      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      const rewardButton = document.getElementById('rewardButton');
+      const rewardStatus = document.getElementById('rewardStatus');
+
+      // Function to add daily reward
+      async function addDailyReward() {
+        const email = localStorage.getItem('email');
+        if (!email) {
+          rewardStatus.textContent = 'No email found in local storage.';
+          return;
+        }
+
+        // Get the current timestamp
+        const now = new Date().getTime();
+
+        // Get the last reward timestamp from local storage
+        const lastRewardTimestamp = localStorage.getItem('lastRewardTimestamp');
+
+        // Check if 24 hours have passed
+        if (lastRewardTimestamp && now - lastRewardTimestamp < 24 * 60 * 60 * 1000) {
+          rewardStatus.textContent = '24 hours have not passed since the last reward.';
+          return;
+        }
+
+        // Query the Supabase database to get the user's current mn_credits
+        const { data: user, error } = await supabase
+          .from('users')
+          .select('mn_credits')
+          .eq('email', email)
+          .single();
+
+        if (error) {
+          rewardStatus.textContent = 'Error fetching user data: ' + error.message;
+          return;
+        }
+
+        // Increment the mn_credits by 1
+        const updatedCredits = user.mn_credits + 1;
+
+        // Update the user's mn_credits in the database
+        const { data, updateError } = await supabase
+          .from('users')
+          .update({ mn_credits: updatedCredits })
+          .eq('email', email);
+
+        if (updateError) {
+          rewardStatus.textContent = 'Error updating mn_credits: ' + updateError.message;
+          return;
+        }
+
+        // Store the current timestamp as the last reward time
+        localStorage.setItem('lastRewardTimestamp', now);
+
+        rewardStatus.textContent = 'Daily reward added successfully. Your new mn_credits: ' + updatedCredits;
+      }
+
+      rewardButton.addEventListener('click', addDailyReward);
+
+      // Optional: Automatically call the addDailyReward function every 24 hours
+      setInterval(addDailyReward, 24 * 60 * 60 * 1000);
+    });
+  </script>
+</body>
+</html>
