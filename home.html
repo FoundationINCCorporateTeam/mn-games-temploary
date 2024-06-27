@@ -258,7 +258,7 @@
         <p>2. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.</p>
         <p>3. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.</p>
           <p>4. We reserve the right to restrict access to our website. Our website is aimed towards kids and family's. If you are a teacher or educator you are prohibited from accessing our website. We are restricting access because we need to save our server resources.</p>
-        <button onclick="closePopup()">Collect Rewards and Agree</button>
+        <button id = "rewards" onclick="closePopup()">Collect Rewards and Agree</button>
     </div>
 </div>
 
@@ -320,68 +320,24 @@ Overall, MN Games gets a big thumbs-up from me. It's like a secret clubhouse for
 >
 </iframe>
   <script>
-         const supabaseUrl = "https://tdsxayxnjomnoiestnmj.supabase.co"; // Replace with your Supabase URL
-  const supabaseAnonKey = "YeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY"; // Replace with your Supabase Anon Key
+  async function dailyRewards() {
+         const creditsUpdateResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+                method: 'PATCH',
+                headers: {
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ mn_credits: mnCredits + 1 })
+            });
 
-  const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
-    // Function to get the email from localStorage
-function getEmailFromLocalStorage() {
-  return localStorage.getItem("email");
-}
-
-// Function to check if 24 hours have passed since the last reward
-function hasDailyRewardPassed() {
-  const lastRewardTime = localStorage.getItem("lastRewardTime");
-  if (!lastRewardTime) {
-    return true; // No last reward time stored, so grant reward
-  }
-
-  const currentTime = Date.now();
-  const DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24;
-  const timeDifference = currentTime - lastRewardTime;
-
-  return timeDifference >= DAY_IN_MILLISECONDS;
-}
-
-// Function to update user's mn_credits in Supabase
-async function updateMnCredits(email) {
-
-  const { data, error } = await supabase
-    .from("users")
-    .update({ mn_credits: supabase.raw("mn_credits + 1") })
-    .match({ email });
-
-  if (error) {
-    console.error("Error updating mn_credits:", error);
-    return;
-  }
-
-  console.log("Successfully updated mn_credits for", email);
-}
-
-// Main function that runs on page load
-async function dailyRewards() {
-  const email = getEmailFromLocalStorage();
-
-  if (!email) {
-    console.warn("No email found in localStorage");
-    return;
-  }
-
-  if (!hasDailyRewardPassed()) {
-    console.log("Daily reward already claimed, waiting for next 24 hours");
-    return;
-  }
-
-  await updateMnCredits(email);
-
-  // Update last reward time in localStorage
-  localStorage.setItem("lastRewardTime", Date.now());
-}
-
-dailyRewards();
-
-  </script>
+            // Check if credits update was successful
+            if (!creditsUpdateResponse.ok) {
+                throw new Error(`Failed to update MN Credits: ${creditsUpdateResponse.statusText}`);
+            }
+         $(document).ready(function() {
+   $('#rewards').on('click', dailyRewards);
+  });
+        </script>
 </script>
 <script>
     function showPopup() {
