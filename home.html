@@ -319,41 +319,49 @@ Overall, MN Games gets a big thumbs-up from me. It's like a secret clubhouse for
   style="border: none;"
 >
 </iframe>
-  <script>
-  async function dailyRewards() {
-         const creditsUpdateResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
-                method: 'PATCH',
-                headers: {
-                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ mn_credits: mnCredits + 1 })
-            });
-
-            // Check if credits update was successful
-            if (!creditsUpdateResponse.ok) {
-                throw new Error(`Failed to update MN Credits: ${creditsUpdateResponse.statusText}`);
-            }
-         $(document).ready(function() {
-   $('#rewards').on('click', dailyRewards);
-  });
-</script>
 <script>
-    function showPopup() {
-        document.getElementById("overlay").style.display = "block";
-        document.getElementById("popup").style.display = "block";
-    }
+  async function dailyRewards() {
+    try {
+      const creditsUpdateResponse = await fetch('https://tdsxayxnjomnoiestnmj.supabase.co/rest/v1/users?email=eq.' + userEmail, {
+        method: 'PATCH',
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ mn_credits: mnCredits + 1 })
+      });
 
-    function closePopup() {
-        document.getElementById("overlay").style.display = "none";
-        document.getElementById("popup").style.display = "none";
-    }
+      // Check if credits update was successful
+      if (!creditsUpdateResponse.ok) {
+        throw new Error(`Failed to update MN Credits: ${creditsUpdateResponse.statusText}`);
+      }
 
-    window.onload = function() {
-        showPopup();
-    };
+    } catch (error) {
+      console.error('Error updating MN Credits:', error);
+    }
+  }
+
+  $(document).ready(function() {
+    $('#rewards').on('click', dailyRewards);
+  });
 </script>
 
+<script>
+  function showPopup() {
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("popup").style.display = "block";
+  }
+
+  function closePopup() {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("popup").style.display = "none";
+  }
+
+  window.onload = function() {
+    showPopup();
+  };
+</script>
+      
 
       <script src="maintenance.js"></script>
       <script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script><script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq02f8433ca113e1f752d622733d14184cf579c98b0ae35336845045f5dfe520c2" defer></script>
