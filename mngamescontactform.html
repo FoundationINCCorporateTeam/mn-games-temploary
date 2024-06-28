@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <!-- Import Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle, #1f1f1f 20%, #000000);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        form {
+            position: relative;
+            width: 400px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea,
+        select { /* Apply styles to the select element */
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 1em;
+        }
+
+        textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .message-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .success-message,
+        .error-message {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            width: 95%;
+            padding: 10px;
+            background-color: #28a745;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contact Us</h1>
+    <form id="contactForm">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="subject">Subject:</label>
+            <select id="subject" name="subject" required>
+                 <option style="color: black;" value="Game Issues">Game Issues</option>
+                 <option style="color: black;" value="Technical issues">Technical issues</option>
+                 <option style="color: black;" value="Feature Request">Feature Request</option>
+                 <option style="color: black;" value="MN Games Plus">MN Games Plus</option>
+                 <option style="color: black;" value="General Help">General Help</option>
+                 <option style="color: black;" value="Job Request">Job Request</option>
+                <option style="color: black;" value="Report Error">Report Error</option>
+                <option style="color: black;" value="Report Bug">Report Bug</option>
+                <option style="color: black;" value="Other">Other</option>
+            </select>
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+        <button type="submit">Submit</button>
+        <div class="message-container">
+            <div id="successMessage" class="success-message">We have received your submission.</div>
+            <div id="errorMessage" class="error-message">Error: An unexpected error occurred. Please try again later.</div>
+        </div>
+    </form>
+
+    <script>
+        // Add event listener for form submission
+        document.getElementById('contactForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // Get form data
+            const formData = new FormData(event.target);
+            const formObject = {};
+            formData.forEach((value, key) => {
+                formObject[key] = value;
+            });
+
+            // Initialize Supabase client
+            const supabase = createSupabaseClient('https://dvsoyesscauzsirtjthh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk');
+
+            // Insert data into Supabase table
+            const { data, error } = await supabase
+                .from('formresponses')
+                .insert([formObject]);
+
+            // Check for errors
+            if (error) {
+                console.error('Error submitting form:', error.message);
+                document.getElementById('errorMessage').innerText = getErrorMessage(error.code);
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('successMessage').style.display = 'none';
+            } else {
+                console.log('Form submitted successfully:', data);
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('errorMessage').style.display = 'none';
+                // Optionally reset the form
+                event.target.reset();
+            }
+        });
+
+        // Add event listener for subject dropdown change
+        document.getElementById('subject').addEventListener('change', function() {
+            var selectedSubject = this.value;
+            var descriptionTextArea = document.getElementById('description');
+
+            // Templates for different subjects
+            var templates = {
+                'Game Issues': `Please give us some information:
+                
+Error Message (If applicable):
+Type of Error:
+Information:`,
+                'MN Games Plus': `Please fill the fields below:
+                
+Reason for Contact Request:
+Contact Request Subject:
+Description:`,
+                'Technical issues': `Please describe the technical issue you are experiencing:
+                
+Steps to reproduce:
+Expected behavior:
+Actual behavior:`,
+                'General Help': `Please describe the the issue you are experiencing:
+                
+Steps to reproduce:
+Expected behavior:
+Actual behavior:`,
+                'Job Request': `Please explain below:
+            IMPORTANT: THIS IS NOT THE JOB APPLICATION FORM! THE JOB REQUEST SUBJECT IS ONLY FOR ASKING ABOUT JOBS    
+Subject and Description:`,
+                'Feature Request': `Please describe the feature you would like to request:
+                
+Description:
+Benefit:`,
+                'Report Error': `Please describe the error you encountered:
+                
+Steps to reproduce (if applicable):
+Expected behavior:
+Actual behavior:`,
+                'Report Bug': `Please describe the bug you found:
+                
+Steps to reproduce:
+Expected behavior:
+Actual behavior:`,
+                'Other': 'Please tell use what you are contacting us about:' // Empty template for 'Other' subject
+            };
+
+            // Populate description textarea based on selected subject
+            descriptionTextArea.value = templates[selectedSubject] || '';
+        });
+
+        // Define the createSupabaseClient function
+        function createSupabaseClient(url, anonKey) {
+            return supabase.createClient(url, anonKey);
+        }
+
+        // Function to get error message based on error code
+        function getErrorMessage(errorCode) {
+            switch (errorCode) {
+                case '23505':
+                    return 'Error: This email has already been used. Please use a different email.';
+                case '23502':
+                    return 'Error: Some required fields are missing. Please fill out all required fields.';
+                default:
+                    return 'Error: An unexpected error occurred. Please try again later.';
+            }
+        }
+    </script>
+</body>
+</html>
