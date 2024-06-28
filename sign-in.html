@@ -53,10 +53,16 @@
   </form>
 
   <script>
-    // Initialize Supabase for authentication and moderation
+    // Initialize Supabase for authentication and mn_credits
     var supabaseAuth = supabase.createClient(
-      'https://tdsxayxnjomnoiestnmj.supabase.co', 
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'
+      'https://yourprojectid.supabase.co', 
+      'your-public-api-key'
+    );
+
+    // Initialize Supabase for mngamesplus
+    var supabaseMngamesplus = supabase.createClient(
+      'https://dvsoyesscauzsirtjthh.supabase.co', 
+      'your-public-api-key'
     );
 
     // Get form elements
@@ -67,63 +73,60 @@
     var successMessage = document.getElementById('success-message');
 
     // Handle form submission
-// Handle form submission
-form.addEventListener('submit', async function(event) {
-  event.preventDefault();
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
 
-  var email = emailInput.value;
-  var password = passwordInput.value;
+      var email = emailInput.value;
+      var password = passwordInput.value;
 
-  if (!email || !password) {
-    displayError('Please fill in all fields.');
-    return;
-  }
-
-  try {
-    // Check if the user's account is suspended
-    const { data: suspensionData, error: suspensionError } = await supabaseAuth
-      .from('moderation')
-      .select('*')
-      .eq('email', email)
-      .eq('status', 'suspended')
-      .single();
-
-    if (suspensionError && suspensionError.code !== 'PGRST116') {
-      console.error('Error checking suspension status:', suspensionError);
-      displayError('Unable to verify account status.');
-      return;
-    }
-
-    if (suspensionData) {
-      // Check if suspension date has passed
-      const suspendedUntil = new Date(suspensionData.suspended_until);
-      const today = new Date();
-
-      if (suspendedUntil <= today) {
-        // Delete the suspension record from the moderation table
-        const { error: deleteError } = await supabaseAuth
-          .from('moderation')
-          .delete()
-          .eq('email', email)
-          .eq('status', 'suspended');
-
-        if (deleteError) {
-          console.error('Error deleting suspension record:', deleteError);
-          displayError('Failed to remove suspension record.');
-          return;
-        }
-
-        // Inform the user that suspension has been lifted
-        displayError('Your suspension has been lifted. Please contact support for further assistance.');
+      if (!email || !password) {
+        displayError('Please fill in all fields.');
         return;
       }
 
-      // User is still suspended, display suspension reason and return
-      displayError(`Your account is suspended until ${suspensionData.suspended_until}. Reason: ${suspensionData.reason}.`);
-      return;
-    }
+      try {
+        // Check if the user's account is suspended
+        const { data: suspensionData, error: suspensionError } = await supabaseAuth
+          .from('moderation')
+          .select('*')
+          .eq('email', email)
+          .eq('status', 'suspended')
+          .single();
 
-    // Continue with authentication if not suspended...
+        if (suspensionError && suspensionError.code !== 'PGRST116') {
+          console.error('Error checking suspension status:', suspensionError);
+          displayError('Unable to verify account status.');
+          return;
+        }
+
+        if (suspensionData) {
+          // Check if suspension date has passed
+          const suspendedUntil = new Date(suspensionData.suspended_until);
+          const today = new Date();
+
+          if (suspendedUntil <= today) {
+            // Delete the suspension record from the moderation table
+            const { error: deleteError } = await supabaseAuth
+              .from('moderation')
+              .delete()
+              .eq('email', email)
+              .eq('status', 'suspended');
+
+            if (deleteError) {
+              console.error('Error deleting suspension record:', deleteError);
+              displayError('Failed to remove suspension record.');
+              return;
+            }
+
+            // Inform the user that suspension has been lifted
+            displayError('Your suspension has been lifted. Please contact support for further assistance.');
+            return;
+          }
+
+          // User is still suspended, display suspension reason and return
+          displayError(`Your account is suspended until ${suspensionData.suspended_until}: ${suspensionData.reason}.`);
+          return;
+        }
 
         // Check if the user's account is terminated
         const { data: terminationData, error: terminationError } = await supabaseAuth
@@ -141,7 +144,7 @@ form.addEventListener('submit', async function(event) {
 
         if (terminationData) {
           // User account is terminated, display termination reason and return
-          displayError(`Your account has been terminated. If you think this is a mistake reach out to out support team.: ${terminationData.reason}.`);
+          displayError(`Your account is permanently banned: ${terminationData.reason}.`);
           return;
         }
 
@@ -162,7 +165,42 @@ form.addEventListener('submit', async function(event) {
         localStorage.setItem('email', email);
         displaySuccess('Successfully logged in, redirecting...');
 
-        // Continue with retrieving mn_credits and additional checks as needed...
+        // Retrieve user's mn_credits value and store it in local storage
+        const { data: creditsData, error: creditsError } = await supabaseAuth
+          .from('users')
+          .select('mn_credits')
+          .eq('email', email)
+          .single();
+
+        if (creditsError) {
+          console.error('Error retrieving mn_credits:', creditsError);
+          displayError('Unable to retrieve user credits.');
+          return;
+        }
+
+        localStorage.setItem('mn_credits', creditsData.mn_credits);
+        console.log('MN Credits retrieved:', creditsData.mn_credits);
+
+        // Check if the email exists in mngamesplus table with supabaseMngamesplus
+        const { data: mngamesData, error: mngamesError } = await supabaseMngamesplus
+          .from('mngamesplus')
+          .select('email')
+          .eq('email', email)
+          .single();
+
+        if (mngamesError && mngamesError.code !== 'PGRST116') {
+          console.error('Error checking mngamesplus table:', mngamesError);
+          displayError('Unable to verify additional account info.');
+          return;
+        }
+
+        // Set ismngamesplus to true if email exists, otherwise false
+        const isMngamesplus = !!mngamesData;
+        localStorage.setItem('ismngamesplus', isMngamesplus);
+
+        setTimeout(function() {
+          window.location.href = '/dashboard';
+        }, 3000); // Redirect after 3 seconds
 
       } catch (error) {
         console.error('Unexpected error:', error);
