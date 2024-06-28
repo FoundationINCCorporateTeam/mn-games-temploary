@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Credits</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    a {
+      color: #add8e6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Credits</h1>
+    <ul id="credits-list">
+      <!-- Credits will be populated here by JavaScript -->
+    </ul>
+  </div>
+
+  <script>
+    // Example data for credits, this can be replaced with data from your local storage or API
+    var creditsData = [
+      { name: "Nolan I.", role: "MN Games Owner and Developer" },
+      { name: "Vinny", role: "MN Games Project Lead" },
+      { name: "Logan", role: "Chief Administrative Officer" },
+      { name: "Carsten", role: "Chief of Staff" },
+      { name: "You!", role: "Valued Customer and Appreciated User" }
+    ];
+
+    // Save example data to local storage (uncomment to use)
+    // localStorage.setItem('credits', JSON.stringify(creditsData));
+
+    // Function to display credits
+    function displayCredits() {
+      var creditsList = document.getElementById('credits-list');
+
+      // Get the credits data from local storage
+      var storedCredits = localStorage.getItem('credits');
+      if (storedCredits) {
+        creditsData = JSON.parse(storedCredits);
+      }
+
+      // Generate the HTML for the credits list
+      creditsData.forEach(function(credit) {
+        var listItem = document.createElement('li');
+        listItem.textContent = credit.name + " - " + credit.role;
+        creditsList.appendChild(listItem);
+      });
+    }
+
+    // Call the function to display the credits when the page loads
+    displayCredits();
+  </script>
+</body>
+</html>
