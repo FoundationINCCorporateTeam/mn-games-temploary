@@ -55,7 +55,7 @@
       <p id="stored-value">Loading...</p>
   <script>
     // Check if the user is authenticated and is a staff member
-    var authToken = localStorage.getItem('supabase.auth.token');
+    var authToken = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
     var isStaff = localStorage.getItem('staff') === 'true';
 
     if (!authToken || !isStaff) {
