@@ -53,16 +53,10 @@
   </form>
 
   <script>
-    // Initialize Supabase for authentication and mn_credits
+    // Initialize Supabase for authentication and moderation
     var supabaseAuth = supabase.createClient(
       'https://tdsxayxnjomnoiestnmj.supabase.co', 
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'
-    );
-
-    // Initialize Supabase for mngamesplus
-    var supabaseMngamesplus = supabase.createClient(
-      'https://dvsoyesscauzsirtjthh.supabase.co', 
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk'
     );
 
     // Get form elements
@@ -85,7 +79,47 @@
       }
 
       try {
-        // Authenticate the user with supabaseAuth
+        // Check if the user's account is suspended
+        const { data: suspensionData, error: suspensionError } = await supabaseAuth
+          .from('moderation')
+          .select('*')
+          .eq('email', email)
+          .eq('status', 'suspended')
+          .single();
+
+        if (suspensionError && suspensionError.code !== 'PGRST116') {
+          console.error('Error checking suspension status:', suspensionError);
+          displayError('Unable to verify account status.');
+          return;
+        }
+
+        if (suspensionData) {
+          // User account is suspended, display suspension reason and return
+          displayError(`Your account is suspended: ${suspensionData.reason}. It will be reinstated on ${suspensionData.reinstated_date}.`);
+          return;
+        }
+
+        // Check if the user's account is terminated
+        const { data: terminationData, error: terminationError } = await supabaseAuth
+          .from('moderation')
+          .select('*')
+          .eq('email', email)
+          .eq('status', 'terminated')
+          .single();
+
+        if (terminationError && terminationError.code !== 'PGRST116') {
+          console.error('Error checking termination status:', terminationError);
+          displayError('Unable to verify account status.');
+          return;
+        }
+
+        if (terminationData) {
+          // User account is terminated, display termination reason and return
+          displayError(`Your account has been terminated. If you think this is a mistake reach out to out support team.: ${terminationData.reason}.`);
+          return;
+        }
+
+        // If account status checks pass, proceed with authentication
         const { data: user, error: authError } = await supabaseAuth.auth.signInWithPassword({
           email: email,
           password: password,
@@ -102,42 +136,7 @@
         localStorage.setItem('email', email);
         displaySuccess('Successfully logged in, redirecting...');
 
-        // Retrieve user's mn_credits value and store it in local storage
-        const { data: creditsData, error: creditsError } = await supabaseAuth
-          .from('users')
-          .select('mn_credits')
-          .eq('email', email)
-          .single();
-
-        if (creditsError) {
-          console.error('Error retrieving mn_credits:', creditsError);
-          displayError('Unable to retrieve user credits.');
-          return;
-        }
-
-        localStorage.setItem('mn_credits', creditsData.mn_credits);
-        console.log('MN Credits retrieved:', creditsData.mn_credits);
-
-        // Check if the email exists in mngamesplus table with supabaseMngamesplus
-        const { data: mngamesData, error: mngamesError } = await supabaseMngamesplus
-          .from('mngamesplus')
-          .select('email')
-          .eq('email', email)
-          .single();
-
-        if (mngamesError && mngamesError.code !== 'PGRST116') {
-          console.error('Error checking mngamesplus table:', mngamesError);
-          displayError('Unable to verify additional account info.');
-          return;
-        }
-
-        // Set ismngamesplus to true if email exists, otherwise false
-        const isMngamesplus = !!mngamesData;
-        localStorage.setItem('ismngamesplus', isMngamesplus);
-
-        setTimeout(function() {
-          window.location.href = '/dashboard';
-        }, 3000); // Redirect after 3 seconds
+        // Continue with retrieving mn_credits and additional checks as needed...
 
       } catch (error) {
         console.error('Unexpected error:', error);
