@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Staff Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin: 10px 0;
+    }
+    a {
+      color: #add8e6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Staff Dashboard</h1>
+    <ul>
+      <li><a href="/home">MN Games Home</a></li>
+      <li><a href="index.html">Staff Home</a></li>
+      <li><a href="formresponses">Form Responses</a></li>
+      <li><a href="links">Links</a></li>
+      <li><a href="admin">Admin</a></li>
+      <li><a href="credits">Credits</a></li>
+    </ul>
+  </div>
+  <p>MN Credit Balance Since Last Sign In:</p>
+      <p id="stored-value">Loading...</p>
+  <script>
+    // Check if the user is authenticated and is a staff member
+    var authToken = localStorage.getItem('supabase.auth.token');
+    var isStaff = localStorage.getItem('staff') === 'true';
+
+    if (!authToken || !isStaff) {
+      // Redirect to login page if not authenticated or not a staff member
+      window.location.href = 'staffsignin';
+    }
+      // Function to display the local storage value
+    function displayStoredValue() {
+      // Get the value from local storage
+      var storedValue = localStorage.getItem('mn_credits');
+
+      // Get the HTML element where we want to display the value
+      var displayElement = document.getElementById('stored-value');
+
+      // Check if the value exists in local storage
+      if (storedValue) {
+        // Set the text content of the element to the stored value
+        displayElement.textContent = storedValue;
+      } else {
+        // If the value does not exist, show a default message
+        displayElement.textContent = 'No MN Credits Found';
+      }
+    }
+
+    // Call the function to display the value when the page loads
+    displayStoredValue();
+  </script>
+</body>
+</html>
