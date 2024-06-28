@@ -67,37 +67,63 @@
     var successMessage = document.getElementById('success-message');
 
     // Handle form submission
-    form.addEventListener('submit', async function(event) {
-      event.preventDefault();
+// Handle form submission
+form.addEventListener('submit', async function(event) {
+  event.preventDefault();
 
-      var email = emailInput.value;
-      var password = passwordInput.value;
+  var email = emailInput.value;
+  var password = passwordInput.value;
 
-      if (!email || !password) {
-        displayError('Please fill in all fields.');
+  if (!email || !password) {
+    displayError('Please fill in all fields.');
+    return;
+  }
+
+  try {
+    // Check if the user's account is suspended
+    const { data: suspensionData, error: suspensionError } = await supabaseAuth
+      .from('moderation')
+      .select('*')
+      .eq('email', email)
+      .eq('status', 'suspended')
+      .single();
+
+    if (suspensionError && suspensionError.code !== 'PGRST116') {
+      console.error('Error checking suspension status:', suspensionError);
+      displayError('Unable to verify account status.');
+      return;
+    }
+
+    if (suspensionData) {
+      // Check if suspension date has passed
+      const suspendedUntil = new Date(suspensionData.suspended_until);
+      const today = new Date();
+
+      if (suspendedUntil <= today) {
+        // Delete the suspension record from the moderation table
+        const { error: deleteError } = await supabaseAuth
+          .from('moderation')
+          .delete()
+          .eq('email', email)
+          .eq('status', 'suspended');
+
+        if (deleteError) {
+          console.error('Error deleting suspension record:', deleteError);
+          displayError('Failed to remove suspension record.');
+          return;
+        }
+
+        // Inform the user that suspension has been lifted
+        displayError('Your suspension has been lifted. Please contact support for further assistance.');
         return;
       }
 
-      try {
-        // Check if the user's account is suspended
-        const { data: suspensionData, error: suspensionError } = await supabaseAuth
-          .from('moderation')
-          .select('*')
-          .eq('email', email)
-          .eq('status', 'suspended')
-          .single();
+      // User is still suspended, display suspension reason and return
+      displayError(`Your account is suspended until ${suspensionData.suspended_until}: ${suspensionData.reason}.`);
+      return;
+    }
 
-        if (suspensionError && suspensionError.code !== 'PGRST116') {
-          console.error('Error checking suspension status:', suspensionError);
-          displayError('Unable to verify account status.');
-          return;
-        }
-
-        if (suspensionData) {
-          // User account is suspended, display suspension reason and return
-          displayError(`Your account is suspended. Reason: ${suspensionData.reason}. It will be reinstated on ${suspensionData.reinstated_date}.`);
-          return;
-        }
+    // Continue with authentication if not suspended...
 
         // Check if the user's account is terminated
         const { data: terminationData, error: terminationError } = await supabaseAuth
