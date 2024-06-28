@@ -53,31 +53,29 @@
   </form>
 
   <script>
-    // Initialize Supabase for authentication and mn_credits
-    var supabaseAuth = supabase.createClient(
-      'https://tdsxayxnjomnoiestnmj.supabase.co', 
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'
-    );
+    // Initialize Supabase client for authentication and mn_credits
+    const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
+    const supabaseAuth = supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Initialize Supabase for mngamesplus
-    var supabaseMngamesplus = supabase.createClient(
-      'https://dvsoyesscauzsirtjthh.supabase.co', 
-      'your-public-api-key'
-    );
+    // Initialize Supabase client for additional account info (mngamesplus)
+    const supabaseMngamesplusUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
+    const supabaseMngamesplusKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
+    const supabaseMngamesplus = supabase.createClient(supabaseMngamesplusUrl, supabaseMngamesplusKey);
 
     // Get form elements
-    var form = document.getElementById('login-form');
-    var emailInput = document.getElementById('email');
-    var passwordInput = document.getElementById('password');
-    var errorMessage = document.getElementById('error-message');
-    var successMessage = document.getElementById('success-message');
+    const form = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
 
     // Handle form submission
     form.addEventListener('submit', async function(event) {
       event.preventDefault();
 
-      var email = emailInput.value;
-      var password = passwordInput.value;
+      const email = emailInput.value;
+      const password = passwordInput.value;
 
       if (!email || !password) {
         displayError('Please fill in all fields.');
@@ -149,9 +147,9 @@
         }
 
         // If account status checks pass, proceed with authentication
-        const { data: user, error: authError } = await supabaseAuth.auth.signInWithPassword({
-          email: email,
-          password: password,
+        const { user, error: authError } = await supabaseAuth.auth.signIn({
+          email,
+          password,
         });
 
         if (authError) {
