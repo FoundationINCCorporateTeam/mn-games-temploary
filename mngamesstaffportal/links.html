@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Useful Links</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    a {
+      color: #add8e6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Useful Links</h1>
+    <ul id="links-list">
+      <!-- Links will be populated here by JavaScript -->
+    </ul>
+  </div>
+
+  <script>
+    // Example links data for authenticated staff (replace with your data)
+    var linksData = [
+      { title: "MN Games Home" url: "/home" }
+        { "MN Games Github", url: "https://github.com/MN-Games" },
+      { title: "MN Games Staff Admin", url: "admin" },
+        { "MN Games Support Portal", url: "https://mngames.freshdesk.com" },
+          { "DB Storage Provider", url: "https://supabase.com" },
+            { "MN Games Staff Portal Home", url: "index.html" }
+      // Add more links as needed
+    ];
+
+    // Function to display links
+    function displayLinks() {
+      var linksList = document.getElementById('links-list');
+
+      // Generate the HTML for the links list
+      linksData.forEach(function(link) {
+        var listItem = document.createElement('li');
+        var linkElement = document.createElement('a');
+        linkElement.textContent = link.title;
+        linkElement.href = link.url;
+        listItem.appendChild(linkElement);
+        linksList.appendChild(listItem);
+      });
+    }
+
+    // Check if the user is authenticated (example using local storage)
+    var authToken = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+    var isStaff = localStorage.getItem('staff') === 'true';
+
+    if (authToken && isStaff) {
+      // Call the function to display links if authenticated and staff
+      displayLinks();
+    } else {
+      // Redirect to login page or unauthorized page if not authenticated or not staff
+      window.location.href = 'login.html'; // Replace with your login page
+    }
+  </script>
+</body>
+</html>
