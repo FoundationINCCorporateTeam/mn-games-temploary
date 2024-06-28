@@ -161,7 +161,7 @@ form.addEventListener('submit', async function(event) {
         // Store email in local storage only if login is successful
         localStorage.setItem('email', email);
         displaySuccess('Successfully logged in, redirecting...');
- // Retrieve user's mn_credits value and store it in local storage
+         // Retrieve user's mn_credits value and store it in local storage
         const { data: creditsData, error: creditsError } = await supabaseAuth
           .from('users')
           .select('mn_credits')
@@ -204,12 +204,6 @@ form.addEventListener('submit', async function(event) {
       }
     });
 
-
-     catch (error) {
-        console.error('Unexpected error:', error);
-        displayError('An unexpected error occurred. Please try again.');
-      }
-    });
 
     // Function to display error message
     function displayError(message) {
