@@ -53,7 +53,7 @@
   </form>
 
   <script>
-    // Initialize Supabase for authentication and mn_credits
+  // Initialize Supabase for authentication and mn_credits
     var supabaseAuth = supabase.createClient(
       'https://tdsxayxnjomnoiestnmj.supabase.co', 
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'
@@ -118,6 +118,7 @@
         // Check if the user is a staff member
         if (!userData.staff) {
           displayError('You are not authorized to sign in as a staff member.');
+          localStorage.setItem('staff', false);
           return;
         }
 
