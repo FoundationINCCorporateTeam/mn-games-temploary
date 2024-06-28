@@ -95,7 +95,7 @@
 
         if (suspensionData) {
           // User account is suspended, display suspension reason and return
-          displayError(`Your account is suspended: ${suspensionData.reason}. It will be reinstated on ${suspensionData.reinstated_date}.`);
+          displayError(`Your account is suspended. Reason: ${suspensionData.reason}. It will be reinstated on ${suspensionData.reinstated_date}.`);
           return;
         }
 
