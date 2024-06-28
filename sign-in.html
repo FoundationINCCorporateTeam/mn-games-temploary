@@ -53,78 +53,121 @@
   </form>
 
   <script>
-    // Initialize Supabase client for authentication and moderation
-    const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
-  const supabaseAuth = supabase.createClient(supabaseUrl, supabaseKey);
+    // Initialize Supabase for authentication and moderation
+    var supabaseAuth = supabase.createClient(
+      'https://tdsxayxnjomnoiestnmj.supabase.co', 
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'
+    );
 
-
- // Get form elements
-    const form = document.getElementById('login-form');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
-    const errorMessage = document.getElementById('error-message');
-    const successMessage = document.getElementById('success-message');
+    // Get form elements
+    var form = document.getElementById('login-form');
+    var emailInput = document.getElementById('email');
+    var passwordInput = document.getElementById('password');
+    var errorMessage = document.getElementById('error-message');
+    var successMessage = document.getElementById('success-message');
 
     // Handle form submission
-    form.addEventListener('submit', async function(event) {
-      event.preventDefault();
+// Handle form submission
+form.addEventListener('submit', async function(event) {
+  event.preventDefault();
 
-      const email = emailInput.value;
-      const password = passwordInput.value;
+  var email = emailInput.value;
+  var password = passwordInput.value;
 
-      if (!email || !password) {
-        displayError('Please fill in all fields.');
-        return;
-      }
+  if (!email || !password) {
+    displayError('Please fill in all fields.');
+    return;
+  }
 
-      try {
-        // Check if user is suspended or terminated
-        const { data: suspensionData, error: suspensionError } = await supabaseAuth
+  try {
+    // Check if the user's account is suspended
+    const { data: suspensionData, error: suspensionError } = await supabaseAuth
+      .from('moderation')
+      .select('*')
+      .eq('email', email)
+      .eq('status', 'suspended')
+      .single();
+
+    if (suspensionError && suspensionError.code !== 'PGRST116') {
+      console.error('Error checking suspension status:', suspensionError);
+      displayError('Unable to verify account status.');
+      return;
+    }
+
+    if (suspensionData) {
+      // Check if suspension date has passed
+      const suspendedUntil = new Date(suspensionData.suspended_until);
+      const today = new Date();
+
+      if (suspendedUntil <= today) {
+        // Delete the suspension record from the moderation table
+        const { error: deleteError } = await supabaseAuth
           .from('moderation')
-          .select('*')
+          .delete()
           .eq('email', email)
-          .in('status', ['suspended', 'terminated'])
-          .single();
+          .eq('status', 'suspended');
 
-        if (suspensionError) {
-          console.error('Error checking suspension status:', suspensionError.message);
-          displayError('Unable to check user status. Please try again.');
+        if (deleteError) {
+          console.error('Error deleting suspension record:', deleteError);
+          displayError('Failed to remove suspension record.');
           return;
         }
 
-        if (suspensionData) {
-          const { status, reason, reinstated_at } = suspensionData;
+        // Inform the user that suspension has been lifted
+        displayError('Your suspension has been lifted. Please contact support for further assistance.');
+        return;
+      }
 
-          if (status === 'suspended') {
-            displayError(`Your account is suspended. Reason: ${reason}.`);
-            return;
-          } else if (status === 'terminated') {
-            displayError(`Your account is permanently banned. Reason: ${reason}.`);
-            return;
-          }
+      // User is still suspended, display suspension reason and return
+      displayError(`Your account is suspended until ${suspensionData.suspended_until}. Reason: ${suspensionData.reason}.`);
+      return;
+    }
+
+    // Continue with authentication if not suspended...
+
+        // Check if the user's account is terminated
+        const { data: terminationData, error: terminationError } = await supabaseAuth
+          .from('moderation')
+          .select('*')
+          .eq('email', email)
+          .eq('status', 'terminated')
+          .single();
+
+        if (terminationError && terminationError.code !== 'PGRST116') {
+          console.error('Error checking termination status:', terminationError);
+          displayError('Unable to verify account status.');
+          return;
         }
 
-        // Attempt to sign in the user
-        const { user, error } = await supabase.auth.signIn({
-          email,
-          password,
+        if (terminationData) {
+          // User account is terminated, display termination reason and return
+          displayError(`Your account has been terminated. If you think this is a mistake reach out to out support team.: ${terminationData.reason}.`);
+          return;
+        }
+
+        // If account status checks pass, proceed with authentication
+        const { data: user, error: authError } = await supabaseAuth.auth.signInWithPassword({
+          email: email,
+          password: password,
         });
 
-        if (error) {
-          console.error('Error logging in:', error.message);
+        if (authError) {
+          console.error('Error logging in:', authError);
           displayError('Invalid email or password.');
           return;
         }
 
-        console.log('User logged in:', user);
-        // Store email in local storage only if login is successful
-        localStorage.setItem('email', email);
-        displaySuccess('Successfully logged in, redirecting...');
+       // Inside the successful login block
+console.log('User logged in:', user);
+// Store email in local storage only if login is successful
+localStorage.setItem('email', email);
+displaySuccess('Successfully logged in, redirecting...');
 
-        setTimeout(function() {
-          window.location.href = '/dashboard';
-        }, 3000); // Redirect after 3 seconds
+// Redirect to /dashboard after 3 seconds
+setTimeout(function() {
+  window.location.href = '/dashboard';
+}, 3000);
+
 
       } catch (error) {
         console.error('Unexpected error:', error);
