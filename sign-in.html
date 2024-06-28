@@ -56,7 +56,7 @@
     // Initialize Supabase client for authentication and moderation
     const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const supabaseAuth = supabase.createClient(supabaseUrl, supabaseKey);
 
 
  // Get form elements
@@ -80,7 +80,7 @@
 
       try {
         // Check if user is suspended or terminated
-        const { data: suspensionData, error: suspensionError } = await supabase
+        const { data: suspensionData, error: suspensionError } = await supabaseAuth
           .from('moderation')
           .select('*')
           .eq('email', email)
