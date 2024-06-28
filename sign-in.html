@@ -161,8 +161,49 @@ form.addEventListener('submit', async function(event) {
         // Store email in local storage only if login is successful
         localStorage.setItem('email', email);
         displaySuccess('Successfully logged in, redirecting...');
+ // Retrieve user's mn_credits value and store it in local storage
+        const { data: creditsData, error: creditsError } = await supabaseAuth
+          .from('users')
+          .select('mn_credits')
+          .eq('email', email)
+          .single();
 
-        // Continue with retrieving mn_credits and additional checks as needed...
+        if (creditsError) {
+          console.error('Error retrieving mn_credits:', creditsError);
+          displayError('Unable to retrieve user credits.');
+          return;
+        }
+
+        localStorage.setItem('mn_credits', creditsData.mn_credits);
+        console.log('MN Credits retrieved:', creditsData.mn_credits);
+
+        // Check if the email exists in mngamesplus table with supabaseMngamesplus
+        const { data: mngamesData, error: mngamesError } = await supabaseMngamesplus
+          .from('mngamesplus')
+          .select('email')
+          .eq('email', email)
+          .single();
+
+        if (mngamesError && mngamesError.code !== 'PGRST116') {
+          console.error('Error checking mngamesplus table:', mngamesError);
+          displayError('Unable to verify additional account info.');
+          return;
+        }
+
+        // Set ismngamesplus to true if email exists, otherwise false
+        const isMngamesplus = !!mngamesData;
+        localStorage.setItem('ismngamesplus', isMngamesplus);
+
+        setTimeout(function() {
+          window.location.href = '/dashboard';
+        }, 3000); // Redirect after 3 seconds
+
+      } catch (error) {
+        console.error('Unexpected error:', error);
+        displayError('An unexpected error occurred. Please try again.');
+      }
+    });
+
 
       } catch (error) {
         console.error('Unexpected error:', error);
