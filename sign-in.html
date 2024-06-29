@@ -85,7 +85,7 @@ form.addEventListener('submit', async function(event) {
       .from('moderation')
       .select('*')
       .eq('email', email)
-      .eq('status', 'suspended')
+      .eq('status', 'suspend')
       .single();
 
     if (suspensionError && suspensionError.code !== 'PGRST116') {
