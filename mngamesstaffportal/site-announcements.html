@@ -32,6 +32,15 @@
     button:hover {
       background-color: #45a049;
     }
+     buttonad {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    buttonad:hover {
+      background-color: #45a049;
+    }
     .message {
       margin-top: 20px;
       padding: 10px;
@@ -48,9 +57,10 @@
   </style>
 </head>
 <body>
-  <h2>Update MN Games Admin Xano Field</h2>
+  <button id="buttonad" onclick='window.location.href="admin"'>Back to Admin</button>
+  <h2>MN Games Announcement</h2>
   <form id="update-form">
-    <input type="text" id="field-value" placeholder="Enter new field value" required>
+    <input type="text" id="field-value" placeholder="Enter new announcement" required>
     <button type="submit">Update</button>
   </form>
   <div id="message" class="message"></div>
