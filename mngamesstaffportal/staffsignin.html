@@ -53,7 +53,7 @@
   </form>
 
   <script>
-  // Initialize Supabase for authentication and mn_credits
+    // Initialize Supabase for authentication and mn_credits
     var supabaseAuth = supabase.createClient(
       'https://tdsxayxnjomnoiestnmj.supabase.co', 
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'
@@ -86,7 +86,7 @@
 
       try {
         // Authenticate the user with supabaseAuth
-        const { data: user, error: authError } = await supabaseAuth.auth.signInWithPassword({
+        const { user, session, error: authError } = await supabaseAuth.auth.signIn({
           email: email,
           password: password,
         });
@@ -130,13 +130,19 @@
         // Check if the email exists in mngamesplus table with supabaseMngamesplus
         const { data: mngamesData, error: mngamesError } = await supabaseMngamesplus
           .from('mngamesplus')
-          .select('email')
+          .select('email, status')
           .eq('email', email)
           .single();
 
         if (mngamesError && mngamesError.code !== 'PGRST116') {
           console.error('Error checking mngamesplus table:', mngamesError);
           displayError('Unable to verify additional account info.');
+          return;
+        }
+
+        // Check if the user is suspended or terminated
+        if (mngamesData && (mngamesData.status === 'suspend' || mngamesData.status === 'terminate')) {
+          displayError(`Your account has been ${mngamesData.status}ed. Please contact support.`);
           return;
         }
 
