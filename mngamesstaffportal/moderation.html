@@ -84,81 +84,75 @@
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // Fetch users and populate the dropdown
-    async function populateUserDropdown() {
-      let { data: users, error } = await supabaseClient
-        .from('users')
-        .select('id, email');
+ // Function to fetch users and populate dropdown
+    async function fetchUsers() {
+      try {
+        const { data: users, error } = await supabaseClient
+          .from('users')
+          .select('id, email');
 
-      if (error) {
-        console.error('Error fetching users:', error);
-        return;
+        if (error) {
+          throw error;
+        }
+
+        const userSelect = document.getElementById('user-select');
+        users.forEach(user => {
+          const option = document.createElement('option');
+          option.value = user.id;
+          option.textContent = user.email;
+          userSelect.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error fetching users:', error.message);
+        displayError('Failed to fetch users.');
       }
-
-      var userSelect = document.getElementById('user-select');
-      users.forEach(user => {
-        var option = document.createElement('option');
-        option.value = user.id;
-        option.textContent = user.email;
-        userSelect.appendChild(option);
-      });
     }
 
-    // Call the function to populate the dropdown on page load
-    populateUserDropdown();
-
-    // Show or hide the date field based on selected action type
-    var typeSelect = document.getElementById('type-select');
-    var dateLabel = document.getElementById('date-label');
-    var suspendDate = document.getElementById('suspend-date');
-
-    typeSelect.addEventListener('change', function() {
-      if (typeSelect.value === 'suspend') {
-        dateLabel.classList.remove('hidden');
-        suspendDate.classList.remove('hidden');
-        suspendDate.required = true;
-      } else {
-        dateLabel.classList.add('hidden');
-        suspendDate.classList.add('hidden');
-        suspendDate.required = false;
-      }
-    });
-
     // Handle form submission
-    var form = document.getElementById('moderation-form');
+    const form = document.getElementById('moderation-form');
     form.addEventListener('submit', async function(event) {
       event.preventDefault();
 
-      var userId = document.getElementById('user-select').value;
-      var status = typeSelect.value;
-      var reason = document.getElementById('reason').value;
-      var suspendedUntil = suspendDate.value;
+      const formData = new FormData(form);
+      const data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
 
-      var moderationData = {
-        user_id: userId,
-        status: status,
-        reason: reason,
-        suspended_until: status === 'suspend' ? suspendedUntil : null
-      };
+      try {
+        const { data: moderationData, error } = await supabaseClient
+          .from('moderation')
+          .insert([data]);
 
-      console.log('Moderation data to be inserted:', moderationData);
+        if (error) {
+          throw error;
+        }
 
-      // Insert moderation data into the table
-      let { data, error } = await supabaseClient
-        .from('moderation')
-        .insert([moderationData]);
-
-      if (error) {
-        console.error('Error inserting moderation data:', error);
-        alert('Failed to submit moderation action.');
-        return;
+        console.log('Moderation data inserted:', moderationData);
+        displaySuccess('Moderation data inserted successfully.');
+        form.reset();
+      } catch (error) {
+        console.error('Error inserting moderation data:', error.message);
+        displayError('Error inserting moderation data.');
       }
-
-      alert('Moderation action submitted successfully.');
-      form.reset();
-      dateLabel.classList.add('hidden');
-      suspendDate.classList.add('hidden');
     });
+
+    // Display error message
+    function displayError(message) {
+      const errorMessage = document.getElementById('error-message');
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+    }
+
+    // Display success message
+    function displaySuccess(message) {
+      const successMessage = document.getElementById('success-message');
+      successMessage.textContent = message;
+      successMessage.style.display = 'block';
+    }
+
+    // Fetch users and populate dropdown on page load
+    fetchUsers();
   </script>
 </body>
 </html>
