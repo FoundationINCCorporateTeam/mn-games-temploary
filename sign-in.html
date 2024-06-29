@@ -141,7 +141,7 @@ form.addEventListener('submit', async function(event) {
 
         if (terminationData) {
           // User account is terminated, display termination reason and return
-          displayError(`Your account has been terminated. If you think this is a mistake reach out to out support team.: ${terminationData.reason}.`);
+          displayError(`Your account has been terminated. If you think this is a mistake reach out to out support team. Reason: ${terminationData.reason}.`);
           return;
         }
 
