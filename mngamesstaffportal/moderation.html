@@ -130,15 +130,15 @@
       event.preventDefault();
 
       var userId = document.getElementById('user-select').value;
-      var type = typeSelect.value;
+      var status = typeSelect.value;
       var reason = document.getElementById('reason').value;
       var suspendedUntil = suspendDate.value;
 
       var moderationData = {
         user_id: userId,
-        type: type,
+        status: status,
         reason: reason,
-        suspended_until: type === 'suspend' ? suspendedUntil : null
+        suspended_until: status === 'suspend' ? suspendedUntil : null
       };
 
       console.log('Moderation data to be inserted:', moderationData);
