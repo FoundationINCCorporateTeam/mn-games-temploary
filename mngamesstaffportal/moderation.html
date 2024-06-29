@@ -57,8 +57,10 @@
   <div class="container">
     <h1>Moderation Form</h1>
     <form id="moderation-form">
-      <label for="email">Select User:</label>
-      <input type="email" id="email" placeholder="Enter user's email" required>
+      <label for="user-select">Select User:</label>
+      <select id="user-select" required>
+        <option value="" disabled selected>Select a user</option>
+      </select>
 
       <label for="type-select">Type:</label>
       <select id="type-select" required>
@@ -82,6 +84,28 @@
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    // Fetch users and populate the dropdown
+    async function populateUserDropdown() {
+      let { data: users, error } = await supabaseClient
+        .from('users')
+        .select('email');
+
+      if (error) {
+        console.error('Error fetching users:', error);
+        return;
+      }
+
+      var userSelect = document.getElementById('user-select');
+      users.forEach(user => {
+        var option = document.createElement('option');
+        option.textContent = user.email;
+        userSelect.appendChild(option);
+      });
+    }
+
+    // Call the function to populate the dropdown on page load
+    populateUserDropdown();
+
     // Show or hide the date field based on selected action type
     const typeSelect = document.getElementById('type-select');
     const dateLabel = document.getElementById('date-label');
@@ -104,7 +128,7 @@
     form.addEventListener('submit', async function(event) {
       event.preventDefault();
 
-      const email = document.getElementById('email').value;
+      const email = document.getElementById('user-select').value;
       const status = typeSelect.value;
       const reason = document.getElementById('reason').value;
       const suspendedUntil = suspendDate.value;
