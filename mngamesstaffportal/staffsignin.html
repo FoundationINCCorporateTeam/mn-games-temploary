@@ -53,11 +53,17 @@
   </form>
 
   <script>
-    // Initialize Supabase for authentication
-    var SUPABASE_URL = 'https://tdsxayxnjomnoiestnmj.supabase.co';
-    var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
+    // Initialize Supabase for authentication and mn_credits
+    var supabaseAuth = supabase.createClient(
+      'https://tdsxayxnjomnoiestnmj.supabase.co', 
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'
+    );
 
-    var supabaseAuth = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // Initialize Supabase for mngamesplus
+    var supabaseMngamesplus = supabase.createClient(
+      'https://dvsoyesscauzsirtjthh.supabase.co', 
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk'
+    );
 
     // Get form elements
     var form = document.getElementById('login-form');
@@ -79,11 +85,14 @@
       }
 
       try {
-        // Authenticate the user with supabaseAuth using signInWithPassword
-        const { user, session, error } = await supabaseAuth.auth.signInWithPassword(email, password);
+        // Authenticate the user with supabaseAuth
+        const { data: user, error: authError } = await supabaseAuth.auth.signInWithPassword({
+          email: email,
+          password: password,
+        });
 
-        if (error) {
-          console.error('Error logging in:', error.message);
+        if (authError) {
+          console.error('Error logging in:', authError);
           displayError('Invalid email or password.');
           return;
         }
@@ -91,63 +100,94 @@
         console.log('User logged in:', user);
         // Store email in local storage only if login is successful
         localStorage.setItem('email', email);
-        displaySuccess('Successfully logged in, checking account status...');
+        displaySuccess('Successfully logged in, redirecting...');
 
-        // Check if the email exists in mngamesplus table with supabaseAuth
-        const { data: mngamesData, error: mngamesError } = await supabaseAuth
-          .from('mngamesplus')
-          .select('status')
+        // Retrieve user's access level and store it in local storage
+        const { data: accessData, error: accessError } = await supabaseAuth
+          .from('users')
+          .select('accessLevel')
           .eq('email', email)
           .single();
 
-        if (mngamesError && mngamesError.code !== 'PGRST116') {
-          console.error('Error checking account status:', mngamesError.message);
+        if (accessError) {
+          console.error('Error retrieving access level:', accessError);
+          displayError('Unable to retrieve access level information.');
+          return;
+        }
+
+        localStorage.setItem('accessLevel', accessData.accessLevel);
+        console.log('Access Level retrieved:', accessData.accessLevel);
+
+        // Check if the user's account is suspended
+        const { data: suspensionData, error: suspensionError } = await supabaseAuth
+          .from('moderation')
+          .select('*')
+          .eq('email', email)
+          .eq('status', 'suspended')
+          .single();
+
+        if (suspensionError && suspensionError.code !== 'PGRST116') {
+          console.error('Error checking suspension status:', suspensionError);
           displayError('Unable to verify account status.');
           return;
         }
 
-        // Check if the user is suspended or terminated
-        if (mngamesData && (mngamesData.status === 'suspend' || mngamesData.status === 'terminate')) {
-          console.log(`User account has been ${mngamesData.status}ed.`);
-          displayError(`Your account has been ${mngamesData.status}ed. Please contact support.`);
+        if (suspensionData) {
+          // Check if suspension date has passed
+          const suspendedUntil = new Date(suspensionData.suspended_until);
+          const today = new Date();
+
+          if (suspendedUntil <= today) {
+            // Delete the suspension record from the moderation table
+            const { error: deleteError } = await supabaseAuth
+              .from('moderation')
+              .delete()
+              .eq('email', email)
+              .eq('status', 'suspended');
+
+            if (deleteError) {
+              console.error('Error deleting suspension record:', deleteError);
+              displayError('Failed to remove suspension record.');
+              return;
+            }
+
+            // Inform the user that suspension has been lifted
+            displayError('Your suspension has been lifted. Please contact support for further assistance.');
+            return;
+          }
+
+          // User is still suspended, display suspension reason and return
+          displayError(`Your account is suspended until ${suspensionData.suspended_until}. Reason: ${suspensionData.reason}.`);
           return;
         }
 
-        // Retrieve user's mn_credits, staff, and accessLevel fields and store them in local storage
-        const { data: userData, error: userError } = await supabaseAuth
-          .from('users')
-          .select('mn_credits, staff, accessLevel')
+        // Continue to check if the user's account is terminated
+        const { data: terminationData, error: terminationError } = await supabaseAuth
+          .from('moderation')
+          .select('*')
           .eq('email', email)
+          .eq('status', 'terminated')
           .single();
 
-        if (userError) {
-          console.error('Error retrieving user data:', userError.message);
-          displayError('Unable to retrieve user information.');
+        if (terminationError && terminationError.code !== 'PGRST116') {
+          console.error('Error checking termination status:', terminationError);
+          displayError('Unable to verify account status.');
           return;
         }
 
-        // Check if the user is a staff member
-        if (!userData || !userData.staff) {
-          displayError('You are not authorized to sign in as a staff member.');
-          localStorage.setItem('staff', false);
+        if (terminationData) {
+          // User account is terminated, display termination reason and return
+          displayError(`Your account has been terminated. If you think this is a mistake, please contact support: ${terminationData.reason}.`);
           return;
         }
 
-        localStorage.setItem('mn_credits', userData.mn_credits);
-        localStorage.setItem('staff', true);
-        localStorage.setItem('accessLevel', userData.accessLevel);
-        console.log('MN Credits retrieved:', userData.mn_credits);
-
-        // Set ismngamesplus to true if email exists, otherwise false
-        const isMngamesplus = !!mngamesData;
-        localStorage.setItem('ismngamesplus', isMngamesplus);
-
+        // If account status checks pass, proceed with authentication
         setTimeout(function() {
-          window.location.href = 'staffdashboard';
+          window.location.href = '/staffdashboard';
         }, 3000); // Redirect after 3 seconds
 
       } catch (error) {
-        console.error('Unexpected error:', error.message);
+        console.error('Unexpected error:', error);
         displayError('An unexpected error occurred. Please try again.');
       }
     });
