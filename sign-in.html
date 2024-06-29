@@ -105,7 +105,7 @@ form.addEventListener('submit', async function(event) {
           .from('moderation')
           .delete()
           .eq('email', email)
-          .eq('status', 'suspended');
+          .eq('status', 'suspend');
 
         if (deleteError) {
           console.error('Error deleting suspension record:', deleteError);
@@ -130,7 +130,7 @@ form.addEventListener('submit', async function(event) {
           .from('moderation')
           .select('*')
           .eq('email', email)
-          .eq('status', 'terminated')
+          .eq('status', 'terminate')
           .single();
 
         if (terminationError && terminationError.code !== 'PGRST116') {
