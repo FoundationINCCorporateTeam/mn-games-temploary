@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Update MN Games Admin Xano Field</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      padding: 50px;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      margin: 0 auto;
+    }
+    input[type="text"], input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .message {
+      margin-top: 20px;
+      padding: 10px;
+      display: none;
+    }
+    .success {
+      background-color: #90EE90;
+      color: #006400;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <h2>Update MN Games Admin Xano Field</h2>
+  <form id="update-form">
+    <input type="text" id="field-value" placeholder="Enter new field value" required>
+    <button type="submit">Update</button>
+  </form>
+  <div id="message" class="message"></div>
+
+  <script>
+    var form = document.getElementById('update-form');
+    var fieldValueInput = document.getElementById('field-value');
+    var messageDiv = document.getElementById('message');
+
+    form.addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      var fieldValue = fieldValueInput.value;
+
+      try {
+        var response = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:A-o4OQD_/mn_games_admin_xano/1', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ announcement: fieldValue })  // Replace 'field' with the actual field name you want to update
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to update field.');
+        }
+
+        var result = await response.json();
+        showMessage('Field updated successfully!', 'success');
+      } catch (error) {
+        showMessage(error.message, 'error');
+      }
+    });
+
+    function showMessage(message, type) {
+      messageDiv.textContent = message;
+      messageDiv.className = 'message ' + type;
+      messageDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
