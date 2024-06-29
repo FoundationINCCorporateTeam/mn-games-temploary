@@ -65,6 +65,9 @@
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk'
     );
 
+
+    var supabaseAuth = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     // Get form elements
     var form = document.getElementById('login-form');
     var emailInput = document.getElementById('email');
@@ -85,11 +88,8 @@
       }
 
       try {
-        // Authenticate the user with supabaseAuth
-        const { user, session, error } = await supabaseAuth.auth.signIn({
-          email: email,
-          password: password,
-        });
+        // Authenticate the user with supabaseAuth using signInWithPassword
+        const { user, session, error } = await supabaseAuth.auth.signInWithPassword(email, password);
 
         if (error) {
           console.error('Error logging in:', error.message);
