@@ -93,7 +93,7 @@
         localStorage.setItem('email', email);
         displaySuccess('Successfully logged in, checking account status...');
 
-        // Check if the email exists in mngamesplus table with supabaseMngamesplus
+        // Check if the email exists in mngamesplus table with supabaseAuth
         const { data: mngamesData, error: mngamesError } = await supabaseAuth
           .from('mngamesplus')
           .select('status')
