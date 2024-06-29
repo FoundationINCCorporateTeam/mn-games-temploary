@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+    nav {
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    }
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: space-around;
+    }
+    nav ul li {
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      display: block;
+    }
+    nav ul li a:hover {
+      background-color: #444;
+      border-radius: 5px;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+    a {
+      color: #add8e6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/home">MN Games Home</a></li>
+      <li><a href='/mngamesstaffportal/'>Staff Home</a></li>
+      <li><a href="formresponses">Form Responses</a></li>
+      <li><a href="links">Links</a></li>
+      <li><a href="admin">Admin</a></li>
+      <li><a href="credits">Credits</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <h1>Admin Page</h1>
+    <ul id="admin-links-list">
+      <!-- Links will be populated here by JavaScript -->
+    </ul>
+  </div>
+
+  <script>
+    // Example admin links data for different access levels (replace with your data)
+    var adminLinksData = [
+      {
+        accessLevel: 1,
+        links: [
+          { title: "Site Announcements", url: "site-announcements.html" },
+          { title: "Ad Management", url: "ad-management.html" },
+          { title: "User Information", url: "user-information.html" }
+        ]
+      },
+      {
+        accessLevel: 2,
+        links: [
+          { title: "Moderation", url: "moderation.html" },
+          { title: "Source Code Access", url: "source-code.html" },
+          { title: "Documents", url: "documents.html" }
+        ]
+      },
+      {
+        accessLevel: 3,
+        links: [
+          { title: "Site Control", url: "site-control.html" },
+          { title: "User Editing", url: "user-editing.html" }
+        ]
+      },
+      {
+        accessLevel: 4,
+        links: [
+          { title: "Extreme Site Control", url: "extreme-site-control.html" }
+        ]
+      }
+    ];
+
+    // Function to display admin links based on access level
+    function displayAdminLinks(accessLevel) {
+      var adminLinksList = document.getElementById('admin-links-list');
+
+      // Filter links based on access level
+      adminLinksData.forEach(function(levelData) {
+        if (levelData.accessLevel <= accessLevel) {
+          levelData.links.forEach(function(link) {
+            var listItem = document.createElement('li');
+            var linkElement = document.createElement('a');
+            linkElement.textContent = link.title;
+            linkElement.href = link.url;
+            listItem.appendChild(linkElement);
+            adminLinksList.appendChild(listItem);
+          });
+        }
+      });
+    }
+
+    // Check if the user is authenticated and get their access level (example using local storage)
+/*  var authToken = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+    var accessLevel = parseInt(localStorage.getItem('accessLevel'), 10);
+
+    if (authToken && accessLevel) {
+      // Call the function to display links if authenticated
+      displayAdminLinks(accessLevel);
+    } else {
+      // Redirect to login page or unauthorized page if not authenticated
+      window.location.href = 'staffsignin'; // Replace with your login page
+    } //
+  </script>
+</body>
+</html>
