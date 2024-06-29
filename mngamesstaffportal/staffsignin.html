@@ -53,7 +53,7 @@
   </form>
 
   <script>
-    // Initialize Supabase for authentication and moderation
+  // Initialize Supabase for authentication and mn_credits
     var supabaseAuth = supabase.createClient(
       'https://tdsxayxnjomnoiestnmj.supabase.co', 
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'
@@ -102,10 +102,10 @@
         localStorage.setItem('email', email);
         displaySuccess('Successfully logged in, redirecting...');
 
-        // Retrieve user's mn_credits and staff fields and store them in local storage
+        // Retrieve user's mn_credits, staff, and accessLevel fields and store them in local storage
         const { data: userData, error: userError } = await supabaseAuth
           .from('users')
-          .select('mn_credits, staff')
+          .select('mn_credits, staff, accessLevel')
           .eq('email', email)
           .single();
 
@@ -124,6 +124,7 @@
 
         localStorage.setItem('mn_credits', userData.mn_credits);
         localStorage.setItem('staff', true);
+        localStorage.setItem('accessLevel', userData.accessLevel);
         console.log('MN Credits retrieved:', userData.mn_credits);
 
         // Check if the email exists in mngamesplus table with supabaseMngamesplus
@@ -143,50 +144,9 @@
         const isMngamesplus = !!mngamesData;
         localStorage.setItem('ismngamesplus', isMngamesplus);
 
-        // Check if the user's account is suspended
-        const { data: suspensionData, error: suspensionError } = await supabaseAuth
-          .from('moderation')
-          .select('*')
-          .eq('email', email)
-          .eq('status', 'suspend')
-          .single();
-
-        if (suspensionError && suspensionError.code !== 'PGRST116') {
-          console.error('Error checking suspension status:', suspensionError);
-          displayError('Unable to verify account status.');
-          return;
-        }
-
-        // Check if the user's account is terminated
-        const { data: terminationData, error: terminationError } = await supabaseAuth
-          .from('moderation')
-          .select('*')
-          .eq('email', email)
-          .eq('status', 'terminate')
-          .single();
-
-        if (terminationError && terminationError.code !== 'PGRST116') {
-          console.error('Error checking termination status:', terminationError);
-          displayError('Unable to verify account status.');
-          return;
-        }
-
-        if (suspensionData) {
-          // Handle suspension logic if needed
-          displayError(`Your account is suspended until ${suspensionData.suspended_until}. Reason: ${suspensionData.reason}.`);
-          return;
-        }
-
-        if (terminationData) {
-          // Handle termination logic if needed
-          displayError(`Your account has been terminated. Reason: ${terminationData.reason}.`);
-          return;
-        }
-
-        // Redirect to staff dashboard after 3 seconds
         setTimeout(function() {
-          window.location.href = '/staffdashboard';
-        }, 3000);
+          window.location.href = 'staffdashboard';
+        }, 3000); // Redirect after 3 seconds
 
       } catch (error) {
         console.error('Unexpected error:', error);
