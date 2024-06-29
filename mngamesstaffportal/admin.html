@@ -5,7 +5,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      background: linear-gradient(135deg, #1d2671 0%, #c33764 100%);
       color: white;
       text-align: center;
       padding: 50px;
@@ -37,16 +37,32 @@
       border-radius: 5px;
     }
     .container {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
+      max-width: 800px;
       margin: 0 auto;
     }
     h1 {
       font-size: 36px;
       margin-bottom: 20px;
+    }
+    .admin-group {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin: 20px 0;
+      border: 2px solid;
+    }
+    .group-1 {
+      border-color: #4CAF50; /* Green */
+    }
+    .group-2 {
+      border-color: #2196F3; /* Blue */
+    }
+    .group-3 {
+      border-color: #FF9800; /* Orange */
+    }
+    .group-4 {
+      border-color: #f44336; /* Red */
     }
     ul {
       list-style-type: none;
@@ -78,9 +94,9 @@
   </nav>
   <div class="container">
     <h1>Admin Page</h1>
-    <ul id="admin-links-list">
-      <!-- Links will be populated here by JavaScript -->
-    </ul>
+    <div id="admin-links-container">
+      <!-- Links groups will be populated here by JavaScript -->
+    </div>
   </div>
 
   <script>
@@ -88,6 +104,7 @@
     var adminLinksData = [
       {
         accessLevel: 1,
+        colorClass: 'group-1',
         links: [
           { title: "Site Announcements", url: "site-announcements.html" },
           { title: "Ad Management", url: "ad-management.html" },
@@ -96,6 +113,7 @@
       },
       {
         accessLevel: 2,
+        colorClass: 'group-2',
         links: [
           { title: "Moderation", url: "moderation.html" },
           { title: "Source Code Access", url: "source-code.html" },
@@ -104,6 +122,7 @@
       },
       {
         accessLevel: 3,
+        colorClass: 'group-3',
         links: [
           { title: "Site Control", url: "site-control.html" },
           { title: "User Editing", url: "user-editing.html" }
@@ -111,6 +130,7 @@
       },
       {
         accessLevel: 4,
+        colorClass: 'group-4',
         links: [
           { title: "Extreme Site Control", url: "extreme-site-control.html" }
         ]
@@ -119,25 +139,36 @@
 
     // Function to display admin links based on access level
     function displayAdminLinks(accessLevel) {
-      var adminLinksList = document.getElementById('admin-links-list');
+      var adminLinksContainer = document.getElementById('admin-links-container');
 
-      // Filter links based on access level
+      // Generate the HTML for the links list
       adminLinksData.forEach(function(levelData) {
         if (levelData.accessLevel <= accessLevel) {
+          var groupDiv = document.createElement('div');
+          groupDiv.className = 'admin-group ' + levelData.colorClass;
+
+          var groupTitle = document.createElement('h2');
+          groupTitle.textContent = 'Access Level ' + levelData.accessLevel;
+          groupDiv.appendChild(groupTitle);
+
+          var linksList = document.createElement('ul');
           levelData.links.forEach(function(link) {
             var listItem = document.createElement('li');
             var linkElement = document.createElement('a');
             linkElement.textContent = link.title;
             linkElement.href = link.url;
             listItem.appendChild(linkElement);
-            adminLinksList.appendChild(listItem);
+            linksList.appendChild(listItem);
           });
+
+          groupDiv.appendChild(linksList);
+          adminLinksContainer.appendChild(groupDiv);
         }
       });
     }
 
     // Check if the user is authenticated and get their access level (example using local storage)
-   var authToken = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+    var authToken = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
     var accessLevel = parseInt(localStorage.getItem('accessLevel'), 10);
 
     if (authToken && accessLevel) {
@@ -146,7 +177,7 @@
     } else {
       // Redirect to login page or unauthorized page if not authenticated
       window.location.href = 'staffsignin'; // Replace with your login page
-    } 
+    }
   </script>
 </body>
 </html>
