@@ -102,10 +102,10 @@
         localStorage.setItem('email', email);
         displaySuccess('Successfully logged in, redirecting...');
 
-        // Retrieve user's mn_credits and staff fields and store them in local storage
+        // Retrieve user's mn_credits, staff, and accessLevel fields and store them in local storage
         const { data: userData, error: userError } = await supabaseAuth
           .from('users')
-          .select('mn_credits, staff')
+          .select('mn_credits, staff, accessLevel')
           .eq('email', email)
           .single();
 
@@ -124,6 +124,7 @@
 
         localStorage.setItem('mn_credits', userData.mn_credits);
         localStorage.setItem('staff', true);
+        localStorage.setItem('accessLevel', userData.accessLevel);
         console.log('MN Credits retrieved:', userData.mn_credits);
 
         // Check if the email exists in mngamesplus table with supabaseMngamesplus
