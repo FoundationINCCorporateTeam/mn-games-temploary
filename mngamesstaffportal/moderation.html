@@ -72,7 +72,7 @@
       <label for="reason">Reason:</label>
       <textarea id="reason" placeholder="Enter reason for action" required></textarea>
 
-      <label for="suspend-date" class="hidden" id="date-label">Date (only for suspension):</label>
+      <label for="suspend-date" class="hidden" id="date-label">Suspended Until (only for suspension):</label>
       <input type="date" id="suspend-date" class="hidden">
 
       <button type="submit">Submit</button>
@@ -132,13 +132,13 @@
       var userId = document.getElementById('user-select').value;
       var type = typeSelect.value;
       var reason = document.getElementById('reason').value;
-      var date = suspendDate.value;
+      var suspendedUntil = suspendDate.value;
 
       var moderationData = {
         user_id: userId,
         type: type,
         reason: reason,
-        date: type === 'suspend' ? date : null
+        suspended_until: type === 'suspend' ? suspendedUntil : null
       };
 
       console.log('Moderation data to be inserted:', moderationData);
