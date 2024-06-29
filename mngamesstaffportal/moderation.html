@@ -141,10 +141,12 @@
         date: type === 'suspend' ? date : null
       };
 
+      console.log('Moderation data to be inserted:', moderationData);
+
       // Insert moderation data into the table
       let { data, error } = await supabaseClient
         .from('moderation')
-        .insert(moderationData);
+        .insert([moderationData]);
 
       if (error) {
         console.error('Error inserting moderation data:', error);
