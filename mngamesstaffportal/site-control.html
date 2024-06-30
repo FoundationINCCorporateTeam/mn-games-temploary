@@ -115,15 +115,12 @@
 
         const switchInput = document.createElement('input');
         switchInput.type = 'checkbox';
-        switchInput.checked = true; // Default to enabled
+        switchInput.checked = !isPageDisabled(page); // Default to enabled unless disabled in localStorage
         switchInput.addEventListener('change', () => {
-          if (switchInput.checked) {
-            // Page enabled
-            console.log(`Page ${page} enabled`);
-            // Optionally, you can redirect to a specific page here
-          } else {
+          setPageDisabled(page, !switchInput.checked); // Update localStorage on change
+          if (!switchInput.checked) {
             // Page disabled
-            console.log(`Page ${page} disabled, redirecting...`);
+            console.log(`Page ${page} disabled globally, redirecting...`);
             window.location.href = 'redirect.html'; // Redirect to your redirect page
           }
         });
@@ -132,6 +129,25 @@
         pageItem.appendChild(switchInput);
         pageList.appendChild(pageItem);
       });
+    }
+
+    // Function to check if a page is disabled
+    function isPageDisabled(page) {
+      const disabledPages = JSON.parse(localStorage.getItem('disabledPages')) || [];
+      return disabledPages.includes(page);
+    }
+
+    // Function to set a page disabled or enabled
+    function setPageDisabled(page, disabled) {
+      let disabledPages = JSON.parse(localStorage.getItem('disabledPages')) || [];
+
+      if (disabled && !disabledPages.includes(page)) {
+        disabledPages.push(page);
+      } else if (!disabled && disabledPages.includes(page)) {
+        disabledPages = disabledPages.filter(p => p !== page);
+      }
+
+      localStorage.setItem('disabledPages', JSON.stringify(disabledPages));
     }
 
     // Load page list when the window loads
