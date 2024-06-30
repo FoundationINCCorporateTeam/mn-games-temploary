@@ -2,28 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Manage Disabled Pages</title>
+  <title>Page Management</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
 </head>
 <body>
-  <h2>Manage Disabled Pages</h2>
+  <h2>Page Management</h2>
   
-  <!-- Form to add page to disabled_pages table -->
+  <!-- Form to add a page to disabled_pages -->
   <form id="add-page-form">
     <label for="page-select">Select a page:</label>
-    <select id="page-select" name="page">
-      <!-- Options will be dynamically populated by JavaScript -->
+    <select id="page-select" required>
+      <option value="">Select Page</option>
+      <!-- Options will be populated by JavaScript -->
     </select>
-    <button type="submit">Add Page</button>
+    <button type="submit">Add to Disabled Pages</button>
   </form>
   
   <!-- List of disabled pages -->
-  <h3>Disabled Pages</h3>
+  <h3>Disabled Pages:</h3>
   <ul id="disabled-pages-list">
-    <!-- List items will be dynamically populated by JavaScript -->
+    <!-- List items will be populated by JavaScript -->
   </ul>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
   <script src="script.js"></script>
 </body>
 </html>
