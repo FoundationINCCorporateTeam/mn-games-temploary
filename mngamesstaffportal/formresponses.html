@@ -3,111 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio List Manager</title>
+    <title>Supabase Form Responses</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .list-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .list-item input[type="text"], .list-item input[type="number"] {
-            margin-right: 10px;
-        }
-        .list-item button {
-            margin-left: 10px;
-        }
+       <style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    nav {
+        background-color: #333;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+    }
+    nav ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    nav ul li {
+        float: left;
+    }
+    nav ul li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+    nav ul li a:hover {
+        background-color: #111;
+    }
+    .container {
+        width: 60%;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .field {
+        margin: 5px 0;
+    }
+</style>
+
     </style>
 </head>
 <body>
-    <h1>Audio List Manager</h1>
-    <div id="audio-form">
-        <input type="text" id="name" placeholder="Name">
-        <input type="file" id="audio-file" accept="audio/*">
-        <input type="number" id="start-time" placeholder="Start Time (seconds)">
-        <input type="number" id="end-time" placeholder="End Time (seconds)">
-        <button onclick="addListItem()">Add</button>
+  <nav>
+    <ul>
+        <li><a href="/home">MN Games Home</a></li>
+        <li><a href="index.html">Staff Home</a></li>
+        <li><a href="formresponses">Form Responses</a></li>
+        <li><a href="links">Links</a></li>
+      <li><a href="admin">Admin</a></li>
+      <li><a href="credits">Credits</a></li>
+    </ul>
+</nav>
+    <div class="container">
+        <label for="response-select">Select Response ID:</label>
+        <select id="response-select"></select>
+        <div id="response-details" style="margin-top: 20px;"></div>
     </div>
-    <div id="audio-list"></div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@1.29.4/dist/umd/supabase.min.js"></script>
     <script>
+        // Initialize Supabase
         const SUPABASE_URL = 'https://dvsoyesscauzsirtjthh.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
         const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let audioList = [];
+        async function fetchData() {
+            let { data, error } = await supabaseClient
+                .from('formresponses')
+                .select('id, name, email, subject, description')
+                .order('id', { ascending: true });
 
-        document.addEventListener('DOMContentLoaded', fetchAudioList);
-
-        async function fetchAudioList() {
-            let { data, error } = await supabaseClient.from('audio_items').select('*');
             if (error) {
-                console.error('Error fetching audio list:', error);
-            } else {
-                audioList = data;
-                renderAudioList();
+                console.error('Error fetching data:', error);
+                return;
             }
+
+            populateDropdown(data);
         }
 
-        async function addListItem() {
-            const name = document.getElementById('name').value;
-            const audioFile = document.getElementById('audio-file').files[0];
-            const startTime = parseFloat(document.getElementById('start-time').value);
-            const endTime = parseFloat(document.getElementById('end-time').value);
+        function populateDropdown(data) {
+            const select = document.getElementById('response-select');
+            data.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = `ID: ${item.id}`;
+                select.appendChild(option);
+            });
 
-            if (name && audioFile && !isNaN(startTime) && !isNaN(endTime)) {
-                const audioUrl = URL.createObjectURL(audioFile);
-                const { data, error } = await supabaseClient.storage.from('audio_files').upload(`public/${audioFile.name}`, audioFile);
-                if (error) {
-                    console.error('Error uploading audio file:', error);
-                    return;
-                }
-
-                const { data: insertedData, error: insertError } = await supabaseClient.from('audio_items').insert([{ name, audio_url: data.Key, start_time: startTime, end_time: endTime }]);
-
-                if (insertError) {
-                    console.error('Error inserting data:', insertError);
-                } else {
-                    audioList.push({ name, audio_url: audioUrl, start_time: startTime, end_time: endTime });
-                    renderAudioList();
-                }
-            } else {
-                alert('Please fill out all fields correctly.');
-            }
+            select.addEventListener('change', () => displayData(data));
         }
 
-        function renderAudioList() {
-            const audioListDiv = document.getElementById('audio-list');
-            audioListDiv.innerHTML = '';
+        function displayData(data) {
+            const select = document.getElementById('response-select');
+            const selectedId = parseInt(select.value, 10);
+            const response = data.find(item => item.id === selectedId);
 
-            audioList.forEach((item, index) => {
-                const listItem = document.createElement('div');
-                listItem.className = 'list-item';
-                listItem.innerHTML = `
-                    <span>${item.name}</span>
-                    <button onclick="playAudio(${index})">Play</button>
+            const responseDiv = document.getElementById('response-details');
+            if (response) {
+                responseDiv.innerHTML = `
+                    <div class="field"><strong>ID:</strong> ${response.id}</div>
+                    <div class="field"><strong>Name:</strong> ${response.name}</div>
+                    <div class="field"><strong>Email:</strong> ${response.email}</div>
+                    <div class="field"><strong>Subject:</strong> ${response.subject}</div>
+                    <div class="field"><strong>Description:</strong> ${response.description}</div>
                 `;
-                audioListDiv.appendChild(listItem);
-            });
+            } else {
+                responseDiv.innerHTML = '<p>No response selected.</p>';
+            }
         }
 
-        function playAudio(index) {
-            const item = audioList[index];
-            const audio = new Audio(supabaseClient.storage.from('audio_files').getPublicUrl(item.audio_url));
-            audio.currentTime = item.start_time;
-
-            audio.addEventListener('timeupdate', () => {
-                if (audio.currentTime >= item.end_time) {
-                    audio.pause();
-                }
-            });
-
-            audio.play();
-        }
+        document.addEventListener('DOMContentLoaded', fetchData);
     </script>
 </body>
 </html>
