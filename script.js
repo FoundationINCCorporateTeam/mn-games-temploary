@@ -2,7 +2,6 @@
 const supabaseUrl = 'https://dvsoyesscauzsirtjthh.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2c295ZXNzY2F1enNpcnRqdGhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTQzNTU4NDQsImV4cCI6MjAyOTkzMTg0NH0.3HoGdobfXm7-SJtRSVF7R9kraDNHBFsiEaJunMjwpHk';
 const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-
 // Array of page names
 const pages = [
   "ad1.html", "ads.txt", "authtest1.html", "backupsign-in.html", "backupsign-up.html",
