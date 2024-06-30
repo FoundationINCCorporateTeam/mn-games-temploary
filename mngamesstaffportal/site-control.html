@@ -1,85 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Access Control Panel</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .page-control {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Access Control Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .page-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .page-item label {
+      margin-right: 10px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Page Access Control Panel</h1>
-    <div id="pages-list"></div>
+  <h1>Page Access Control Panel</h1>
 
-    <script>
-        const backendUrl = 'https://scarce-supreme-wavelength.glitch.me'; // Replace with your backend URL
+  <div id="pageList">
+    <!-- Page list will be dynamically populated here -->
+  </div>
 
-        // Fetch the list of pages from the backend server
-        async function fetchPages() {
-            const response = await fetch(`${backendUrl}/api/pages`);
-            const pages = await response.json();
-            return pages;
-        }
+  <script>
+    // List of pages
+    const pages = [
+      "ad1.html",
+      "ads.txt",
+      "authtest1.html",
+      "backupsign-in.html",
+      "backupsign-up.html",
+      "change-password.html",
+      "changepassword.html",
+      "config.js",
+      "customer-referral.html",
+      "dailyrewardsbackend.js",
+      "dashboard.html",
+      "dashtest1.html",
+      "datecheck.html",
+      "dialyrewardtest.html",
+      "elite.html",
+      "enterprise.html",
+      "enterpriseprox.html",
+      "events.html",
+      "firebase.json",
+      "forgot-password.html",
+      "forgotpassword.html",
+      "home.html",
+      "index.html",
+      "infoform.html",
+      "istockphoto-176230653-612x612.jpg",
+      "jobs.html",
+      "learnhtml1.html",
+      "login.html",
+      "logout.html",
+      "main.js",
+      "maintenance.js",
+      "mnai.html",
+      "mnairedirect.html",
+      "mncreditcheck.html",
+      "mngamescontactform.html",
+      "mngamescore.html",
+      "mnlearn.html",
+      "mnpluslogo.png",
+      "names.txt",
+      "onboarding.html",
+      "ourteam.html",
+      "premium.html",
+      "process_form.php",
+      "profile.html",
+      "protectedtest.html",
+      "redirect.js",
+      "referral.html",
+      "referralcheck.html",
+      "report-a-prompt.html",
+      "schoology-icon.jpg",
+      "schoology-logo.png",
+      "schoology.jpg",
+      "seleniteauthtest.html",
+      "seleniteauthtest2.html",
+      "sign-in.html",
+      "sign-up.html",
+      "statuschecks.html",
+      "store.html",
+      "sw.js",
+      "terms-of-service.html",
+      "test111.html",
+      "test123.html",
+      "tournamentrules.html",
+      "tournaments.html",
+      "ultimate.html",
+      "unauthorized1.html",
+      "untilnextyear.html"
+    ];
 
-        // Fetch the current settings from the backend server
-        async function fetchSettings() {
-            const response = await fetch(`${backendUrl}/api/settings`);
-            const settings = await response.json();
-            return settings;
-        }
+    // Function to initialize page list
+    function initPageList() {
+      const pageList = document.getElementById('pageList');
 
-        // Update the settings on the backend server
-        async function updateSettings(settings) {
-            await fetch(`${backendUrl}/api/settings`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(settings),
-            });
-        }
+      pages.forEach(page => {
+        const pageItem = document.createElement('div');
+        pageItem.classList.add('page-item');
 
-        // Render the list of pages with switches
-        async function renderPageList() {
-            const pages = await fetchPages();
-            const settings = await fetchSettings();
-            const pagesList = document.getElementById('pages-list');
-            pagesList.innerHTML = '';
+        const nameLabel = document.createElement('label');
+        nameLabel.textContent = page;
 
-            pages.forEach(page => {
-                const isRestricted = settings[page.url]?.restricted || false;
+        const switchInput = document.createElement('input');
+        switchInput.type = 'checkbox';
+        switchInput.checked = true; // Default to enabled
+        switchInput.addEventListener('change', () => {
+          if (switchInput.checked) {
+            // Page enabled
+            console.log(`Page ${page} enabled`);
+            // Optionally, you can redirect to a specific page here
+          } else {
+            // Page disabled
+            console.log(`Page ${page} disabled, redirecting...`);
+            window.location.href = 'redirect.html'; // Redirect to your redirect page
+          }
+        });
 
-                const pageControl = document.createElement('div');
-                pageControl.className = 'page-control';
+        pageItem.appendChild(nameLabel);
+        pageItem.appendChild(switchInput);
+        pageList.appendChild(pageItem);
+      });
+    }
 
-                const pageName = document.createElement('span');
-                pageName.textContent = page.name;
-
-                const pageSwitch = document.createElement('input');
-                pageSwitch.type = 'checkbox';
-                pageSwitch.checked = isRestricted;
-                pageSwitch.addEventListener('change', async () => {
-                    settings[page.url] = { restricted: pageSwitch.checked };
-                    await updateSettings(settings);
-                });
-
-                pageControl.appendChild(pageName);
-                pageControl.appendChild(pageSwitch);
-                pagesList.appendChild(pageControl);
-            });
-        }
-
-        // Initialize the control panel
-        renderPageList();
-    </script>
+    // Load page list when the window loads
+    window.onload = function() {
+      initPageList();
+    };
+  </script>
 </body>
 </html>
