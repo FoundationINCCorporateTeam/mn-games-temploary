@@ -3,157 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page Access Control Panel</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    h1 {
-      text-align: center;
-    }
-    .page-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .page-item label {
-      margin-right: 10px;
-    }
-  </style>
+  <title>Manage Disabled Pages</title>
 </head>
 <body>
-  <h1>Page Access Control Panel</h1>
+  <h2>Manage Disabled Pages</h2>
+  
+  <!-- Form to add page to disabled_pages table -->
+  <form id="add-page-form">
+    <label for="page-select">Select a page:</label>
+    <select id="page-select" name="page">
+      <!-- Options will be dynamically populated by JavaScript -->
+    </select>
+    <button type="submit">Add Page</button>
+  </form>
+  
+  <!-- List of disabled pages -->
+  <h3>Disabled Pages</h3>
+  <ul id="disabled-pages-list">
+    <!-- List items will be dynamically populated by JavaScript -->
+  </ul>
 
-  <div id="pageList">
-    <!-- Page list will be dynamically populated here -->
-  </div>
-
-  <script>
-    // List of pages
-    const pages = [
-      "ad1.html",
-      "ads.txt",
-      "authtest1.html",
-      "backupsign-in.html",
-      "backupsign-up.html",
-      "change-password.html",
-      "changepassword.html",
-      "config.js",
-      "customer-referral.html",
-      "dailyrewardsbackend.js",
-      "dashboard.html",
-      "dashtest1.html",
-      "datecheck.html",
-      "dialyrewardtest.html",
-      "elite.html",
-      "enterprise.html",
-      "enterpriseprox.html",
-      "events.html",
-      "firebase.json",
-      "forgot-password.html",
-      "forgotpassword.html",
-      "home.html",
-      "index.html",
-      "infoform.html",
-      "istockphoto-176230653-612x612.jpg",
-      "jobs.html",
-      "learnhtml1.html",
-      "login.html",
-      "logout.html",
-      "main.js",
-      "maintenance.js",
-      "mnai.html",
-      "mnairedirect.html",
-      "mncreditcheck.html",
-      "mngamescontactform.html",
-      "mngamescore.html",
-      "mnlearn.html",
-      "mnpluslogo.png",
-      "names.txt",
-      "onboarding.html",
-      "ourteam.html",
-      "premium.html",
-      "process_form.php",
-      "profile.html",
-      "protectedtest.html",
-      "redirect.js",
-      "referral.html",
-      "referralcheck.html",
-      "report-a-prompt.html",
-      "schoology-icon.jpg",
-      "schoology-logo.png",
-      "schoology.jpg",
-      "seleniteauthtest.html",
-      "seleniteauthtest2.html",
-      "sign-in.html",
-      "sign-up.html",
-      "statuschecks.html",
-      "store.html",
-      "sw.js",
-      "terms-of-service.html",
-      "test111.html",
-      "test123.html",
-      "tournamentrules.html",
-      "tournaments.html",
-      "ultimate.html",
-      "unauthorized1.html",
-      "untilnextyear.html"
-    ];
-
-    // Function to initialize page list
-    function initPageList() {
-      const pageList = document.getElementById('pageList');
-
-      pages.forEach(page => {
-        const pageItem = document.createElement('div');
-        pageItem.classList.add('page-item');
-
-        const nameLabel = document.createElement('label');
-        nameLabel.textContent = page;
-
-        const switchInput = document.createElement('input');
-        switchInput.type = 'checkbox';
-        switchInput.checked = !isPageDisabled(page); // Default to enabled unless disabled in localStorage
-        switchInput.addEventListener('change', () => {
-          setPageDisabled(page, !switchInput.checked); // Update localStorage on change
-          if (!switchInput.checked) {
-            // Page disabled
-            console.log(`Page ${page} disabled globally, redirecting...`);
-            window.location.href = 'redirect.html'; // Redirect to your redirect page
-          }
-        });
-
-        pageItem.appendChild(nameLabel);
-        pageItem.appendChild(switchInput);
-        pageList.appendChild(pageItem);
-      });
-    }
-
-    // Function to check if a page is disabled
-    function isPageDisabled(page) {
-      const disabledPages = JSON.parse(localStorage.getItem('disabledPages')) || [];
-      return disabledPages.includes(page);
-    }
-
-    // Function to set a page disabled or enabled
-    function setPageDisabled(page, disabled) {
-      let disabledPages = JSON.parse(localStorage.getItem('disabledPages')) || [];
-
-      if (disabled && !disabledPages.includes(page)) {
-        disabledPages.push(page);
-      } else if (!disabled && disabledPages.includes(page)) {
-        disabledPages = disabledPages.filter(p => p !== page);
-      }
-
-      localStorage.setItem('disabledPages', JSON.stringify(disabledPages));
-    }
-
-    // Load page list when the window loads
-    window.onload = function() {
-      initPageList();
-    };
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@latest"></script>
+  <script src="script.js"></script>
 </body>
 </html>
