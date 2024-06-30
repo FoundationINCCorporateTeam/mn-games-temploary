@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Access Control Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .page-control {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Page Access Control Panel</h1>
+    <div id="pages-list"></div>
+
+    <script>
+        const backendUrl = 'https://scarce-supreme-wavelength.glitch.me'; // Replace with your backend URL
+
+        // Fetch the list of pages from the backend server
+        async function fetchPages() {
+            const response = await fetch(`${backendUrl}/api/pages`);
+            const pages = await response.json();
+            return pages;
+        }
+
+        // Fetch the current settings from the backend server
+        async function fetchSettings() {
+            const response = await fetch(`${backendUrl}/api/settings`);
+            const settings = await response.json();
+            return settings;
+        }
+
+        // Update the settings on the backend server
+        async function updateSettings(settings) {
+            await fetch(`${backendUrl}/api/settings`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(settings),
+            });
+        }
+
+        // Render the list of pages with switches
+        async function renderPageList() {
+            const pages = await fetchPages();
+            const settings = await fetchSettings();
+            const pagesList = document.getElementById('pages-list');
+            pagesList.innerHTML = '';
+
+            pages.forEach(page => {
+                const isRestricted = settings[page.url]?.restricted || false;
+
+                const pageControl = document.createElement('div');
+                pageControl.className = 'page-control';
+
+                const pageName = document.createElement('span');
+                pageName.textContent = page.name;
+
+                const pageSwitch = document.createElement('input');
+                pageSwitch.type = 'checkbox';
+                pageSwitch.checked = isRestricted;
+                pageSwitch.addEventListener('change', async () => {
+                    settings[page.url] = { restricted: pageSwitch.checked };
+                    await updateSettings(settings);
+                });
+
+                pageControl.appendChild(pageName);
+                pageControl.appendChild(pageSwitch);
+                pagesList.appendChild(pageControl);
+            });
+        }
+
+        // Initialize the control panel
+        renderPageList();
+    </script>
+</body>
+</html>
