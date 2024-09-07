@@ -1,6 +1,4 @@
 [build]
-  # Define the directory where the static files are located
-  publish = "public"
 
   # Define the directory where the serverless functions are located
   functions = "functions"
