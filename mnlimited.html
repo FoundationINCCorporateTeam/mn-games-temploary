@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        color: white;
+        background-color: black;
+        text-align: center;
+      }
+      button {
+        background-color: blue;
+        color: white;
+        border-radius: 3px;
+        padding: 10px;
+        margin: 5px;
+      }
+    </style>
+  </head>
+<h1>Welcome to MN Games Limited (Temporary)</h1>
+	        <button class="button" onclick="openSecureBrowser1()">Slope</button>
+	        <button class="button" onclick="openSecureBrowser2()">Slope 2</button>
+	        <button class="button" onclick="openSecureBrowser3()">1v1.lol</button>
+	        <button class="button" onclick="openSecureBrowser4()">Stickman Hook</button>
+	        <button class="button" onclick="openSecureBrowser5()">Worlds Hardest Game 2</button>
+	<script>
+    function openSecureBrowser1() {
+        var urls = ['https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%201v1lol/index.html'];
+        var lastUrlIndex = parseInt(localStorage.getItem('lastUrlIndex')) || 0;
+        var currentUrlIndex = (lastUrlIndex + 1) % 2;
+        var newWindow = window.open('about:blank', '_blank');
+        newWindow.document.write('<html><head><title>MN Games Secure Browser</title></head><body><iframe src="' + urls[currentUrlIndex] + '" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
+        localStorage.setItem('lastUrlIndex', currentUrlIndex);
+    }
+        function openSecureBrowser2() {
+        var urls = ['https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy slope-2/index.html'];
+        var lastUrlIndex = parseInt(localStorage.getItem('lastUrlIndex')) || 0;
+        var currentUrlIndex = (lastUrlIndex + 1) % 2;
+        var newWindow = window.open('about:blank', '_blank');
+        newWindow.document.write('<html><head><title>MN Games Secure Browser</title></head><body><iframe src="' + urls[currentUrlIndex] + '" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
+        localStorage.setItem('lastUrlIndex', currentUrlIndex);
+    }
+        function openSecureBrowser3() {
+        var urls = ['https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy slope/index.html'];
+        var lastUrlIndex = parseInt(localStorage.getItem('lastUrlIndex')) || 0;
+        var currentUrlIndex = (lastUrlIndex + 1) % 2;
+        var newWindow = window.open('about:blank', '_blank');
+        newWindow.document.write('<html><head><title>MN Games Secure Browser</title></head><body><iframe src="' + urls[currentUrlIndex] + '" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
+        localStorage.setItem('lastUrlIndex', currentUrlIndex);
+    }
+        function openSecureBrowser4() {
+        var urls = ['https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy stickman-hook/index.html'];
+        var lastUrlIndex = parseInt(localStorage.getItem('lastUrlIndex')) || 0;
+        var currentUrlIndex = (lastUrlIndex + 1) % 2;
+        var newWindow = window.open('about:blank', '_blank');
+        newWindow.document.write('<html><head><title>MN Games Secure Browser</title></head><body><iframe src="' + urls[currentUrlIndex] + '" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
+        localStorage.setItem('lastUrlIndex', currentUrlIndex);
+    }
+        function openSecureBrowser5() {
+        var urls = ['https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy stickman-hook/index.html'];
+        var lastUrlIndex = parseInt(localStorage.getItem('lastUrlIndex')) || 0;
+        var currentUrlIndex = (lastUrlIndex + 1) % 2;
+        var newWindow = window.open('about:blank', '_blank');
+        newWindow.document.write('<html><head><title>MN Games Secure Browser</title></head><body><iframe src="' + urls[currentUrlIndex] + '" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe></body></html>');
+        localStorage.setItem('lastUrlIndex', currentUrlIndex);
+    }
+  
+  </script>
+</html>
