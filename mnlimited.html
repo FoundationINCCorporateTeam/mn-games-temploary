@@ -26,6 +26,27 @@
 <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script> <!-- Include Socket.io -->
 
 	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+    // List of allowed referrer URLs
+    var allowedReferrers = [
+        'https://zealous-meadow-04d0ae41e.5.azurestaticapps.net/mnlimited',
+        'https://gentle-mushroom-0e2ea7b1e.5.azurestaticapps.net'
+    ];
+
+    // Get the referrer URL
+    var referrer = document.referrer;
+
+    // Check if the referrer is in the allowed list
+    var isAllowed = allowedReferrers.some(function(allowed) {
+        return referrer.startsWith(allowed);
+    });
+
+    // Redirect if the referrer is not allowed
+    if (!isAllowed) {
+        window.location.href = 'https://gentle-mushroom-0e2ea7b1e.5.azurestaticapps.net/';
+        console.log("Is Not Allowed")
+    }
+});
     function openSecureBrowser1() {
         var urls1 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%201v1lol/index.html';
 
