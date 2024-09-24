@@ -41,6 +41,8 @@ function openSecureBrowser(url) {
                         right: 10px;
                         z-index: 20;
                         cursor: grab;
+                        width: auto; /* Prevent resizing while dragging */
+                        height: auto;
                     }
                     /* Fullscreen overlay image */
                     .overlay {
@@ -73,9 +75,17 @@ function openSecureBrowser(url) {
                     let isDragging = false;
                     let offsetX, offsetY;
 
-                    // Show the overlay when inactive
+                    // Show the overlay when inactive (test overlay function)
                     function showOverlay() {
-                        overlay.style.display = 'block';
+                        try {
+                            overlay.style.display = 'block';
+                            console.log('Success: Overlay displayed!');
+                            // Optionally show success to the user
+                            alert('Overlay displayed successfully.');
+                        } catch (error) {
+                            console.error('Error: Failed to display overlay.', error);
+                            alert('Failed to display the overlay.');
+                        }
                     }
 
                     // Hide the overlay when user is active
@@ -87,7 +97,7 @@ function openSecureBrowser(url) {
                     function resetInactivityTimer() {
                         hideOverlay();
                         clearTimeout(inactivityTimeout);
-                        inactivityTimeout = setTimeout(showOverlay, 5000); // 5 seconds inactivity
+                        inactivityTimeout = setTimeout(showOverlay, 5000); // 5 seconds inactivity for testing
                     }
 
                     // Add event listeners for interaction
@@ -97,7 +107,7 @@ function openSecureBrowser(url) {
                     document.addEventListener('touchstart', resetInactivityTimer);
 
                     // Start the inactivity timer
-                    inactivityTimeout = setTimeout(showOverlay, 5000);
+                    inactivityTimeout = setTimeout(showOverlay, 5000); // You can increase this for real usage
 
                     // Dragging functionality for the Panic Button
                     panicButton.addEventListener('mousedown', function(e) {
@@ -120,6 +130,13 @@ function openSecureBrowser(url) {
                     document.addEventListener('mouseup', function() {
                         isDragging = false;
                         panicButton.style.cursor = 'grab';
+                    });
+
+                    // Prevent click action during dragging
+                    panicButton.addEventListener('click', function(e) {
+                        if (isDragging) {
+                            e.preventDefault(); // Stop any action when dragging
+                        }
                     });
                 </script>
             </body>
