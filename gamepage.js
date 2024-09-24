@@ -51,7 +51,7 @@ function openSecureBrowser(url) {
                         left: 0;
                         width: 100vw;
                         height: 100vh;
-                        background-image: url('https://example.com/your-image.jpg');
+                        background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Dexample&psig=AOvVaw1gAGCEoBhBrlEFijHn_bGh&ust=1727299445130000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC7yIDC3IgDFQAAAAAdAAAAABAE');
                         background-size: cover;
                         background-position: center;
                         display: none; /* Initially hidden */
