@@ -41,8 +41,6 @@ function openSecureBrowser(url) {
                         right: 10px;
                         z-index: 20;
                         cursor: grab;
-                        width: auto; /* Prevent resizing while dragging */
-                        height: auto;
                     }
                     /* Fullscreen overlay image */
                     .overlay {
@@ -51,7 +49,7 @@ function openSecureBrowser(url) {
                         left: 0;
                         width: 100vw;
                         height: 100vh;
-                        background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fstock.adobe.com%2Fsearch%3Fk%3Dexample&psig=AOvVaw1gAGCEoBhBrlEFijHn_bGh&ust=1727299445130000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCNC7yIDC3IgDFQAAAAAdAAAAABAE');
+                        background-image: url('https://example.com/your-image.jpg');
                         background-size: cover;
                         background-position: center;
                         display: none; /* Initially hidden */
@@ -73,18 +71,15 @@ function openSecureBrowser(url) {
                     const overlay = document.getElementById('fullscreenOverlay');
                     const panicButton = document.getElementById('panicButton');
                     let isDragging = false;
-                    let offsetX, offsetY;
+                    let startX, startY, initialX, initialY;
 
                     // Show the overlay when inactive (test overlay function)
                     function showOverlay() {
                         try {
                             overlay.style.display = 'block';
                             console.log('Success: Overlay displayed!');
-                            // Optionally show success to the user
-                            alert('Overlay displayed successfully.');
                         } catch (error) {
                             console.error('Error: Failed to display overlay.', error);
-                            alert('Failed to display the overlay.');
                         }
                     }
 
@@ -107,29 +102,34 @@ function openSecureBrowser(url) {
                     document.addEventListener('touchstart', resetInactivityTimer);
 
                     // Start the inactivity timer
-                    inactivityTimeout = setTimeout(showOverlay, 5000); // You can increase this for real usage
+                    inactivityTimeout = setTimeout(showOverlay, 5000); // Adjust for real usage
 
                     // Dragging functionality for the Panic Button
                     panicButton.addEventListener('mousedown', function(e) {
                         isDragging = true;
-                        offsetX = e.clientX - panicButton.offsetLeft;
-                        offsetY = e.clientY - panicButton.offsetTop;
+                        startX = e.clientX;
+                        startY = e.clientY;
+                        initialX = panicButton.offsetLeft;
+                        initialY = panicButton.offsetTop;
                         panicButton.style.cursor = 'grabbing';
                     });
 
                     document.addEventListener('mousemove', function(e) {
                         if (isDragging) {
-                            var x = e.clientX - offsetX;
-                            var y = e.clientY - offsetY;
-                            panicButton.style.left = x + 'px';
-                            panicButton.style.top = y + 'px';
+                            e.preventDefault(); // Prevent selection or other actions while dragging
+                            const deltaX = e.clientX - startX;
+                            const deltaY = e.clientY - startY;
+                            panicButton.style.left = initialX + deltaX + 'px';
+                            panicButton.style.top = initialY + deltaY + 'px';
                             panicButton.style.position = 'absolute';
                         }
                     });
 
                     document.addEventListener('mouseup', function() {
-                        isDragging = false;
-                        panicButton.style.cursor = 'grab';
+                        if (isDragging) {
+                            isDragging = false;
+                            panicButton.style.cursor = 'grab';
+                        }
                     });
 
                     // Prevent click action during dragging
