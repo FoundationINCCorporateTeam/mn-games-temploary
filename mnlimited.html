@@ -45,6 +45,7 @@
             top: 10px;
             right: 10px;
             z-index: 20; /* Ensure panic button is above everything */
+            cursor: grab;
         }
     </style>
 </head>
@@ -99,7 +100,7 @@
             var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy death-run-3d/index.html';
             openSecureBrowser(urls9);
         }
-        
+
         function openSecureBrowser(url) {
             var newWindow = window.open('about:blank', '_blank');
             newWindow.document.write(`
@@ -111,8 +112,36 @@
                     <body>
                         <div class="iframe-container">
                             <iframe src="${url}"></iframe>
-                            <a href="https://osseo.schoology.com" class="panic">Panic Button</a>
+                            <a href="https://osseo.schoology.com" class="panic" id="panicButton">Panic Button</a>
                         </div>
+                        <script>
+                            // Dragging functionality
+                            var panicButton = document.getElementById('panicButton');
+                            var isDragging = false;
+                            var offsetX, offsetY;
+
+                            panicButton.addEventListener('mousedown', function(e) {
+                                isDragging = true;
+                                offsetX = e.clientX - panicButton.offsetLeft;
+                                offsetY = e.clientY - panicButton.offsetTop;
+                                panicButton.style.cursor = 'grabbing';
+                            });
+
+                            document.addEventListener('mousemove', function(e) {
+                                if (isDragging) {
+                                    var x = e.clientX - offsetX;
+                                    var y = e.clientY - offsetY;
+                                    panicButton.style.left = x + 'px';
+                                    panicButton.style.top = y + 'px';
+                                    panicButton.style.position = 'absolute';
+                                }
+                            });
+
+                            document.addEventListener('mouseup', function() {
+                                isDragging = false;
+                                panicButton.style.cursor = 'grab';
+                            });
+                        </script>
                     </body>
                 </html>
             `);
