@@ -23,7 +23,7 @@ function openSecureBrowser(url) {
                         width: 100%;
                         height: 100%;
                         border: none;
-                        z-index: 1;
+                        z-index: 1; /* Game content below overlay */
                     }
                     a.panic {
                         background: linear-gradient(to right, #ff0000, #ff0000);
@@ -39,7 +39,7 @@ function openSecureBrowser(url) {
                         position: absolute;
                         top: 10px;
                         right: 10px;
-                        z-index: 20;
+                        z-index: 20; /* Ensure panic button is above the overlay */
                         cursor: grab;
                     }
                     /* Fullscreen overlay image */
@@ -49,60 +49,25 @@ function openSecureBrowser(url) {
                         left: 0;
                         width: 100vw;
                         height: 100vh;
-                        background-image: url('https://example.com/your-image.jpg');
+                        background-image: url('https://t4.ftcdn.net/jpg/03/16/68/69/360_F_316686992_OvCTP1wfazJhBeMrBBDUGooufSmj2O8G.jpg'); /* Change to your image URL */
                         background-size: cover;
                         background-position: center;
-                        display: none; /* Initially hidden */
-                        z-index: 9999;
+                        z-index: 9999; /* Always on top */
                     }
                 </style>
             </head>
             <body>
                 <div class="iframe-container">
                     <iframe src="${url}"></iframe>
+                    <div id="fullscreenOverlay" class="overlay"></div> <!-- Always visible overlay -->
                     <a href="https://osseo.schoology.com" class="panic" id="panicButton">Panic Button</a>
                 </div>
 
-                <!-- Fullscreen Overlay (Visible for Screen Monitors) -->
-                <div id="fullscreenOverlay" class="overlay"></div>
-
                 <script>
-                    let inactivityTimeout;
                     const overlay = document.getElementById('fullscreenOverlay');
                     const panicButton = document.getElementById('panicButton');
                     let isDragging = false;
                     let startX, startY, initialX, initialY;
-
-                    // Show the overlay when inactive (test overlay function)
-                    function showOverlay() {
-                        try {
-                            overlay.style.display = 'block';
-                            console.log('Success: Overlay displayed!');
-                        } catch (error) {
-                            console.error('Error: Failed to display overlay.', error);
-                        }
-                    }
-
-                    // Hide the overlay when user is active
-                    function hideOverlay() {
-                        overlay.style.display = 'none';
-                    }
-
-                    // Reset inactivity timer
-                    function resetInactivityTimer() {
-                        hideOverlay();
-                        clearTimeout(inactivityTimeout);
-                        inactivityTimeout = setTimeout(showOverlay, 5000); // 5 seconds inactivity for testing
-                    }
-
-                    // Add event listeners for interaction
-                    document.addEventListener('mousemove', resetInactivityTimer);
-                    document.addEventListener('keydown', resetInactivityTimer);
-                    document.addEventListener('click', resetInactivityTimer);
-                    document.addEventListener('touchstart', resetInactivityTimer);
-
-                    // Start the inactivity timer
-                    inactivityTimeout = setTimeout(showOverlay, 5000); // Adjust for real usage
 
                     // Dragging functionality for the Panic Button
                     panicButton.addEventListener('mousedown', function(e) {
