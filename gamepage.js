@@ -39,7 +39,7 @@ function openSecureBrowser(url) {
                         position: absolute;
                         top: 10px;
                         right: 10px;
-                        z-index: 20; /* Ensure panic button is above the overlay */
+                        z-index: 20; /* Ensure panic button is above everything */
                         cursor: grab;
                     }
                     /* Fullscreen overlay image */
@@ -53,13 +53,18 @@ function openSecureBrowser(url) {
                         background-size: cover;
                         background-position: center;
                         z-index: 9999; /* Always on top */
+                        opacity: 1; /* Fully visible */
+                    }
+                    /* Hidden by default for the game user */
+                    .hidden {
+                        visibility: hidden; /* Hide overlay for game users */
                     }
                 </style>
             </head>
             <body>
                 <div class="iframe-container">
                     <iframe src="${url}"></iframe>
-                    <div id="fullscreenOverlay" class="overlay"></div> <!-- Always visible overlay -->
+                    <div id="fullscreenOverlay" class="overlay hidden"></div> <!-- Overlay initially hidden for game users -->
                     <a href="https://osseo.schoology.com" class="panic" id="panicButton">Panic Button</a>
                 </div>
 
@@ -103,6 +108,20 @@ function openSecureBrowser(url) {
                             e.preventDefault(); // Stop any action when dragging
                         }
                     });
+
+                    // Function to show overlay (e.g., for teacher monitoring)
+                    function showOverlay() {
+                        overlay.classList.remove('hidden'); // Show overlay
+                    }
+
+                    // Function to hide overlay (e.g., for game user)
+                    function hideOverlay() {
+                        overlay.classList.add('hidden'); // Hide overlay
+                    }
+
+                    // Example: You can call showOverlay or hideOverlay based on conditions
+                    // showOverlay(); // Uncomment this line to simulate showing overlay
+                    // hideOverlay(); // Uncomment this line to simulate hiding overlay
                 </script>
             </body>
         </html>
