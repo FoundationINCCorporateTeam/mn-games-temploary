@@ -23,7 +23,7 @@ function openSecureBrowser(url) {
                         width: 100%;
                         height: 100%;
                         border: none;
-                        z-index: 1; /* Game content below overlay */
+                        z-index: 1; /* Game content below panic button */
                     }
                     a.panic {
                         background: linear-gradient(to right, #ff0000, #ff0000);
@@ -40,88 +40,19 @@ function openSecureBrowser(url) {
                         top: 10px;
                         right: 10px;
                         z-index: 20; /* Ensure panic button is above everything */
-                        cursor: grab;
-                    }
-                    /* Fullscreen overlay image */
-                    .overlay {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100vw;
-                        height: 100vh;
-                        background-image: url('https://t4.ftcdn.net/jpg/03/16/68/69/360_F_316686992_OvCTP1wfazJhBeMrBBDUGooufSmj2O8G.jpg'); /* Change to your image URL */
-                        background-size: cover;
-                        background-position: center;
-                        z-index: 9999; /* Always on top */
-                        opacity: 1; /* Fully visible */
-                    }
-                    /* Hidden by default for the game user */
-                    .hidden {
-                        visibility: hidden; /* Hide overlay for game users */
+                        cursor: pointer; /* Change cursor style for better UX */
                     }
                 </style>
             </head>
             <body>
                 <div class="iframe-container">
                     <iframe src="${url}"></iframe>
-                    <div id="fullscreenOverlay" class="overlay hidden"></div> <!-- Overlay initially hidden for game users -->
-                    <a href="https://osseo.schoology.com" class="panic" id="panicButton">Panic Button</a>
+                    <a href="https://osseo.schoology.com" class="panic">Panic Button</a>
                 </div>
 
                 <script>
-                    const overlay = document.getElementById('fullscreenOverlay');
-                    const panicButton = document.getElementById('panicButton');
-                    let isDragging = false;
-                    let startX, startY, initialX, initialY;
-
-                    // Dragging functionality for the Panic Button
-                    panicButton.addEventListener('mousedown', function(e) {
-                        isDragging = true;
-                        startX = e.clientX;
-                        startY = e.clientY;
-                        initialX = panicButton.offsetLeft;
-                        initialY = panicButton.offsetTop;
-                        panicButton.style.cursor = 'grabbing';
-                    });
-
-                    document.addEventListener('mousemove', function(e) {
-                        if (isDragging) {
-                            e.preventDefault(); // Prevent selection or other actions while dragging
-                            const deltaX = e.clientX - startX;
-                            const deltaY = e.clientY - startY;
-                            panicButton.style.left = initialX + deltaX + 'px';
-                            panicButton.style.top = initialY + deltaY + 'px';
-                            panicButton.style.position = 'absolute';
-                        }
-                    });
-
-                    document.addEventListener('mouseup', function() {
-                        if (isDragging) {
-                            isDragging = false;
-                            panicButton.style.cursor = 'grab';
-                        }
-                    });
-
-                    // Prevent click action during dragging
-                    panicButton.addEventListener('click', function(e) {
-                        if (isDragging) {
-                            e.preventDefault(); // Stop any action when dragging
-                        }
-                    });
-
-                    // Function to show overlay (e.g., for teacher monitoring)
-                    function showOverlay() {
-                        overlay.classList.remove('hidden'); // Show overlay
-                    }
-
-                    // Function to hide overlay (e.g., for game user)
-                    function hideOverlay() {
-                        overlay.classList.add('hidden'); // Hide overlay
-                    }
-
-                    // Example: You can call showOverlay or hideOverlay based on conditions
-                    // showOverlay(); // Uncomment this line to simulate showing overlay
-                    // hideOverlay(); // Uncomment this line to simulate hiding overlay
+                    // Insert a value into localStorage when the page is visited
+                    localStorage.setItem('gameVisit', new Date().toISOString()); // Store current timestamp
                 </script>
             </body>
         </html>
