@@ -88,107 +88,107 @@
             <button onclick="closeSettings()">Close</button>
         </div>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script>
-    // Supabase client initialization (replace with your Supabase URL and key)
-    const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'; // Replace with your actual Supabase key
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+    <script>
+        // Supabase client initialization (replace with your Supabase URL and key)
+        const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
+        const supabaseKey = 'YOUR_SUPABASE_KEY'; // Replace with your actual Supabase key
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-    // Open the settings modal
-    document.getElementById("openSettingsBtn").onclick = function() {
-        document.getElementById("settingsModal").style.display = "block";
-        loadExistingSettings(); // Load existing settings when modal opens
-    };
-
-    // Close the settings modal
-    function closeSettings() {
-        document.getElementById("settingsModal").style.display = "none";
-    }
-
-    // Load existing settings from Supabase
-    async function loadExistingSettings() {
-        const userId = localStorage.getItem('settingsUserId');
-        if (!userId) return; // No user ID found
-
-        const { data, error } = await supabase
-            .from('settings')
-            .select('*')
-            .eq('user_id', userId)
-            .single();
-        if (error == "PGRST116") {
-            console.log("No user id found")
-        };
-        if (error) {
-            console.error("Error loading settings from Supabase:", error);
-            return;
-        }
-
-        // Populate the form with existing settings
-        if (data) {
-            document.getElementById("panicPosition").value = data.panicposition || '';
-            document.getElementById("emergencyKey").value = data.emergencykey || '';
-            document.getElementById("emergencyUrl").value = data.emergencyurl || '';
-            document.getElementById("imageUrl").value = data.imageurl || '';
-            document.getElementById("tabTitle").value = data.tabtitle || '';
-            document.getElementById("panicUrl").value = data.panicurl || '';
-        }
-    }
-
-    // Save settings to Supabase and localStorage
-    async function saveSettings() {
-        const userId = localStorage.getItem('settingsUserId');
-        if (!userId) {
-            console.error("No user ID found in localStorage.");
-            return;
-        }
-
-        const panicposition = document.getElementById("panicPosition").value;
-        const emergencykey = document.getElementById("emergencyKey").value;
-        const emergencyurl = document.getElementById("emergencyUrl").value;
-        const imageurl = document.getElementById("imageUrl").value;
-        const tabtitle = document.getElementById("tabTitle").value;
-        const panicurl = document.getElementById("panicUrl").value;
-
-        const settings = {
-            user_id: userId,
-            panicposition,
-            emergencykey,
-            emergencyurl,
-            imageurl,
-            tabtitle,
-            panicurl
+        // Open the settings modal
+        document.getElementById("openSettingsBtn").onclick = function() {
+            document.getElementById("settingsModal").style.display = "block";
+            loadExistingSettings(); // Load existing settings when modal opens
         };
 
-        // Upsert settings to Supabase (insert if not exists, update if exists)
-        const { data, error } = await supabase
-            .from('settings')
-            .upsert([settings], { onConflict: ['user_id'] });
-
-        if (error) {
-            console.error("Error saving settings to Supabase:", error);
-        } else {
-            console.log("Settings saved successfully:", data);
+        // Close the settings modal
+        function closeSettings() {
+            document.getElementById("settingsModal").style.display = "none";
         }
 
-        closeSettings();
-    }
+        // Load existing settings from Supabase
+        async function loadExistingSettings() {
+            const userId = localStorage.getItem('settingsUserId');
+            if (!userId) return; // No user ID found
 
-    // Check user authentication
-    function checkAuthentication() {
-        const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
-        if (!token) {
-            window.location.href = 'unauthorized1';
-        } else {
-            // Generate and store a unique user ID in localStorage
-            if (!localStorage.getItem('settingsUserId')) {
-                const uniqueUserId = Date.now(); // Simple unique ID generation
-                localStorage.setItem('settingsUserId', uniqueUserId);
+            const { data, error } = await supabase
+                .from('settings')
+                .select('*')
+                .eq('user_id', userId)
+                .single();
+
+            if (error) {
+                console.error("Error loading settings from Supabase:", error);
+                return;
+            }
+
+            // Populate the form with existing settings
+            if (data) {
+                document.getElementById("panicPosition").value = data.panicposition || '';
+                document.getElementById("emergencyKey").value = data.emergencykey || '';
+                document.getElementById("emergencyUrl").value = data.emergencyurl || '';
+                document.getElementById("imageUrl").value = data.imageurl || '';
+                document.getElementById("tabTitle").value = data.tabtitle || '';
+                document.getElementById("panicUrl").value = data.panicurl || '';
             }
         }
-    }
 
-    checkAuthentication();
-</script>
+        // Save settings to Supabase and localStorage
+        async function saveSettings() {
+            const userId = localStorage.getItem('settingsUserId');
+            if (!userId) {
+                console.error("No user ID found in localStorage.");
+                return;
+            }
+
+            const panicposition = document.getElementById("panicPosition").value;
+            const emergencykey = document.getElementById("emergencyKey").value;
+            const emergencyurl = document.getElementById("emergencyUrl").value;
+            const imageurl = document.getElementById("imageUrl").value;
+            const tabtitle = document.getElementById("tabTitle").value;
+            const panicurl = document.getElementById("panicUrl").value;
+
+            const settings = {
+                user_id: userId,
+                panicposition,
+                emergencykey,
+                emergencyurl,
+                imageurl,
+                tabtitle,
+                panicurl
+            };
+
+            // Upsert settings to Supabase (insert if not exists, update if exists)
+            const { data, error } = await supabase
+                .from('settings')
+                .upsert([settings], { onConflict: ['user_id'] });
+
+            if (error) {
+                console.error("Error saving settings to Supabase:", error);
+            } else {
+                console.log("Settings saved successfully:", data);
+            }
+
+            closeSettings();
+        }
+
+        // Check user authentication
+        function checkAuthentication() {
+            const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+            if (!token) {
+                window.location.href = 'unauthorized1';
+            } else {
+                // Generate and store a unique user ID in localStorage
+                if (!localStorage.getItem('settingsUserId')) {
+                    const uniqueUserId = Date.now(); // Simple unique ID generation
+                    localStorage.setItem('settingsUserId', uniqueUserId);
+                }
+            }
+        }
+
+        checkAuthentication();
+    </script>
+    <script src="gamepage.js"></script>
 </body>
 </html>
