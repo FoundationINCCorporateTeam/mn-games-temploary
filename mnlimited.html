@@ -3,160 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MN Games Settings</title>
-    <link rel="stylesheet" href="https://cdn.statically.io/gh/FoundationINCCorporateTeam/mn-games-temploary/main/styles.css">
+    <link id="favicon" rel="icon" href="default-favicon.ico" type="image/x-icon"> <!-- Default favicon -->
+    <title id="page-title">MN Games Limited (Temporary)</title> <!-- Default title -->
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f0f0f0;
-        }
-        h1 {
+            color: white;
+            background-color: black;
             text-align: center;
-        }
-        .settings-form {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            margin: 0;
+            overflow: hidden;
         }
         button {
-            padding: 10px 15px;
-            background-color: #007BFF;
+            background-color: blue;
             color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 3px;
+            padding: 10px;
+            margin: 5px;
+            position: relative;
+            z-index: 10;
         }
-        button:hover {
-            background-color: #0056b3;
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 1;
+        }
+        a.panic {
+            background: linear-gradient(to right, #ff0000, #ff0000);
+            background-color: #ff0000;
+            color: #fff;
+            font-family: Trebuchet MS;
+            font-size: 18px;
+            font-weight: 800;
+            text-decoration: none;
+            padding: 14px 15px;
+            border-radius: 10px;
+            display: inline-block;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 20;
+            cursor: pointer; /* Change cursor style for better UX */
+        }
+        .overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent overlay */
+            z-index: 100; /* Above everything else */
+        }
+        .settings-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid white;
+            padding: 20px;
+            z-index: 101;
+            display: none; /* Hidden by default */
+        }
+        .settings-popup input {
+            display: block;
+            margin: 10px 0;
+            padding: 5px;
+            width: 200px;
         }
     </style>
 </head>
 <body>
-
-    <h1>MN Games Settings</h1>
-    <div class="settings-form">
-        <div class="form-group">
-            <label for="panicButtonPosition">Panic Button Position:</label>
-            <select id="panicButtonPosition">
-                <option value="top-left">Top Left</option>
-                <option value="top-right">Top Right</option>
-                <option value="bottom-left">Bottom Left</option>
-                <option value="bottom-right">Bottom Right</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="emergencyKey">Emergency Key Combination:</label>
-            <input type="text" id="emergencyKey" placeholder="e.g., Ctrl+E" />
-        </div>
-
-        <div class="form-group">
-            <label for="emergencyUrl">Emergency URL:</label>
-            <input type="url" id="emergencyUrl" placeholder="https://example.com" />
-        </div>
-
-        <div class="form-group">
-            <label for="iconImageUrl">Icon Image URL:</label>
-            <input type="url" id="iconImageUrl" placeholder="https://example.com/icon.png" />
-        </div>
-
-        <div class="form-group">
-            <label for="pageTitle">Page Title:</label>
-            <input type="text" id="pageTitle" placeholder="Enter the page title" />
-        </div>
-
-        <div class="form-group">
-            <label for="panicButtonUrl">Panic Button URL:</label>
-            <input type="url" id="panicButtonUrl" placeholder="https://osseo.schoology.com" />
-        </div>
-
-        <button id="saveSettings">Save Settings</button>
+    <h1 id="page-title">Welcome to MN Games Limited (Temporary)</h1>
+    <div>
+        <button onclick="openSecureBrowser1()">1v1.lol</button>
+        <button onclick="openSecureBrowser2()">Slope 2</button>
+        <button onclick="openSecureBrowser3()">Slope</button>
+        <button onclick="openSecureBrowser4()">Stickman Hook</button>
+        <button onclick="openSecureBrowser5()">World's Hardest Game 2</button>
+        <button onclick="openSecureBrowser6()">Retro Bowl</button>
+        <button onclick="openSecureBrowser7()">N Gon</button>
+        <button onclick="openSecureBrowser8()">MotoX3M</button>
+        <button onclick="openSecureBrowser9()">Death Run 3D</button>
+        <button onclick="toggleSettingsPopup()">Settings</button>
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+    <div class="overlay" id="emergencyOverlay">
+        <iframe id="emergencyFrame" src="" style="display:none;"></iframe>
+    </div>
+
+    <div class="settings-popup" id="settingsPopup">
+        <h2>Settings</h2>
+        <label for="panicButtonPosition">Panic Button Position (top, right):</label>
+        <input type="text" id="panicButtonPosition" placeholder="e.g., 10px, 10px">
+        
+        <label for="emergencyKeyCombination">Emergency Key Combination:</label>
+        <input type="text" id="emergencyKeyCombination" placeholder="e.g., Ctrl+Shift+E">
+        
+        <label for="emergencyFrameUrl">Emergency Frame URL:</label>
+        <input type="text" id="emergencyFrameUrl" placeholder="e.g., https://example.com">
+        
+        <label for="panicButtonUrl">Panic Button URL:</label>
+        <input type="text" id="panicButtonUrl" placeholder="e.g., https://osseo.schoology.com">
+        
+        <label for="pageTitle">Page Title:</label>
+        <input type="text" id="pageTitle" placeholder="Page Title">
+        
+        <label for="faviconUrl">Favicon URL:</label>
+        <input type="text" id="faviconUrl" placeholder="e.g., https://example.com/favicon.ico">
+        
+        <button onclick="saveSettings()">Save Settings</button>
+        <button onclick="toggleSettingsPopup()">Close</button>
+    </div>
+
+    <!-- Link the external JavaScript file -->
+    <script src="gamepage.js"></script>
+    
     <script>
-        // Supabase credentials (hardcoded for use in the application)
-        const SUPABASE_URL = 'https://tdsxayxnjomnoiestnmj.supabase.co'; // Replace with your Supabase URL
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'; // Replace with your Supabase API Key
+        function toggleSettingsPopup() {
+            const popup = document.getElementById('settingsPopup');
+            popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+        }
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        function saveSettings() {
+            const panicButtonPosition = document.getElementById('panicButtonPosition').value;
+            const emergencyKeyCombination = document.getElementById('emergencyKeyCombination').value;
+            const emergencyFrameUrl = document.getElementById('emergencyFrameUrl').value;
+            const panicButtonUrl = document.getElementById('panicButtonUrl').value;
+            const pageTitle = document.getElementById('pageTitle').value;
+            const faviconUrl = document.getElementById('faviconUrl').value;
 
-        // Function to save user settings
-        document.getElementById('saveSettings').addEventListener('click', async () => {
-            const userId = localStorage.getItem('userId') || generateUserId();
-            localStorage.setItem('userId', userId);
+            localStorage.setItem('panicButtonPosition', panicButtonPosition);
+            localStorage.setItem('emergencyKeyCombination', emergencyKeyCombination);
+            localStorage.setItem('emergencyFrameUrl', emergencyFrameUrl);
+            localStorage.setItem('panicButtonUrl', panicButtonUrl);
+            localStorage.setItem('pageTitle', pageTitle);
+            localStorage.setItem('faviconUrl', faviconUrl);
 
-            const settings = {
-                user_id: userId,
-                panic_button_position: document.getElementById('panicButtonPosition').value,
-                emergency_key: document.getElementById('emergencyKey').value,
-                emergency_url: document.getElementById('emergencyUrl').value,
-                icon_image_url: document.getElementById('iconImageUrl').value,
-                page_title: document.getElementById('pageTitle').value,
-                panic_button_url: document.getElementById('panicButtonUrl').value
-            };
+            // Apply the settings immediately
+            applySettings();
 
-            const { data, error } = await supabase
-                .from('user_settings')
-                .upsert(settings, { onConflict: ['user_id'] });
+            toggleSettingsPopup(); // Close the popup after saving
+        }
 
-            if (error) {
-                console.error('Error saving settings:', error);
-            } else {
-                alert('Settings saved successfully!');
-            }
-        });
-
-        // Load user settings when the page is opened
-        async function loadUserSettings() {
-            const userId = localStorage.getItem('userId');
-            const { data: settings, error } = await supabase
-                .from('user_settings')
-                .select('*')
-                .eq('user_id', userId)
-                .single();
-
-            if (error) {
-                console.error("Error fetching settings:", error);
-                return;
-            }
-
-            if (settings) {
-                document.getElementById('panicButtonPosition').value = settings.panic_button_position || 'top-right';
-                document.getElementById('emergencyKey').value = settings.emergency_key || 'Ctrl+E';
-                document.getElementById('emergencyUrl').value = settings.emergency_url || 'https://osseo.schoology.com';
-                document.getElementById('iconImageUrl').value = settings.icon_image_url || '';
-                document.getElementById('pageTitle').value = settings.page_title || '';
-                document.getElementById('panicButtonUrl').value = settings.panic_button_url || 'https://osseo.schoology.com';
+        function applySettings() {
+            const pageTitle = localStorage.getItem('pageTitle') || "MN Games Limited (Temporary)";
+            document.getElementById('page-title').innerText = pageTitle;
+            document.getElementById('page-title').innerText = pageTitle;
+            document.getElementById('favicon').setAttribute('href', localStorage.getItem('faviconUrl') || "default-favicon.ico");
+            const panicButtonPosition = localStorage.getItem('panicButtonPosition');
+            const panicButton = document.querySelector('.panic');
+            if (panicButtonPosition) {
+                const positions = panicButtonPosition.split(',').map(pos => pos.trim());
+                if (positions.length === 2) {
+                    panicButton.style.top = positions[0];
+                    panicButton.style.right = positions[1];
+                }
             }
         }
 
-        // Generate a random user ID if none exists
-        function generateUserId() {
-            return 'user_' + Math.random().toString(36).substr(2, 9);
-        }
-
-        // Load user settings on page load
-        window.onload = loadUserSettings;
-
+        // Call applySettings on load
+        window.onload = function() {
+            applySettings();
+        };
     </script>
 </body>
 </html>
