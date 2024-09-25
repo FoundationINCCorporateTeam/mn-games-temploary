@@ -119,12 +119,12 @@
             <button onclick="closeSettings()">Close</button>
         </div>
     </div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
     // Supabase client initialization (replace with your Supabase URL and key)
-    const supabaseUrl = 'https://your-supabase-url.supabase.co';
-    const supabaseKey = 'your-supabase-key';
-    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
     // Open the settings modal
     document.getElementById("openSettingsBtn").onclick = function() {
