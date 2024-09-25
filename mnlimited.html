@@ -119,12 +119,57 @@
             <button onclick="closeSettings()">Close</button>
         </div>
     </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
     // Supabase client initialization (replace with your Supabase URL and key)
     const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    let userId;
+
+    // Check user authentication and retrieve userid
+    async function checkAuthentication() {
+        const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+        if (!token) {
+            window.location.href = 'unauthorized1';
+        } else {
+            const { data, error } = await supabase.auth.getUser(token);
+            if (error || !data) {
+                console.error('Error retrieving user:', error);
+                window.location.href = 'unauthorized1';
+            } else {
+                userId = data.user.id;
+                localStorage.setItem('userid', userId);
+            }
+        }
+    }
+
+    checkAuthentication();
+
+    // Load settings for the user
+    async function loadSettings() {
+        const storedUserId = localStorage.getItem('userid');
+        if (!storedUserId) {
+            console.error("User ID not found in localStorage.");
+            return;
+        }
+
+        const { data, error } = await supabase
+            .from('settings')
+            .select('*')
+            .eq('userid', storedUserId)
+            .single();
+
+        if (error) {
+            console.error("Error loading settings from Supabase:", error);
+            return null;
+        }
+
+        localStorage.setItem('gameSettings', JSON.stringify(data));
+        return data;
+    }
 
     // Open the settings modal
     document.getElementById("openSettingsBtn").onclick = function() {
@@ -146,6 +191,7 @@
         const panicurl = document.getElementById("panicUrl").value;
 
         const settings = {
+            userid: userId,
             panicposition,
             emergencykey,
             emergencyurl,
@@ -154,34 +200,47 @@
             panicurl
         };
 
-        // Save to localStorage
-        localStorage.setItem('gameSettings', JSON.stringify(settings));
-
-        // Save to Supabase
-        const { data, error } = await supabase
+        // Check if the user's settings already exist
+        const { data: existingSettings, error: selectError } = await supabase
             .from('settings')
-            .insert([settings]);
+            .select('*')
+            .eq('userid', userId)
+            .single();
 
-        if (error) {
-            console.error("Error saving settings to Supabase:", error);
-        } else {
-            console.log("Settings saved successfully:", data);
+        if (selectError && selectError.code !== 'PGRST116') { // 'PGRST116' means no rows found
+            console.error("Error fetching settings from Supabase:", selectError);
+            return;
         }
 
+        if (existingSettings) {
+            // Update existing settings
+            const { data, error } = await supabase
+                .from('settings')
+                .update(settings)
+                .eq('userid', userId);
+
+            if (error) {
+                console.error("Error updating settings:", error);
+            } else {
+                console.log("Settings updated successfully:", data);
+            }
+        } else {
+            // Insert new settings
+            const { data, error } = await supabase
+                .from('settings')
+                .insert([settings]);
+
+            if (error) {
+                console.error("Error saving settings to Supabase:", error);
+            } else {
+                console.log("Settings saved successfully:", data);
+            }
+        }
+
+        // Save settings locally
+        localStorage.setItem('gameSettings', JSON.stringify(settings));
         closeSettings();
     }
-
-    // Check user authentication
-    function checkAuthentication() {
-        const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
-        if (!token) {
-            window.location.href = 'unauthorized1';
-        }
-    }
-
-    checkAuthentication();
 </script>
-
-<script src="gamepage.js"></script>
 </body>
 </html>
