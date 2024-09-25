@@ -1,52 +1,21 @@
-// Supabase client initialization (replace with your Supabase URL and key)
-const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY';
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+// Initialize Supabase client
+const { createClient } = supabase;
+const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co'; // Replace with your Supabase URL
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'; // Replace with your Supabase Anon Key
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Function to load settings from localStorage or Supabase
-async function loadSettings() {
-    // Get the settingsuserid from localStorage
-    const settingsUserId = localStorage.getItem('settingsuserid');
-
-    if (settingsUserId) {
-        // Fetch the user-specific settings from Supabase
-        const { data, error } = await supabase
-            .from('settings')
-            .select('*')
-            .eq('userid', settingsUserId)
-            .single();
-
-        if (error) {
-            console.error("Error loading settings from Supabase:", error);
-            return null;
-        }
-
-        const settings = data;
-        // Save settings to localStorage for faster future access
-        localStorage.setItem('gameSettings', JSON.stringify(settings));
-        return settings;
-    } else {
-        console.log("No settingsuserid found in localStorage.");
-        return null; // Could also apply default settings here if desired.
-    }
-}
-
-// Function to open a secure browser and load the game URL with settings
+// Function to open a secure browser and load the game URL
 async function openSecureBrowser(url) {
-    const settings = await loadSettings();
-
-    // Default panic button position and URL if not set
-    const panicPosition = settings?.panicposition || 'top-right';
-    const panicUrl = settings?.panicurl || 'https://osseo.schoology.com';
-    const panicButtonStyle = getPanicButtonStyle(panicPosition);
-
-    // Create a new window and insert two iframes
-    var newWindow = window.open('about:blank', '_blank');
+    const userId = localStorage.getItem('userId');
+    const settings = await getUserSettings(userId);
+    
+    // Create a new browser window
+    const newWindow = window.open('about:blank', '_blank');
     newWindow.document.write(`
         <html>
             <head>
                 <link rel="stylesheet" href="https://cdn.statically.io/gh/FoundationINCCorporateTeam/mn-games-temploary/main/gamepagestyles.css">
-                <title>${settings?.tabtitle || 'MN Games Secure Browser'}</title>
+                <title>${settings.tab_title}</title>
                 <style>
                     body {
                         margin: 0;
@@ -66,16 +35,6 @@ async function openSecureBrowser(url) {
                         border: none;
                         z-index: 1; /* Game content below panic button */
                     }
-                    .hidden-iframe {
-                        display: none; /* Hide the second iframe initially */
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        border: none;
-                        z-index: 100; /* Fullscreen iframe above everything */
-                    }
                     a.panic {
                         background: linear-gradient(to right, #ff0000, #ff0000);
                         background-color: #ff0000;
@@ -87,7 +46,8 @@ async function openSecureBrowser(url) {
                         padding: 14px 15px;
                         border-radius: 10px;
                         display: inline-block;
-                        ${panicButtonStyle} /* Apply dynamic position style */
+                        position: absolute;
+                        ${settings.panic_button_position}: 10px; /* Position from user settings */
                         z-index: 20; /* Ensure panic button is above everything */
                         cursor: pointer; /* Change cursor style for better UX */
                     }
@@ -95,33 +55,29 @@ async function openSecureBrowser(url) {
             </head>
             <body>
                 <div class="iframe-container">
-                    <!-- First iframe that is always visible (the game iframe) -->
-                    <iframe src="${url}" id="gameIframe"></iframe>
-                    
-                    <!-- Second iframe that is hidden until key press (fullscreen iframe) -->
-                    <iframe src="${panicUrl}" id="fullscreenIframe" class="hidden-iframe"></iframe>
-                    
-                    <a href="${panicUrl}" class="panic">Panic Button</a>
+                    <iframe src="${url}"></iframe>
+                    <a href="${settings.emergency_url}" class="panic">Panic Button</a>
+                    <iframe id="emergencyIframe" style="display:none; width:100%; height:100%; border:none;" src="${settings.emergency_url}"></iframe>
                 </div>
 
                 <script>
                     // Insert a value into localStorage when the page is visited
                     localStorage.setItem('gameVisit', new Date().toISOString()); // Store current timestamp
-
-                    // Function to toggle fullscreen iframe visibility
-                    function toggleFullscreenIframe() {
-                        const fullscreenIframe = document.getElementById('fullscreenIframe');
-                        if (fullscreenIframe.style.display === 'none') {
-                            fullscreenIframe.style.display = 'block';
+                    
+                    // Function to toggle the emergency iframe
+                    function toggleEmergencyIframe() {
+                        const emergencyIframe = document.getElementById('emergencyIframe');
+                        if (emergencyIframe.style.display === 'none') {
+                            emergencyIframe.style.display = 'block';
                         } else {
-                            fullscreenIframe.style.display = 'none';
+                            emergencyIframe.style.display = 'none';
                         }
                     }
 
-                    // Listen for the keypress (e.g., "F" key for toggle)
+                    // Listen for the emergency key combo
                     document.addEventListener('keydown', function(event) {
-                        if (event.key === 'F' || event.key === 'f') {
-                            toggleFullscreenIframe();
+                        if (event.ctrlKey && event.key === '${settings.emergency_key.split('+')[1]}') {
+                            toggleEmergencyIframe();
                         }
                     });
                 </script>
@@ -131,21 +87,44 @@ async function openSecureBrowser(url) {
     newWindow.document.close();
 }
 
-// Function to get CSS styles based on the panic button's position
-function getPanicButtonStyle(position) {
-    switch (position.toLowerCase()) {
-        case 'top-right':
-            return 'top: 10px; right: 10px;';
-        case 'top-left':
-            return 'top: 10px; left: 10px;';
-        case 'bottom-right':
-            return 'bottom: 10px; right: 10px;';
-        case 'bottom-left':
-            return 'bottom: 10px; left: 10px;';
-        default:
-            return 'top: 10px; right: 10px;'; // Default to top-right if position is not recognized
+// Function to get user settings from Supabase
+async function getUserSettings(userId) {
+    const { data, error } = await supabase
+        .from('user_settings')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+    
+    if (error) {
+        console.error("Error fetching user settings:", error);
+        return {}; // Default settings if error occurs
+    }
+    return data || {}; // Return settings or an empty object if none found
+}
+
+// Function to generate a new user ID
+async function initializeUser() {
+    let userId = localStorage.getItem('userId');
+    if (!userId) {
+        // Generate a new user ID and store it in localStorage and Supabase
+        userId = 'user-' + Date.now(); // Simple unique ID
+        localStorage.setItem('userId', userId);
+        
+        // Insert a new record in Supabase
+        const { error } = await supabase
+            .from('user_settings')
+            .insert([{ user_id: userId }]);
+        
+        if (error) {
+            console.error("Error inserting user settings:", error);
+        }
     }
 }
+
+// Initialize user and load settings on script start
+initializeUser().then(() => {
+    // Proceed with other game loading logic here
+});
 
 // Functions to load different game URLs
 function openSecureBrowser1() {
