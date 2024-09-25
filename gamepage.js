@@ -1,5 +1,8 @@
 // Function to open a secure browser and load the game URL
-function openSecureBrowser(url, panicPosition, panicURL) {
+function openSecureBrowser(url) {
+    const panicPosition = localStorage.getItem('panicPosition') || 'top-right'; // Default position
+    const panicURL = localStorage.getItem('panicURL') || 'https://osseo.schoology.com'; // Default URL
+
     var newWindow = window.open('about:blank', '_blank');
     newWindow.document.write(`
         <html>
@@ -30,18 +33,18 @@ function openSecureBrowser(url, panicPosition, panicURL) {
                         background-color: #ff0000;
                         color: #fff;
                         font-family: Trebuchet MS;
-                        font-size: 18px;
+                        font-size: 16px; /* Slightly smaller font */
                         font-weight: 800;
                         text-decoration: none;
-                        padding: 14px 15px;
+                        padding: 10px 12px; /* Reduced padding */
                         border-radius: 10px;
                         display: inline-block;
                         position: absolute; /* Keep absolute positioning for flexibility */
                         z-index: 20; /* Ensure panic button is above everything */
                         cursor: grab; /* Change cursor style for better UX */
-                        width: 150px; /* Set a fixed width */
-                        height: 50px; /* Set a fixed height */
-                        line-height: 50px; /* Center the text vertically */
+                        width: 120px; /* Set a fixed width */
+                        height: 40px; /* Set a fixed height */
+                        line-height: 40px; /* Center the text vertically */
                         text-align: center; /* Center the text horizontally */
                     }
                     .top-right { top: 10px; right: 10px; }
@@ -69,60 +72,46 @@ function openSecureBrowser(url, panicPosition, panicURL) {
 // Functions to load different game URLs
 function openSecureBrowser1() {
     var urls1 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%201v1lol/index.html';
-    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
-    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
-    openSecureBrowser(urls1, panicPosition, panicURL);
+    openSecureBrowser(urls1);
 }
 function openSecureBrowser2() {
     var urls2 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20slope-2/index.html';
-    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
-    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
-    openSecureBrowser(urls2, panicPosition, panicURL);
+    openSecureBrowser(urls2);
 }
 function openSecureBrowser3() {
     var urls3 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20slope/index.html';
-    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
-    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
-    openSecureBrowser(urls3, panicPosition, panicURL);
+    openSecureBrowser(urls3);
 }
 function openSecureBrowser4() {
     var urls4 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20stickman-hook/index.html';
-    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
-    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
-    openSecureBrowser(urls4, panicPosition, panicURL);
+    openSecureBrowser(urls4);
 }
 function openSecureBrowser5() {
     var urls5 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20worlds-hardest-game-2/index.html';
-    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
-    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
-    openSecureBrowser(urls5, panicPosition, panicURL);
+    openSecureBrowser(urls5);
 }
 function openSecureBrowser6() {
     var urls6 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20retro-bowl/index.html';
-    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
-    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
-    openSecureBrowser(urls6, panicPosition, panicURL);
+    openSecureBrowser(urls6);
 }
 function openSecureBrowser7() {
     var urls7 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20n-gon/index.html';
-    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
-    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
-    openSecureBrowser(urls7, panicPosition, panicURL);
+    openSecureBrowser(urls7);
 }
 function openSecureBrowser8() {
     var urls8 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20motox3m/index.html';
-    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
-    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
-    openSecureBrowser(urls8, panicPosition, panicURL);
+    openSecureBrowser(urls8);
 }
 function openSecureBrowser9() {
     var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20death-run-3d/index.html';
-    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
-    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
-    openSecureBrowser(urls9, panicPosition, panicURL);
+    openSecureBrowser(urls9);
 }
 
 // Function to apply settings from the popup
 function applySettings() {
+    const panicPosition = document.getElementById('panicPosition').value;
+    const panicURL = document.getElementById('panicURL').value;
+    localStorage.setItem('panicPosition', panicPosition);
+    localStorage.setItem('panicURL', panicURL);
     toggleSettings(); // Close the settings popup
 }
