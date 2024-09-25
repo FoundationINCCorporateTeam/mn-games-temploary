@@ -116,7 +116,9 @@
             .select('*')
             .eq('user_id', userId)
             .single();
-
+        if (error == "PGRST116") {
+            console.log("No user id found")
+        };
         if (error) {
             console.error("Error loading settings from Supabase:", error);
             return;
@@ -149,7 +151,7 @@
         const panicurl = document.getElementById("panicUrl").value;
 
         const settings = {
-            userid: userId,
+            user_id: userId,
             panicposition,
             emergencykey,
             emergencyurl,
