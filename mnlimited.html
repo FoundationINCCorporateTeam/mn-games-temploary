@@ -3,192 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MN Games - Settings</title>
+    <title>MN Games Settings</title>
+    <link rel="stylesheet" href="https://cdn.statically.io/gh/FoundationINCCorporateTeam/mn-games-temploary/main/styles.css">
     <style>
         body {
-            color: white;
-            background-color: black;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        h1 {
             text-align: center;
-            margin: 0;
-            overflow: hidden;
+        }
+        .settings-form {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         button {
-            background-color: blue;
+            padding: 10px 15px;
+            background-color: #007BFF;
             color: white;
-            border-radius: 3px;
-            padding: 10px;
-            margin: 5px;
-            position: relative;
-            z-index: 10;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        /* Styles for the settings menu */
-        #settingsModal {
-            display: none;
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            text-align: center;
-        }
-        #settingsModalContent {
-            background-color: black;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid blue;
-            width: 50%;
-            color: white;
-        }
-        input[type="text"] {
-            padding: 5px;
-            margin-bottom: 10px;
-            width: 80%;
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h1>Welcome to MN Games Limited (Temporary)</h1>
-    <div>
-        <button onclick="openSecureBrowser1()">1v1.lol</button>
-        <button onclick="openSecureBrowser2()">Slope 2</button>
-        <button onclick="openSecureBrowser3()">Slope</button>
-        <button onclick="openSecureBrowser4()">Stickman Hook</button>
-        <button onclick="openSecureBrowser5()">World's Hardest Game 2</button>
-        <button onclick="openSecureBrowser6()">Retro Bowl</button>
-        <button onclick="openSecureBrowser7()">N Gon</button>
-        <button onclick="openSecureBrowser8()">MotoX3M</button>
-        <button onclick="openSecureBrowser9()">Death Run 3D</button>
-    </div>
-    <button id="openSettingsBtn">Settings</button>
 
-    <!-- Settings Modal -->
-    <div id="settingsModal">
-        <div id="settingsModalContent">
-            <h2>Settings</h2>
-            <label>Panic Button Position: </label>
-            <input type="text" id="panicPosition" placeholder="e.g., top-right, bottom-left"><br>
-            
-            <label>Emergency Key (Combo + URL): </label>
-            <input type="text" id="emergencyKey" placeholder="e.g., Ctrl+Shift+P"><br>
-            <input type="text" id="emergencyUrl" placeholder="e.g., https://example.com"><br>
-            
-            <label>Image URL (for Icon): </label>
-            <input type="text" id="imageUrl" placeholder="e.g., https://example.com/image.png"><br>
-            
-            <label>Tab Title: </label>
-            <input type="text" id="tabTitle" placeholder="e.g., MN Games"><br>
-            
-            <label>Panic Button URL: </label>
-            <input type="text" id="panicUrl" placeholder="e.g., https://osseo.schoology.com"><br>
-            
-            <button onclick="saveSettings()">Save Settings</button>
-            <button onclick="closeSettings()">Close</button>
+    <h1>MN Games Settings</h1>
+    <div class="settings-form">
+        <div class="form-group">
+            <label for="panicButtonPosition">Panic Button Position:</label>
+            <select id="panicButtonPosition">
+                <option value="top-left">Top Left</option>
+                <option value="top-right">Top Right</option>
+                <option value="bottom-left">Bottom Left</option>
+                <option value="bottom-right">Bottom Right</option>
+            </select>
         </div>
+
+        <div class="form-group">
+            <label for="emergencyKey">Emergency Key Combination:</label>
+            <input type="text" id="emergencyKey" placeholder="e.g., Ctrl+E" />
+        </div>
+
+        <div class="form-group">
+            <label for="emergencyUrl">Emergency URL:</label>
+            <input type="url" id="emergencyUrl" placeholder="https://example.com" />
+        </div>
+
+        <div class="form-group">
+            <label for="iconImageUrl">Icon Image URL:</label>
+            <input type="url" id="iconImageUrl" placeholder="https://example.com/icon.png" />
+        </div>
+
+        <div class="form-group">
+            <label for="pageTitle">Page Title:</label>
+            <input type="text" id="pageTitle" placeholder="Enter the page title" />
+        </div>
+
+        <div class="form-group">
+            <label for="panicButtonUrl">Panic Button URL:</label>
+            <input type="url" id="panicButtonUrl" placeholder="https://osseo.schoology.com" />
+        </div>
+
+        <button id="saveSettings">Save Settings</button>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
     <script>
-        // Supabase client initialization (replace with your Supabase URL and key)
-        const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co';
-        const supabaseKey = 'YOUR_SUPABASE_KEY'; // Replace with your actual Supabase key
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        // Supabase credentials (hardcoded for use in the application)
+        const SUPABASE_URL = 'https://tdsxayxnjomnoiestnmj.supabase.co'; // Replace with your Supabase URL
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'; // Replace with your Supabase API Key
 
-        // Open the settings modal
-        document.getElementById("openSettingsBtn").onclick = function() {
-            document.getElementById("settingsModal").style.display = "block";
-            loadExistingSettings(); // Load existing settings when modal opens
-        };
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Close the settings modal
-        function closeSettings() {
-            document.getElementById("settingsModal").style.display = "none";
-        }
+        // Function to save user settings
+        document.getElementById('saveSettings').addEventListener('click', async () => {
+            const userId = localStorage.getItem('userId') || generateUserId();
+            localStorage.setItem('userId', userId);
 
-        // Load existing settings from Supabase
-        async function loadExistingSettings() {
-            const userId = localStorage.getItem('settingsUserId');
-            if (!userId) return; // No user ID found
+            const settings = {
+                user_id: userId,
+                panic_button_position: document.getElementById('panicButtonPosition').value,
+                emergency_key: document.getElementById('emergencyKey').value,
+                emergency_url: document.getElementById('emergencyUrl').value,
+                icon_image_url: document.getElementById('iconImageUrl').value,
+                page_title: document.getElementById('pageTitle').value,
+                panic_button_url: document.getElementById('panicButtonUrl').value
+            };
 
             const { data, error } = await supabase
-                .from('settings')
+                .from('user_settings')
+                .upsert(settings, { onConflict: ['user_id'] });
+
+            if (error) {
+                console.error('Error saving settings:', error);
+            } else {
+                alert('Settings saved successfully!');
+            }
+        });
+
+        // Load user settings when the page is opened
+        async function loadUserSettings() {
+            const userId = localStorage.getItem('userId');
+            const { data: settings, error } = await supabase
+                .from('user_settings')
                 .select('*')
                 .eq('user_id', userId)
                 .single();
 
             if (error) {
-                console.error("Error loading settings from Supabase:", error);
+                console.error("Error fetching settings:", error);
                 return;
             }
 
-            // Populate the form with existing settings
-            if (data) {
-                document.getElementById("panicPosition").value = data.panicposition || '';
-                document.getElementById("emergencyKey").value = data.emergencykey || '';
-                document.getElementById("emergencyUrl").value = data.emergencyurl || '';
-                document.getElementById("imageUrl").value = data.imageurl || '';
-                document.getElementById("tabTitle").value = data.tabtitle || '';
-                document.getElementById("panicUrl").value = data.panicurl || '';
+            if (settings) {
+                document.getElementById('panicButtonPosition').value = settings.panic_button_position || 'top-right';
+                document.getElementById('emergencyKey').value = settings.emergency_key || 'Ctrl+E';
+                document.getElementById('emergencyUrl').value = settings.emergency_url || 'https://osseo.schoology.com';
+                document.getElementById('iconImageUrl').value = settings.icon_image_url || '';
+                document.getElementById('pageTitle').value = settings.page_title || '';
+                document.getElementById('panicButtonUrl').value = settings.panic_button_url || 'https://osseo.schoology.com';
             }
         }
 
-        // Save settings to Supabase and localStorage
-        async function saveSettings() {
-            const userId = localStorage.getItem('settingsUserId');
-            if (!userId) {
-                console.error("No user ID found in localStorage.");
-                return;
-            }
-
-            const panicposition = document.getElementById("panicPosition").value;
-            const emergencykey = document.getElementById("emergencyKey").value;
-            const emergencyurl = document.getElementById("emergencyUrl").value;
-            const imageurl = document.getElementById("imageUrl").value;
-            const tabtitle = document.getElementById("tabTitle").value;
-            const panicurl = document.getElementById("panicUrl").value;
-
-            const settings = {
-                user_id: userId,
-                panicposition,
-                emergencykey,
-                emergencyurl,
-                imageurl,
-                tabtitle,
-                panicurl
-            };
-
-            // Upsert settings to Supabase (insert if not exists, update if exists)
-            const { data, error } = await supabase
-                .from('settings')
-                .upsert([settings], { onConflict: ['user_id'] });
-
-            if (error) {
-                console.error("Error saving settings to Supabase:", error);
-            } else {
-                console.log("Settings saved successfully:", data);
-            }
-
-            closeSettings();
+        // Generate a random user ID if none exists
+        function generateUserId() {
+            return 'user_' + Math.random().toString(36).substr(2, 9);
         }
 
-        // Check user authentication
-        function checkAuthentication() {
-            const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
-            if (!token) {
-                window.location.href = 'unauthorized1';
-            } else {
-                // Generate and store a unique user ID in localStorage
-                if (!localStorage.getItem('settingsUserId')) {
-                    const uniqueUserId = Date.now(); // Simple unique ID generation
-                    localStorage.setItem('settingsUserId', uniqueUserId);
-                }
-            }
-        }
+        // Load user settings on page load
+        window.onload = loadUserSettings;
 
-        checkAuthentication();
     </script>
-    <script src="gamepage.js"></script>
 </body>
 </html>
