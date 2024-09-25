@@ -67,6 +67,27 @@ function openSecureBrowser(url) {
                             iframe.style.display = 'none'; // Hide the iframe
                         }
                     }
+
+                    // Apply settings from localStorage to the new window
+                    function applySettings() {
+                        // Get settings from localStorage
+                        const panicButtonPosition = localStorage.getItem('panicButtonPosition') || "10px, 10px"; // Default position
+                        const pageTitle = localStorage.getItem('pageTitle') || "MN Games Secure Browser"; // Default title
+
+                        // Update the page title
+                        document.title = pageTitle;
+
+                        // Position the panic button
+                        const panicButton = document.querySelector('.panic');
+                        const positions = panicButtonPosition.split(',').map(pos => pos.trim());
+                        if (positions.length === 2) {
+                            panicButton.style.top = positions[0];
+                            panicButton.style.right = positions[1];
+                        }
+                    }
+
+                    // Call applySettings to set up the window correctly
+                    applySettings();
                 </script>
             </body>
         </html>
