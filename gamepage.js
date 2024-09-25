@@ -1,5 +1,5 @@
 // Function to open a secure browser and load the game URL
-function openSecureBrowser(url) {
+function openSecureBrowser(url, panicPosition, panicURL) {
     var newWindow = window.open('about:blank', '_blank');
     newWindow.document.write(`
         <html>
@@ -40,54 +40,21 @@ function openSecureBrowser(url) {
                         z-index: 20; /* Ensure panic button is above everything */
                         cursor: pointer; /* Change cursor style for better UX */
                     }
+                    .top-right { top: 10px; right: 10px; }
+                    .top-left { top: 10px; left: 10px; }
+                    .bottom-right { bottom: 10px; right: 10px; }
+                    .bottom-left { bottom: 10px; left: 10px; }
                 </style>
             </head>
             <body>
                 <div class="iframe-container">
                     <iframe src="${url}"></iframe>
-                    <a href="#" class="panic" onclick="toggleEmergencyFrame(event)">Panic Button</a>
+                    <a href="${panicURL}" class="panic ${panicPosition}">Panic Button</a>
                 </div>
 
                 <script>
                     // Insert a value into localStorage when the page is visited
                     localStorage.setItem('gameVisit', new Date().toISOString()); // Store current timestamp
-                    
-                    function toggleEmergencyFrame(event) {
-                        event.preventDefault(); // Prevent default link behavior
-                        const overlay = window.opener.document.getElementById('emergencyOverlay');
-                        const iframe = window.opener.document.getElementById('emergencyFrame');
-                        const url = localStorage.getItem('emergencyFrameUrl');
-
-                        if (overlay.style.display === 'none' || overlay.style.display === '') {
-                            overlay.style.display = 'block';
-                            iframe.src = url; // Set the emergency frame URL
-                            iframe.style.display = 'block'; // Show the iframe
-                        } else {
-                            overlay.style.display = 'none';
-                            iframe.style.display = 'none'; // Hide the iframe
-                        }
-                    }
-
-                    // Apply settings from localStorage to the new window
-                    function applySettings() {
-                        // Get settings from localStorage
-                        const panicButtonPosition = localStorage.getItem('panicButtonPosition') || "10px, 10px"; // Default position
-                        const pageTitle = localStorage.getItem('pageTitle') || "MN Games Secure Browser"; // Default title
-
-                        // Update the page title
-                        document.title = pageTitle;
-
-                        // Position the panic button
-                        const panicButton = document.querySelector('.panic');
-                        const positions = panicButtonPosition.split(',').map(pos => pos.trim());
-                        if (positions.length === 2) {
-                            panicButton.style.top = positions[0];
-                            panicButton.style.right = positions[1];
-                        }
-                    }
-
-                    // Call applySettings to set up the window correctly
-                    applySettings();
                 </script>
             </body>
         </html>
@@ -98,37 +65,60 @@ function openSecureBrowser(url) {
 // Functions to load different game URLs
 function openSecureBrowser1() {
     var urls1 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%201v1lol/index.html';
-    openSecureBrowser(urls1);
+    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
+    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
+    openSecureBrowser(urls1, panicPosition, panicURL);
 }
 function openSecureBrowser2() {
-    var urls2 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy slope-2/index.html';
-    openSecureBrowser(urls2);
+    var urls2 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20slope-2/index.html';
+    var panicPosition = document.getElementById('panicPosition').value;
+    var panicURL = document.getElementById('panicURL').value;
+    openSecureBrowser(urls2, panicPosition, panicURL);
 }
 function openSecureBrowser3() {
-    var urls3 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy slope/index.html';
-    openSecureBrowser(urls3);
+    var urls3 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20slope/index.html';
+    var panicPosition = document.getElementById('panicPosition').value;
+    var panicURL = document.getElementById('panicURL').value;
+    openSecureBrowser(urls3, panicPosition, panicURL);
 }
 function openSecureBrowser4() {
-    var urls4 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy stickman-hook/index.html';
-    openSecureBrowser(urls4);
+    var urls4 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20stickman-hook/index.html';
+    var panicPosition = document.getElementById('panicPosition').value;
+    var panicURL = document.getElementById('panicURL').value;
+    openSecureBrowser(urls4, panicPosition, panicURL);
 }
 function openSecureBrowser5() {
-    var urls5 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy worlds-hardest-game-2/index.html';
-    openSecureBrowser(urls5);
+    var urls5 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20worlds-hardest-game-2/index.html';
+    var panicPosition = document.getElementById('panicPosition').value;
+    var panicURL = document.getElementById('panicURL').value;
+    openSecureBrowser(urls5, panicPosition, panicURL);
 }
 function openSecureBrowser6() {
-    var urls6 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy retro-bowl/index.html';
-    openSecureBrowser(urls6);
+    var urls6 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20retro-bowl/index.html';
+    var panicPosition = document.getElementById('panicPosition').value;
+    var panicURL = document.getElementById('panicURL').value;
+    openSecureBrowser(urls6, panicPosition, panicURL);
 }
 function openSecureBrowser7() {
-    var urls7 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy n-gon/index.html';
-    openSecureBrowser(urls7);
+    var urls7 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20n-gon/index.html';
+    var panicPosition = document.getElementById('panicPosition').value;
+    var panicURL = document.getElementById('panicURL').value;
+    openSecureBrowser(urls7, panicPosition, panicURL);
 }
 function openSecureBrowser8() {
-    var urls8 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy motox3m/index.html';
-    openSecureBrowser(urls8);
+    var urls8 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20motox3m/index.html';
+    var panicPosition = document.getElementById('panicPosition').value;
+    var panicURL = document.getElementById('panicURL').value;
+    openSecureBrowser(urls8, panicPosition, panicURL);
 }
 function openSecureBrowser9() {
-    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam 3kh0-assets fixy death-run-3d/index.html';
-    openSecureBrowser(urls9);
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20death-run-3d/index.html';
+    var panicPosition = document.getElementById('panicPosition').value;
+    var panicURL = document.getElementById('panicURL').value;
+    openSecureBrowser(urls9, panicPosition, panicURL);
+}
+
+// Function to apply settings from the popup
+function applySettings() {
+    toggleSettings(); // Close the settings popup
 }
