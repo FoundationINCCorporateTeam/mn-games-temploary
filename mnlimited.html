@@ -66,7 +66,20 @@
         <button onclick="openSecureBrowser8()">MotoX3M</button>
         <button onclick="openSecureBrowser9()">Death Run 3D</button>
     </div>
-
+<script>
+    // Function to check if the user is signed in
+function checkAuthentication() {
+    // Check if token exists in local storage
+    const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+    if (!token) {
+        // If token doesn't exist, redirect user to sign-in page
+        window.location.href = 'sign-in.html';
+        return; // Exit function to prevent further execution
+    }
+    
+}
+    checkAuthentication();
+</script>
     <!-- Link the external JavaScript file -->
     <script src="gamepage.js"></script>
 </body>
