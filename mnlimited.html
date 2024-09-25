@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link id="favicon" rel="icon" href="default-favicon.ico" type="image/x-icon"> <!-- Default favicon -->
-    <title id="page-title">MN Games Limited (Temporary)</title> <!-- Default title -->
     <style>
         body {
             color: white;
@@ -48,42 +46,37 @@
             border-radius: 10px;
             display: inline-block;
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 10px; /* Default position */
+            right: 10px; /* Default position */
             z-index: 20;
-            cursor: pointer; /* Change cursor style for better UX */
+            cursor: pointer;
         }
-        .overlay {
-            display: none; /* Hidden by default */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent overlay */
-            z-index: 100; /* Above everything else */
-        }
+        /* Styles for the settings popup */
         .settings-popup {
+            display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.8);
-            border: 2px solid white;
             padding: 20px;
-            z-index: 101;
-            display: none; /* Hidden by default */
+            border-radius: 10px;
+            z-index: 100;
         }
-        .settings-popup input {
-            display: block;
-            margin: 10px 0;
-            padding: 5px;
-            width: 200px;
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 50;
         }
     </style>
 </head>
 <body>
-    <h1 id="page-title">Welcome to MN Games Limited (Temporary)</h1>
+    <h1>Welcome to MN Games Limited (Temporary)</h1>
     <div>
         <button onclick="openSecureBrowser1()">1v1.lol</button>
         <button onclick="openSecureBrowser2()">Slope 2</button>
@@ -94,87 +87,38 @@
         <button onclick="openSecureBrowser7()">N Gon</button>
         <button onclick="openSecureBrowser8()">MotoX3M</button>
         <button onclick="openSecureBrowser9()">Death Run 3D</button>
-        <button onclick="toggleSettingsPopup()">Settings</button>
+        <button onclick="toggleSettings()">Settings</button> <!-- New settings button -->
     </div>
 
-    <div class="overlay" id="emergencyOverlay">
-        <iframe id="emergencyFrame" src="" style="display:none;"></iframe>
-    </div>
-
+    <div class="overlay" id="overlay"></div>
+    
     <div class="settings-popup" id="settingsPopup">
         <h2>Settings</h2>
-        <label for="panicButtonPosition">Panic Button Position (top, right):</label>
-        <input type="text" id="panicButtonPosition" placeholder="e.g., 10px, 10px">
-        
-        <label for="emergencyKeyCombination">Emergency Key Combination:</label>
-        <input type="text" id="emergencyKeyCombination" placeholder="e.g., Ctrl+Shift+E">
-        
-        <label for="emergencyFrameUrl">Emergency Frame URL:</label>
-        <input type="text" id="emergencyFrameUrl" placeholder="e.g., https://example.com">
-        
-        <label for="panicButtonUrl">Panic Button URL:</label>
-        <input type="text" id="panicButtonUrl" placeholder="e.g., https://osseo.schoology.com">
-        
-        <label for="pageTitle">Page Title:</label>
-        <input type="text" id="pageTitle" placeholder="Page Title">
-        
-        <label for="faviconUrl">Favicon URL:</label>
-        <input type="text" id="faviconUrl" placeholder="e.g., https://example.com/favicon.ico">
-        
-        <button onclick="saveSettings()">Save Settings</button>
-        <button onclick="toggleSettingsPopup()">Close</button>
+        <label for="panicPosition">Panic Button Position:</label>
+        <select id="panicPosition">
+            <option value="top-right">Top Right</option>
+            <option value="top-left">Top Left</option>
+            <option value="bottom-right">Bottom Right</option>
+            <option value="bottom-left">Bottom Left</option>
+        </select>
+        <br><br>
+        <label for="panicURL">Panic Button URL:</label>
+        <input type="text" id="panicURL" placeholder="Enter Panic Button URL" value="https://osseo.schoology.com">
+        <br><br>
+        <button onclick="applySettings()">Apply</button>
+        <button onclick="toggleSettings()">Close</button>
     </div>
 
     <!-- Link the external JavaScript file -->
     <script src="gamepage.js"></script>
-    
     <script>
-        function toggleSettingsPopup() {
-            const popup = document.getElementById('settingsPopup');
-            popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+        function toggleSettings() {
+            const settingsPopup = document.getElementById('settingsPopup');
+            const overlay = document.getElementById('overlay');
+            const isVisible = settingsPopup.style.display === 'block';
+            settingsPopup.style.display = isVisible ? 'none' : 'block';
+            overlay.style.display = isVisible ? 'none' : 'block';
         }
-
-        function saveSettings() {
-            const panicButtonPosition = document.getElementById('panicButtonPosition').value;
-            const emergencyKeyCombination = document.getElementById('emergencyKeyCombination').value;
-            const emergencyFrameUrl = document.getElementById('emergencyFrameUrl').value;
-            const panicButtonUrl = document.getElementById('panicButtonUrl').value;
-            const pageTitle = document.getElementById('pageTitle').value;
-            const faviconUrl = document.getElementById('faviconUrl').value;
-
-            localStorage.setItem('panicButtonPosition', panicButtonPosition);
-            localStorage.setItem('emergencyKeyCombination', emergencyKeyCombination);
-            localStorage.setItem('emergencyFrameUrl', emergencyFrameUrl);
-            localStorage.setItem('panicButtonUrl', panicButtonUrl);
-            localStorage.setItem('pageTitle', pageTitle);
-            localStorage.setItem('faviconUrl', faviconUrl);
-
-            // Apply the settings immediately
-            applySettings();
-
-            toggleSettingsPopup(); // Close the popup after saving
-        }
-
-        function applySettings() {
-            const pageTitle = localStorage.getItem('pageTitle') || "MN Games Limited (Temporary)";
-            document.getElementById('page-title').innerText = pageTitle;
-            document.getElementById('page-title').innerText = pageTitle;
-            document.getElementById('favicon').setAttribute('href', localStorage.getItem('faviconUrl') || "default-favicon.ico");
-            const panicButtonPosition = localStorage.getItem('panicButtonPosition');
-            const panicButton = document.querySelector('.panic');
-            if (panicButtonPosition) {
-                const positions = panicButtonPosition.split(',').map(pos => pos.trim());
-                if (positions.length === 2) {
-                    panicButton.style.top = positions[0];
-                    panicButton.style.right = positions[1];
-                }
-            }
-        }
-
-        // Call applySettings on load
-        window.onload = function() {
-            applySettings();
-        };
     </script>
 </body>
 </html>
