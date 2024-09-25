@@ -114,7 +114,7 @@
         const { data, error } = await supabase
             .from('settings')
             .select('*')
-            .eq('userid', userId)
+            .eq('user_id', userId)
             .single();
 
         if (error) {
@@ -161,7 +161,7 @@
         // Upsert settings to Supabase (insert if not exists, update if exists)
         const { data, error } = await supabase
             .from('settings')
-            .upsert([settings], { onConflict: ['userid'] });
+            .upsert([settings], { onConflict: ['user_id'] });
 
         if (error) {
             console.error("Error saving settings to Supabase:", error);
