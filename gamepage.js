@@ -36,9 +36,13 @@ function openSecureBrowser(url, panicPosition, panicURL) {
                         padding: 14px 15px;
                         border-radius: 10px;
                         display: inline-block;
-                        position: absolute;
+                        position: absolute; /* Keep absolute positioning for flexibility */
                         z-index: 20; /* Ensure panic button is above everything */
                         cursor: pointer; /* Change cursor style for better UX */
+                        width: 150px; /* Set a fixed width */
+                        height: 50px; /* Set a fixed height */
+                        line-height: 50px; /* Center the text vertically */
+                        text-align: center; /* Center the text horizontally */
                     }
                     .top-right { top: 10px; right: 10px; }
                     .top-left { top: 10px; left: 10px; }
@@ -71,50 +75,50 @@ function openSecureBrowser1() {
 }
 function openSecureBrowser2() {
     var urls2 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20slope-2/index.html';
-    var panicPosition = document.getElementById('panicPosition').value;
-    var panicURL = document.getElementById('panicURL').value;
+    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
+    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
     openSecureBrowser(urls2, panicPosition, panicURL);
 }
 function openSecureBrowser3() {
     var urls3 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20slope/index.html';
-    var panicPosition = document.getElementById('panicPosition').value;
-    var panicURL = document.getElementById('panicURL').value;
+    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
+    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
     openSecureBrowser(urls3, panicPosition, panicURL);
 }
 function openSecureBrowser4() {
     var urls4 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20stickman-hook/index.html';
-    var panicPosition = document.getElementById('panicPosition').value;
-    var panicURL = document.getElementById('panicURL').value;
+    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
+    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
     openSecureBrowser(urls4, panicPosition, panicURL);
 }
 function openSecureBrowser5() {
     var urls5 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20worlds-hardest-game-2/index.html';
-    var panicPosition = document.getElementById('panicPosition').value;
-    var panicURL = document.getElementById('panicURL').value;
+    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
+    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
     openSecureBrowser(urls5, panicPosition, panicURL);
 }
 function openSecureBrowser6() {
     var urls6 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20retro-bowl/index.html';
-    var panicPosition = document.getElementById('panicPosition').value;
-    var panicURL = document.getElementById('panicURL').value;
+    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
+    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
     openSecureBrowser(urls6, panicPosition, panicURL);
 }
 function openSecureBrowser7() {
     var urls7 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20n-gon/index.html';
-    var panicPosition = document.getElementById('panicPosition').value;
-    var panicURL = document.getElementById('panicURL').value;
+    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
+    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
     openSecureBrowser(urls7, panicPosition, panicURL);
 }
 function openSecureBrowser8() {
     var urls8 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20motox3m/index.html';
-    var panicPosition = document.getElementById('panicPosition').value;
-    var panicURL = document.getElementById('panicURL').value;
+    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
+    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
     openSecureBrowser(urls8, panicPosition, panicURL);
 }
 function openSecureBrowser9() {
     var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20death-run-3d/index.html';
-    var panicPosition = document.getElementById('panicPosition').value;
-    var panicURL = document.getElementById('panicURL').value;
+    var panicPosition = document.getElementById('panicPosition').value; // Get the panic button position
+    var panicURL = document.getElementById('panicURL').value; // Get the panic button URL
     openSecureBrowser(urls9, panicPosition, panicURL);
 }
 
