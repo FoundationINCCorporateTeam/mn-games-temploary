@@ -45,11 +45,13 @@
             padding: 14px 15px;
             border-radius: 10px;
             display: inline-block;
-            position: absolute;
-            top: 10px; /* Default position */
-            right: 10px; /* Default position */
-            z-index: 20;
-            cursor: pointer;
+            position: absolute; /* Keep absolute positioning for flexibility */
+            z-index: 20; /* Ensure panic button is above everything */
+            cursor: pointer; /* Change cursor style for better UX */
+            width: 150px; /* Set a fixed width */
+            height: 50px; /* Set a fixed height */
+            line-height: 50px; /* Center the text vertically */
+            text-align: center; /* Center the text horizontally */
         }
         /* Styles for the settings popup */
         .settings-popup {
