@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wikipedia</title>
     <style>
         body {
             color: white;
@@ -51,6 +52,32 @@
             z-index: 20;
             cursor: grab;
         }
+        /* Styles for the settings menu */
+        #settingsModal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+        }
+        #settingsModalContent {
+            background-color: black;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid blue;
+            width: 50%;
+            color: white;
+        }
+        input[type="text"] {
+            padding: 5px;
+            margin-bottom: 10px;
+            width: 80%;
+        }
     </style>
 </head>
 <body>
@@ -66,21 +93,95 @@
         <button onclick="openSecureBrowser8()">MotoX3M</button>
         <button onclick="openSecureBrowser9()">Death Run 3D</button>
     </div>
+    <button id="openSettingsBtn">Settings</button>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal">
+        <div id="settingsModalContent">
+            <h2>Settings</h2>
+            <label>Panic Button Position: </label>
+            <input type="text" id="panicPosition" placeholder="e.g., top-right, bottom-left"><br>
+            
+            <label>Emergency Key (Combo + URL): </label>
+            <input type="text" id="emergencyKey" placeholder="e.g., Ctrl+Shift+P"><br>
+            <input type="text" id="emergencyUrl" placeholder="e.g., https://example.com"><br>
+            
+            <label>Image URL (for Icon): </label>
+            <input type="text" id="imageUrl" placeholder="e.g., https://example.com/image.png"><br>
+            
+            <label>Tab Title: </label>
+            <input type="text" id="tabTitle" placeholder="e.g., MN Games"><br>
+            
+            <label>Panic Button URL: </label>
+            <input type="text" id="panicUrl" placeholder="e.g., https://osseo.schoology.com"><br>
+            
+            <button onclick="saveSettings()">Save Settings</button>
+            <button onclick="closeSettings()">Close</button>
+        </div>
+    </div>
+
 <script>
-    // Function to check if the user is signed in
-function checkAuthentication() {
-    // Check if token exists in local storage
-    const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
-    if (!token) {
-        // If token doesn't exist, redirect user to sign-in page
-        window.location.href = 'unauthorized1';
-        return; // Exit function to prevent further execution
+    // Supabase client initialization (replace with your Supabase URL and key)
+    const supabaseUrl = 'https://your-supabase-url.supabase.co';
+    const supabaseKey = 'your-supabase-key';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Open the settings modal
+    document.getElementById("openSettingsBtn").onclick = function() {
+        document.getElementById("settingsModal").style.display = "block";
+    };
+
+    // Close the settings modal
+    function closeSettings() {
+        document.getElementById("settingsModal").style.display = "none";
     }
-    
-}
+
+    // Save settings to Supabase and localStorage
+    async function saveSettings() {
+        const panicPosition = document.getElementById("panicPosition").value;
+        const emergencyKey = document.getElementById("emergencyKey").value;
+        const emergencyUrl = document.getElementById("emergencyUrl").value;
+        const imageUrl = document.getElementById("imageUrl").value;
+        const tabTitle = document.getElementById("tabTitle").value;
+        const panicUrl = document.getElementById("panicUrl").value;
+
+        const settings = {
+            panicPosition,
+            emergencyKey,
+            emergencyUrl,
+            imageUrl,
+            tabTitle,
+            panicUrl
+        };
+
+        // Save to localStorage
+        localStorage.setItem('gameSettings', JSON.stringify(settings));
+
+        // Save to Supabase
+        const { data, error } = await supabase
+            .from('settings')
+            .insert([settings]);
+
+        if (error) {
+            console.error("Error saving settings to Supabase:", error);
+        } else {
+            console.log("Settings saved successfully:", data);
+        }
+
+        closeSettings();
+    }
+
+    // Check user authentication
+    function checkAuthentication() {
+        const token = localStorage.getItem('sb-tdsxayxnjomnoiestnmj-auth-token');
+        if (!token) {
+            window.location.href = 'unauthorized1';
+        }
+    }
+
     checkAuthentication();
 </script>
-    <!-- Link the external JavaScript file -->
-    <script src="gamepage.js"></script>
+
+<script src="gamepage.js"></script>
 </body>
 </html>
