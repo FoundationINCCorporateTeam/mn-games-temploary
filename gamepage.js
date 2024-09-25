@@ -5,13 +5,15 @@ const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
 // Function to load settings from localStorage or Supabase
 async function loadSettings() {
-    let settings = localStorage.getItem('gameSettings');
+    // Get the settingsuserid from localStorage
+    const settingsUserId = localStorage.getItem('settingsuserid');
 
-    if (!settings) {
-        // Fetch settings from Supabase if not in localStorage
+    if (settingsUserId) {
+        // Fetch the user-specific settings from Supabase
         const { data, error } = await supabase
             .from('settings')
             .select('*')
+            .eq('userid', settingsUserId)
             .single();
 
         if (error) {
@@ -19,14 +21,14 @@ async function loadSettings() {
             return null;
         }
 
-        settings = data;
-        // Save the settings to localStorage for future use
+        const settings = data;
+        // Save settings to localStorage for faster future access
         localStorage.setItem('gameSettings', JSON.stringify(settings));
+        return settings;
     } else {
-        settings = JSON.parse(settings);
+        console.log("No settingsuserid found in localStorage.");
+        return null; // Could also apply default settings here if desired.
     }
-
-    return settings;
 }
 
 // Function to open a secure browser and load the game URL with settings
@@ -34,8 +36,8 @@ async function openSecureBrowser(url) {
     const settings = await loadSettings();
 
     // Default panic button position and URL if not set
-    const panicPosition = settings?.panicPosition || 'top-right';
-    const panicUrl = settings?.panicUrl || 'https://osseo.schoology.com';
+    const panicPosition = settings?.panicposition || 'top-right';
+    const panicUrl = settings?.panicurl || 'https://osseo.schoology.com';
     const panicButtonStyle = getPanicButtonStyle(panicPosition);
 
     // Create a new window and insert two iframes
@@ -44,7 +46,7 @@ async function openSecureBrowser(url) {
         <html>
             <head>
                 <link rel="stylesheet" href="https://cdn.statically.io/gh/FoundationINCCorporateTeam/mn-games-temploary/main/gamepagestyles.css">
-                <title>${settings?.tabTitle || 'MN Games Secure Browser'}</title>
+                <title>${settings?.tabtitle || 'MN Games Secure Browser'}</title>
                 <style>
                     body {
                         margin: 0;
