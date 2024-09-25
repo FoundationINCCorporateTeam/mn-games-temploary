@@ -138,20 +138,20 @@
 
     // Save settings to Supabase and localStorage
     async function saveSettings() {
-        const panicPosition = document.getElementById("panicPosition").value;
-        const emergencyKey = document.getElementById("emergencyKey").value;
-        const emergencyUrl = document.getElementById("emergencyUrl").value;
-        const imageUrl = document.getElementById("imageUrl").value;
-        const tabTitle = document.getElementById("tabTitle").value;
-        const panicUrl = document.getElementById("panicUrl").value;
+        const panicposition = document.getElementById("panicPosition").value;
+        const emergencykey = document.getElementById("emergencyKey").value;
+        const emergencyurl = document.getElementById("emergencyUrl").value;
+        const imageurl = document.getElementById("imageUrl").value;
+        const tabtitle = document.getElementById("tabTitle").value;
+        const panicurl = document.getElementById("panicUrl").value;
 
         const settings = {
-            panicPosition,
-            emergencyKey,
-            emergencyUrl,
-            imageUrl,
-            tabTitle,
-            panicUrl
+            panicposition,
+            emergencykey,
+            emergencyurl,
+            imageurl,
+            tabtitle,
+            panicurl
         };
 
         // Save to localStorage
