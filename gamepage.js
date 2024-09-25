@@ -1,21 +1,11 @@
-// Initialize Supabase client
-const { createClient } = supabase;
-const supabaseUrl = 'https://tdsxayxnjomnoiestnmj.supabase.co'; // Replace with your Supabase URL
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRkc3hheXhuam9tbm9pZXN0bm1qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTE3NDg4NzUsImV4cCI6MjAyNzMyNDg3NX0._1GPeVJvMjrSyNX3x2mDSGACVIdFkmlD96rgDfOzSkY'; // Replace with your Supabase Anon Key
-const supabase = createClient(supabaseUrl, supabaseKey);
-
 // Function to open a secure browser and load the game URL
-async function openSecureBrowser(url) {
-    const userId = localStorage.getItem('userId');
-    const settings = await getUserSettings(userId);
-    
-    // Create a new browser window
-    const newWindow = window.open('about:blank', '_blank');
+function openSecureBrowser(url) {
+    var newWindow = window.open('about:blank', '_blank');
     newWindow.document.write(`
         <html>
             <head>
                 <link rel="stylesheet" href="https://cdn.statically.io/gh/FoundationINCCorporateTeam/mn-games-temploary/main/gamepagestyles.css">
-                <title>${settings.tab_title}</title>
+                <title>MN Games Secure Browser</title>
                 <style>
                     body {
                         margin: 0;
@@ -47,7 +37,6 @@ async function openSecureBrowser(url) {
                         border-radius: 10px;
                         display: inline-block;
                         position: absolute;
-                        ${settings.panic_button_position}: 10px; /* Position from user settings */
                         z-index: 20; /* Ensure panic button is above everything */
                         cursor: pointer; /* Change cursor style for better UX */
                     }
@@ -56,75 +45,34 @@ async function openSecureBrowser(url) {
             <body>
                 <div class="iframe-container">
                     <iframe src="${url}"></iframe>
-                    <a href="${settings.emergency_url}" class="panic">Panic Button</a>
-                    <iframe id="emergencyIframe" style="display:none; width:100%; height:100%; border:none;" src="${settings.emergency_url}"></iframe>
+                    <a href="#" class="panic" onclick="toggleEmergencyFrame(event)">Panic Button</a>
                 </div>
 
                 <script>
                     // Insert a value into localStorage when the page is visited
                     localStorage.setItem('gameVisit', new Date().toISOString()); // Store current timestamp
                     
-                    // Function to toggle the emergency iframe
-                    function toggleEmergencyIframe() {
-                        const emergencyIframe = document.getElementById('emergencyIframe');
-                        if (emergencyIframe.style.display === 'none') {
-                            emergencyIframe.style.display = 'block';
+                    function toggleEmergencyFrame(event) {
+                        event.preventDefault(); // Prevent default link behavior
+                        const overlay = window.opener.document.getElementById('emergencyOverlay');
+                        const iframe = window.opener.document.getElementById('emergencyFrame');
+                        const url = localStorage.getItem('emergencyFrameUrl');
+
+                        if (overlay.style.display === 'none' || overlay.style.display === '') {
+                            overlay.style.display = 'block';
+                            iframe.src = url; // Set the emergency frame URL
+                            iframe.style.display = 'block'; // Show the iframe
                         } else {
-                            emergencyIframe.style.display = 'none';
+                            overlay.style.display = 'none';
+                            iframe.style.display = 'none'; // Hide the iframe
                         }
                     }
-
-                    // Listen for the emergency key combo
-                    document.addEventListener('keydown', function(event) {
-                        if (event.ctrlKey && event.key === '${settings.emergency_key.split('+')[1]}') {
-                            toggleEmergencyIframe();
-                        }
-                    });
                 </script>
             </body>
         </html>
     `);
     newWindow.document.close();
 }
-
-// Function to get user settings from Supabase
-async function getUserSettings(userId) {
-    const { data, error } = await supabase
-        .from('user_settings')
-        .select('*')
-        .eq('user_id', userId)
-        .single();
-    
-    if (error) {
-        console.error("Error fetching user settings:", error);
-        return {}; // Default settings if error occurs
-    }
-    return data || {}; // Return settings or an empty object if none found
-}
-
-// Function to generate a new user ID
-async function initializeUser() {
-    let userId = localStorage.getItem('userId');
-    if (!userId) {
-        // Generate a new user ID and store it in localStorage and Supabase
-        userId = 'user-' + Date.now(); // Simple unique ID
-        localStorage.setItem('userId', userId);
-        
-        // Insert a new record in Supabase
-        const { error } = await supabase
-            .from('user_settings')
-            .insert([{ user_id: userId }]);
-        
-        if (error) {
-            console.error("Error inserting user settings:", error);
-        }
-    }
-}
-
-// Initialize user and load settings on script start
-initializeUser().then(() => {
-    // Proceed with other game loading logic here
-});
 
 // Functions to load different game URLs
 function openSecureBrowser1() {
