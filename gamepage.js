@@ -44,7 +44,7 @@ function openSecureBrowser(url) {
                         cursor: grab; /* Change cursor style for better UX */
                         width: 100px; /* Set a fixed width */
                         height: 30px; /* Set a fixed height */
-                        line-height: 40px; /* Center the text vertically */
+                        line-height: 30px; /* Center the text vertically */
                         text-align: center; /* Center the text horizontally */
                     }
                     .top-right { top: 10px; right: 10px; }
