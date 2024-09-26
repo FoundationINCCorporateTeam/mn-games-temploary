@@ -103,7 +103,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
 
 /* Button styles */
-.button {
+.btn {
     background-color: #28a745;
     color: white;
     border: none;
@@ -114,7 +114,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     width: 100%;
 }
 
-.button:hover {
+.btn:hover {
     background-color: #218838;
 }
 
@@ -223,7 +223,7 @@ input[type="radio"] + label, input[type="checkbox"] + label {
             <div id="dynamic-questions"></div>
             <label class="label" for="email">Email:</label>
             <input class="input" type="email" id="email" name="email" required placeholder="Your email">
-            <button class="button" type="submit">Submit Feedback</button>
+            <button class="btn" type="submit">Submit Feedback</button>
         </form>
         <div id="response-message"></div>
     `;
