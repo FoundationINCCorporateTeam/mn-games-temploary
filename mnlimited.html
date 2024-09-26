@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
+        .body {
             color: white;
             background-color: black;
             text-align: center;
             margin: 0;
             overflow: hidden;
         }
-        button {
+        .button {
             background-color: blue;
             color: white;
             border-radius: 3px;
@@ -49,21 +49,20 @@
     </style>
 </head>
 <body>
+    <div class="body">
     <h1>Welcome to MN Games Limited (Temporary)</h1>
     <div>
-        <button onclick="openSecureBrowser1()">1v1.lol</button>
-        <button onclick="openSecureBrowser2()">Slope 2</button>
-        <button onclick="openSecureBrowser3()">Slope</button>
-        <button onclick="openSecureBrowser4()">Stickman Hook</button>
-        <button onclick="openSecureBrowser5()">World's Hardest Game 2</button>
-        <button onclick="openSecureBrowser6()">Retro Bowl</button>
-        <button onclick="openSecureBrowser7()">N-Gon</button>
-        <button onclick="openSecureBrowser8()">Motox3m</button>
-        <button onclick="openSecureBrowser9()">Death Run 3D</button>
-        <button onclick="toggleSettings()">Settings</button>
+        <button class="button" onclick="openSecureBrowser1()">1v1.lol</button>
+        <button class="button" onclick="openSecureBrowser2()">Slope 2</button>
+        <button class="button" onclick="openSecureBrowser3()">Slope</button>
+        <button class="button" onclick="openSecureBrowser4()">Stickman Hook</button>
+        <button class="button" onclick="openSecureBrowser5()">World's Hardest Game 2</button>
+        <button class="button" onclick="openSecureBrowser6()">Retro Bowl</button>
+        <button class="button" onclick="openSecureBrowser7()">N-Gon</button>
+        <button class="button" onclick="openSecureBrowser8()">Motox3m</button>
+        <button class="button" onclick="openSecureBrowser9()">Death Run 3D</button>
+        <button class="button" onclick="toggleSettings()">Settings</button>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/FoundationINCCorporateTeam/MNFeedback@main/Feedbackwidget.js"></script>
     <div class="settings-popup" id="settingsPopup">
         <h2>Settings</h2>
         <label for="panicPosition">Panic Button Position:</label>
@@ -77,10 +76,12 @@
         <label for="panicURL">Panic Button URL:</label>
         <input type="text" id="panicURL" placeholder="Enter panic URL" />
         <br><br>
-        <button onclick="applySettings()">Apply</button>
-        <button onclick="toggleSettings()">Close</button>
+        <button class="button" onclick="applySettings()">Apply</button>
+        <button class="button" onclick="toggleSettings()">Close</button>
     </div>
-
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/FoundationINCCorporateTeam/MNFeedback@main/FFeedbackwidget.js"></script>
     <script src="gamepage.js"></script>
     <script>
         function toggleSettings() {
