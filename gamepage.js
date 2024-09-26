@@ -42,8 +42,8 @@ function openSecureBrowser(url) {
                         position: absolute; /* Keep absolute positioning for flexibility */
                         z-index: 20; /* Ensure panic button is above everything */
                         cursor: grab; /* Change cursor style for better UX */
-                        width: 120px; /* Set a fixed width */
-                        height: 40px; /* Set a fixed height */
+                        width: 100px; /* Set a fixed width */
+                        height: 30px; /* Set a fixed height */
                         line-height: 40px; /* Center the text vertically */
                         text-align: center; /* Center the text horizontally */
                     }
