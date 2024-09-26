@@ -208,7 +208,7 @@ input[type="radio"] + label, input[type="checkbox"] + label {
 
     feedbackWidget.innerHTML = `
         <button class="close-btn" id="close-feedback">&times;</button>
-        <h2>Feedback Form</h2>
+        <h2 class="h2">Feedback Form</h2>
         <form id="feedback-form">
             <label class="label" for="category">Category:</label>
             <select class="select" id="category" name="category" required>
