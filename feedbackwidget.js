@@ -44,6 +44,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 .feedback-widget {
     background: white;
     font-family: Arial, sans-serif;
+    color: black;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
