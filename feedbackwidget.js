@@ -80,12 +80,12 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
 
 /* Form heading and labels */
-h2 {
+.h2 {
     margin-top: 0;
     color: #333;
 }
 
-label {
+.label {
     display: block;
     margin-bottom: 8px;
     color: #555;
@@ -93,7 +93,7 @@ label {
 }
 
 /* Form inputs */
-input, select, textarea {
+.input, .select, .textarea {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
@@ -103,7 +103,7 @@ input, select, textarea {
 }
 
 /* Button styles */
-button {
+.button {
     background-color: #28a745;
     color: white;
     border: none;
@@ -114,7 +114,7 @@ button {
     width: 100%;
 }
 
-button:hover {
+.button:hover {
     background-color: #218838;
 }
 
@@ -123,7 +123,7 @@ button:hover {
     position: relative;
 }
 
-select {
+.select {
     appearance: none;
     background: url('data:image/svg+xml;base64,...') no-repeat right 10px center; /* Custom dropdown arrow */
     background-color: white;
@@ -210,8 +210,8 @@ input[type="radio"] + label, input[type="checkbox"] + label {
         <button class="close-btn" id="close-feedback">&times;</button>
         <h2>Feedback Form</h2>
         <form id="feedback-form">
-            <label for="category">Category:</label>
-            <select id="category" name="category" required>
+            <label class="label" for="category">Category:</label>
+            <select class="select" id="category" name="category" required>
                 <option value="" disabled selected>Select a category</option>
                 <option value="bug">Bug or Error</option>
                 <option value="gamereq">Game Request</option>
@@ -221,9 +221,9 @@ input[type="radio"] + label, input[type="checkbox"] + label {
                 <option value="other">Other</option>
             </select>
             <div id="dynamic-questions"></div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required placeholder="Your email">
-            <button type="submit">Submit Feedback</button>
+            <label class="label" for="email">Email:</label>
+            <input class="input" type="email" id="email" name="email" required placeholder="Your email">
+            <button class="button" type="submit">Submit Feedback</button>
         </form>
         <div id="response-message"></div>
     `;
