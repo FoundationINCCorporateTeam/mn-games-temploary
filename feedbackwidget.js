@@ -93,7 +93,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 }
 
 /* Form inputs */
-.input, .select, .textarea {
+input, select, textarea {
     width: 100%;
     padding: 12px;
     margin-bottom: 15px;
@@ -123,7 +123,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     position: relative;
 }
 
-.select {
+select {
     appearance: none;
     background: url('data:image/svg+xml;base64,...') no-repeat right 10px center; /* Custom dropdown arrow */
     background-color: white;
