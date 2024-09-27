@@ -51,7 +51,7 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     width: 100%;
     max-width: 450px;
     position: fixed;
-    top: 5%; /* Adjusted to move higher */
+    top: 10%; /* Adjusted to move higher */
     right: -500px; /* Hidden by default */
     transition: right 0.4s ease;
     z-index: 999; /* Ensure it's above other content */
