@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Face ID Sign-In</title>
+  <script defer src="https://unpkg.com/face-api.js@0.22.2/build/commonjs/index.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #video, #canvas {
+      width: 320px;
+      height: 240px;
+      border: 1px solid black;
+      margin-bottom: 10px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    button {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Face ID Sign-In</h2>
+
+  <!-- Video for the live camera feed -->
+  <video id="video" autoplay muted></video>
+
+  <!-- Canvas for capturing the frame -->
+  <canvas id="canvas" style="display:none;"></canvas>
+
+  <!-- Buttons to capture reference image and verify -->
+  <div>
+    <button id="capture">Capture Reference Image</button>
+    <button id="verify" disabled>Verify Face</button>
+  </div>
+
+  <!-- Status Text -->
+  <p id="status"></p>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureButton = document.getElementById('capture');
+    const verifyButton = document.getElementById('verify');
+    const statusText = document.getElementById('status');
+    let referenceDescriptor = null;
+
+    // Load face-api.js models
+    async function loadModels() {
+      await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('/models');
+      await faceapi.nets.faceRecognitionNet.loadFromUri('/models');
+    }
+
+    // Start the video stream from the camera
+    async function setupCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+      } catch (err) {
+        console.error('Error accessing the camera:', err);
+        statusText.textContent = 'Camera access denied or unavailable.';
+      }
+    }
+
+    // Capture image and get face descriptor
+    async function captureImage() {
+      const displaySize = { width: video.width, height: video.height };
+      const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
+
+      if (!detections) {
+        statusText.textContent = 'No face detected. Try again.';
+        return null;
+      }
+
+      // Resize the detection result to match the video size
+      const resizedDetections = faceapi.resizeResults(detections, displaySize);
+      const descriptor = resizedDetections.descriptor;
+
+      return descriptor;
+    }
+
+    // Capture reference image
+    captureButton.addEventListener('click', async () => {
+      referenceDescriptor = await captureImage();
+      if (referenceDescriptor) {
+        statusText.textContent = 'Reference face captured. You can now verify your face.';
+        verifyButton.disabled = false;
+      }
+    });
+
+    // Verify the face by comparing it to the reference
+    verifyButton.addEventListener('click', async () => {
+      const currentDescriptor = await captureImage();
+      if (!currentDescriptor) {
+        return;
+      }
+
+      const distance = faceapi.euclideanDistance(referenceDescriptor, currentDescriptor);
+      if (distance < 0.6) { // Threshold for verification
+        statusText.textContent = 'Face verified successfully!';
+      } else {
+        statusText.textContent = 'Face verification failed. Please try again.';
+      }
+    });
+
+    // Load models and setup camera
+    loadModels().then(setupCamera);
+  </script>
+</body>
+</html>
