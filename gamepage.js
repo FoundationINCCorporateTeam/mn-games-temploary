@@ -106,6 +106,30 @@ function openSecureBrowser9() {
     var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20death-run-3d/index.html';
     openSecureBrowser(urls9);
 }
+function openSecureBrowser10() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20basket-random/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser11() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20bitlife/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser12() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20flappy-bird/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser13() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20rooftop-snipers/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser14() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20sand-game/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser15() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%20selenite-old%20main%20monkeymart/index.html';
+    openSecureBrowser(urls9);
+}
 
 // Function to apply settings from the popup
 function applySettings() {
