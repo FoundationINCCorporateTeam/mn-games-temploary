@@ -162,6 +162,10 @@ function openSecureBrowser23() {
     var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%20selenite-old%20main%20monkeymart/index.html';
     openSecureBrowser(urls9);
 }
+function openSecureBrowser24() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam/MNLimited/main/tunnel-rush/tunnel-rush/index.html';
+    openSecureBrowser(urls9);
+}
 
 // Function to apply settings from the popup
 function applySettings() {
