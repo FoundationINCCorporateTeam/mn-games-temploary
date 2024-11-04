@@ -130,6 +130,38 @@ function openSecureBrowser15() {
     var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%20selenite-old%20main%20monkeymart/index.html';
     openSecureBrowser(urls9);
 }
+function openSecureBrowser16() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam/basketball-stars/basketball-stars/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser17() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%20/bit-planes/bit-planes/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser18() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam/core-ball/core-ball/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser19() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%20drive-mad/drive-mad/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser20() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%20impossiblequiz/impossiblequiz/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser21() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%20selenite-old%20main%20monkeymart/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser22() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%20selenite-old%20main%20monkeymart/index.html';
+    openSecureBrowser(urls9);
+}
+function openSecureBrowser23() {
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%20selenite-old%20main%20monkeymart/index.html';
+    openSecureBrowser(urls9);
+}
 
 // Function to apply settings from the popup
 function applySettings() {
