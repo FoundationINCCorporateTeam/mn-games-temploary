@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Callback</title>
+</head>
+<body>
+    <script>
+        // Parse URL parameters
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Store token securely in cookies
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/; Secure; HttpOnly; SameSite=Strict";
+        }
+
+        // Retrieve the token from the URL
+        const token = getQueryParam('token');
+        if (token) {
+            // Save the token to cookies for future requests
+            setCookie('auth_token', token, 1);  // Store for 1 day (adjust as needed)
+
+            // Redirect to the main application page (or another secured area of your app)
+            window.location.href = "/";  // Replace with your main app URL
+        } else {
+            // Handle the case where no token was provided
+            console.error("No token provided in URL");
+            alert("Authentication failed. Please try logging in again.");
+            window.location.href = "/portal_redirect.html"; // Redirect back to login
+        }
+    </script>
+</body>
+</html>
