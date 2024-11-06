@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting to Authentication</title>
+</head>
+<body>
+    <script>
+        // Configure the redirect parameters
+        const authPortalUrl = "https://blueastroid.com/portal_login.php";  // Replace with your auth portal's URL
+        const appId = "zealous-meadow-04d0ae41e.5.azurestaticapps.net";                                     // Unique ID for your application
+        const callbackUrl = `${window.location.origin}/callback.html`;   // URL to return to after authentication
+
+        // Build the redirect URL
+        const redirectUrl = `${authPortalUrl}?app_id=${encodeURIComponent(appId)}&callback_url=${encodeURIComponent(callbackUrl)}`;
+
+        // Redirect to the auth portal
+        window.location.href = redirectUrl;
+    </script>
+</body>
+</html>
