@@ -21,9 +21,9 @@
                 date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
                 expires = "; expires=" + date.toUTCString();
             }
-            // Secure cookie with domain specified
-            document.cookie = name + "=" + (value || "") + expires + "; path=/home; domain=.zealous-meadow-04d0ae41e.5.azurestaticapps.net; Secure; HttpOnly; SameSite=Strict";
-            console.log("Cookie set successfully");
+            // Setting a cookie with domain specified
+            document.cookie = `${name}=${value || ""}${expires}; path=/; domain=.zealous-meadow-04d0ae41e.5.azurestaticapps.net; Secure; SameSite=None`;
+            console.log("Attempting to set cookie:", document.cookie);
         }
 
         // Retrieve the token from the URL
@@ -34,8 +34,15 @@
                 // Save the token to cookies for future requests
                 setCookie('auth_token', token, 1);
 
-                // Redirect to the main application page (or another secured area of your app)
-                window.location.href = "/mnlimited";  // Replace with your main app URL
+                // Check if the cookie was successfully set
+                if (document.cookie.includes("auth_token=")) {
+                    console.log("Cookie successfully set:", document.cookie);
+                    
+                    // Redirect to the main application page
+                    window.location.href = "/mnlimited";  // Replace with your main app URL
+                } else {
+                    console.error("Failed to set the cookie. Check domain, SameSite, and Secure attributes.");
+                }
             }, 5000);
         } else {
             // Handle the case where no token was provided
