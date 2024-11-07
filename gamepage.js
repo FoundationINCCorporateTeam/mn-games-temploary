@@ -47,9 +47,9 @@ function openSecureBrowser(url) {
                     <a href="${panicURL}" class="panic ${panicPosition}">Panic Button</a>
                 </div>
                 
-                <div id="emailOverlay" class="overlay">
+                <!--<div id="emailOverlay" class="overlay">
                     Access Restricted
-                </div>
+                </div>-->
 
                 <form id="emailCheckForm" style="display: none;">
                     <input type="hidden" name="email" value="${email}">
