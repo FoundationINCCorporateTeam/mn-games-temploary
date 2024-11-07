@@ -1,56 +1,43 @@
-// Function to open a secure browser and load the game URL
 function openSecureBrowser(url) {
-    const panicPosition = localStorage.getItem('panicPosition') || 'top-right'; // Default position
-    const panicURL = localStorage.getItem('panicURL') || 'https://osseo.schoology.com'; // Default URL
+    const panicPosition = localStorage.getItem('panicPosition') || 'top-right';
+    const panicURL = localStorage.getItem('panicURL') || 'https://osseo.schoology.com';
+    let email = localStorage.getItem('userEmail');
 
-    var newWindow = window.open('about:blank', '_blank');
+    // Prompt for email if not already stored
+    if (!email) {
+        email = prompt("Please enter your email:");
+        if (email) {
+            localStorage.setItem('userEmail', email);
+        } else {
+            alert("Email is required to continue.");
+            return;
+        }
+    }
+
+    // Open a new window with about:blank and write HTML into it
+    const newWindow = window.open('about:blank', '_blank');
     newWindow.document.write(`
         <html>
             <head>
                 <link rel="stylesheet" href="https://cdn.statically.io/gh/FoundationINCCorporateTeam/mn-games-temploary/main/gamepagestyles.css">
                 <title>MN Games Secure Browser</title>
                 <style>
-                    body {
-                        margin: 0;
-                        overflow: hidden;
-                    }
-                    .iframe-container {
-                        position: relative;
-                        width: 100%;
-                        height: 100vh;
-                    }
-                    iframe {
-                        position: absolute;
+                    /* Add styles for the overlay if email is found */
+                    .overlay {
+                        display: none;
+                        position: fixed;
                         top: 0;
                         left: 0;
                         width: 100%;
                         height: 100%;
-                        border: none;
-                        z-index: 1; /* Game content below panic button */
+                        background-color: rgba(0, 0, 0, 0.85);
+                        color: white;
+                        font-size: 24px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 100;
                     }
-                    a.panic {
-                        background: linear-gradient(to right, #ff0000, #ff0000);
-                        background-color: #ff0000;
-                        color: #fff;
-                        font-family: Trebuchet MS;
-                        font-size: 16px; /* Slightly smaller font */
-                        font-weight: 800;
-                        text-decoration: none;
-                        padding: 10px 12px; /* Reduced padding */
-                        border-radius: 10px;
-                        display: inline-block;
-                        position: absolute; /* Keep absolute positioning for flexibility */
-                        z-index: 20; /* Ensure panic button is above everything */
-                        cursor: grab; /* Change cursor style for better UX */
-                        width: 100px; /* Set a fixed width */
-                        height: 30px; /* Set a fixed height */
-                        line-height: 30px; /* Center the text vertically */
-                        text-align: center; /* Center the text horizontally */
-                    }
-                    .top-right { top: 10px; right: 10px; }
-                    .top-left { top: 10px; left: 10px; }
-                    .bottom-right { bottom: 10px; right: 10px; }
-                    .bottom-left { bottom: 10px; left: 10px; }
                 </style>
             </head>
             <body>
@@ -58,10 +45,31 @@ function openSecureBrowser(url) {
                     <iframe src="${url}"></iframe>
                     <a href="${panicURL}" class="panic ${panicPosition}">Panic Button</a>
                 </div>
+                
+                <div id="emailOverlay" class="overlay">
+                    Access Restricted
+                </div>
+
+                <form id="emailCheckForm" style="display: none;">
+                    <input type="hidden" name="email" value="${email}">
+                </form>
 
                 <script>
-                    // Insert a value into localStorage when the page is visited
-                    localStorage.setItem('gameVisit', new Date().toISOString()); // Store current timestamp
+                    // Send email to PHP server to check if it exists in the database
+                    fetch('https://your-server.com/check-email.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        body: 'email=' + encodeURIComponent('${email}')
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exists) {
+                            document.getElementById('emailOverlay').style.display = 'flex';
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
                 </script>
             </body>
         </html>
