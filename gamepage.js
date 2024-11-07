@@ -55,22 +55,33 @@ function openSecureBrowser(url) {
                 </form>
 
                 <script>
-                    // Send email to PHP server to check if it exists in the database
-                    fetch('https://your-server.com/check-email.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: 'email=' + encodeURIComponent('${email}')
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.exists) {
-                            document.getElementById('emailOverlay').style.display = 'flex';
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-                </script>
+      // Retrieve the email from localStorage
+        const email = localStorage.getItem('userEmail');
+        if (!email) {
+            alert("Email is required to continue.");
+        }
+
+        // Function to check email every second
+        function checkEmail() {
+            fetch('https://publicmowing.site.blueastroid.com/check-email.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'email=' + encodeURIComponent(email)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    document.getElementById('emailOverlay').style.display = 'flex';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Run the checkEmail function every 1 second
+        setInterval(checkEmail, 1000);
+    </script>
             </body>
         </html>
     `);
