@@ -7,13 +7,13 @@
 </head>
 <body>
     <script>
-        // Parse URL parameters
+        // Function to parse URL parameters
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
 
-        // Store token securely in cookies
+        // Function to store the token securely in cookies
         function setCookie(name, value, days) {
             let expires = "";
             if (days) {
@@ -21,7 +21,8 @@
                 date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
                 expires = "; expires=" + date.toUTCString();
             }
-            document.cookie = name + "=" + (value || "") + expires + "; path=/; Secure; HttpOnly; SameSite=Strict";
+            // Secure cookie with domain specified
+            document.cookie = name + "=" + (value || "") + expires + "; path=/; domain=.zealous-meadow-04d0ae41e.5.azurestaticapps.net; Secure; HttpOnly; SameSite=Strict";
         }
 
         // Retrieve the token from the URL
@@ -36,7 +37,7 @@
             // Handle the case where no token was provided
             console.error("No token provided in URL");
             alert("Authentication failed. Please try logging in again.");
-            window.location.href = "/portal_redirect.html"; // Redirect back to login
+            window.location.href = "/portal_redirect.html"; // Redirect back to login if needed
         }
     </script>
 </body>
