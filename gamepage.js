@@ -172,6 +172,7 @@ if (scare) {
     `);
     newWindow.document.close();
 }
+checkEmail();
 
 // Functions to load different game URLs
 function openSecureBrowser1() {
