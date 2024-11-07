@@ -152,7 +152,6 @@ if (scare) {
 } else {
     overlay.style.display = "none";
 }
-checkEmail();
     // Show the notification and hide it after 3 seconds
     notification.style.display = 'block';
     setTimeout(() => {
