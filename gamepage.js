@@ -152,10 +152,7 @@ if (scare) {
 } else {
     overlay.style.display = "none";
 }
-
-        
-    
-
+checkEmail();
     // Show the notification and hide it after 3 seconds
     notification.style.display = 'block';
     setTimeout(() => {
@@ -172,7 +169,6 @@ if (scare) {
     `);
     newWindow.document.close();
 }
-checkEmail();
 
 // Functions to load different game URLs
 function openSecureBrowser1() {
