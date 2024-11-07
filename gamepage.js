@@ -23,21 +23,22 @@ function openSecureBrowser(url) {
                 <title>MN Games Secure Browser</title>
                 <style>
                     /* Add styles for the overlay if email is found */
-                    .overlay {
-                        display: none;
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background-color: rgba(0, 0, 0, 0.85);
-                        color: white;
-                        font-size: 24px;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        z-index: 100;
-                    }
+        /* Overlay styling */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
                 </style>
             </head>
             <body>
