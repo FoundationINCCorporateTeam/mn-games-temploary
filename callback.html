@@ -39,11 +39,11 @@
                     console.log("Cookie successfully set:", document.cookie);
                     
                     // Redirect to the main application page
-                    window.location.href = "/mnlimited";  // Replace with your main app URL
+                    window.location.href = "/dashboard";  // Replace with your main app URL
                 } else {
                     console.error("Failed to set the cookie. Check domain, SameSite, and Secure attributes.");
                 }
-            }, 5000);
+            }, 0);
         } else {
             // Handle the case where no token was provided
             console.error("No token provided in URL");
