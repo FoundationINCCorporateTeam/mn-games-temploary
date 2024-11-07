@@ -74,9 +74,11 @@ function openSecureBrowser(url) {
             .then(response => response.json())
             .then(data => {
                 if (data.exists) {
+                    alert("Email FOUND (Sorry if you are not a developer and you war seeing this. This is just a test. Come back in 2-5 min when it is not here)")
                     document.getElementById('emailOverlay').style.display = 'flex';
                 }
             })
+            alert("Email Found (Sorry if you are not a developer and you war seeing this. This is just a test. Come back in 2-5 min when it is not here)")
             .catch(error => console.error('Error:', error));
         }
 
