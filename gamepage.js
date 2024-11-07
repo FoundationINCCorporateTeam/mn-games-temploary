@@ -134,32 +134,21 @@ function openSecureBrowser(url) {
             .then(response => response.json())
             .then(data => {
 // Get the notification element or create it if it doesn't exist
-let notification = document.getElementById('notification');
 let scare = false;  // Define scare outside the block for global access
 let overlay = document.getElementById('emailOverlay');
-
-if (!notification) {
-    notification = document.createElement('div');
-    notification.id = 'notification';
-    notification.className = 'notification';
-    document.body.appendChild(notification);
-}
+let overlayText = overlay.querySelector('.background .text'); // Target the text element inside the overlay
 
 // Check if the email is found and display the corresponding message
 if (data.exists) {
-    notification.textContent = 'Blocked';
-    notification.classList.add('success');
-    notification.classList.remove('failure');
     scare = true;  // Set scare to true here
 } else {
-    notification.textContent = 'Unblocked';
-    notification.classList.add('failure');
-    notification.classList.remove('success');
 }
 
-// Show or hide the overlay based on the scare variable
+// Show or hide the overlay based on the scare variable and update the message if provided
 if (scare) {
     overlay.style.display = "flex";
+    // If data has a message, use it; otherwise, keep the existing message
+    overlayText.textContent = data.message || overlayText.textContent;
 } else {
     overlay.style.display = "none";
 }
