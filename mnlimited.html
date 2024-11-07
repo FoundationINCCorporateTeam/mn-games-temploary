@@ -69,6 +69,7 @@
             <div style="display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 9998;" id="overlay"></div>-->
 </div>
     <h1>Welcome to MN Games Limited (Temporary)</h1>
+    <p id="content"></p>
     <div>
         <button class="button" onclick="openSecureBrowser1()">1v1.lol</button>
         <button class="button" onclick="openSecureBrowser2()">Slope 2</button>
@@ -147,6 +148,13 @@
         if (!authToken) {
             window.location.href = "/portal_redirect.html";  // Adjust this URL to your actual login page
         }*/
+    let email = localStorage.getItem('userEmail');
+        var content = document.getElementById("content");
+
+    function displayEmail() {
+        "use strict";
+        content.innerHTML = email;
+    }
     </script>
 </body>
 </html>
