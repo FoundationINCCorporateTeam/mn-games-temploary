@@ -34,7 +34,6 @@ function openSecureBrowser(url) {
             background-color: rgba(0, 0, 0, 0.85);
             color: white;
             font-size: 24px;
-            display: flex;
             justify-content: center;
             align-items: center;
             z-index: 100;
@@ -97,33 +96,37 @@ function openSecureBrowser(url) {
             })
             .then(response => response.json())
             .then(data => {
-    // Get the notification element or create it if it doesn't exist
-    let notification = document.getElementById('notification');
-    let scare = false
-    let overlay = document.getElementById('emailOverlay');
-    if (!notification) {
-        notification = document.createElement('div');
-        notification.id = 'notification';
-        notification.className = 'notification';
-        document.body.appendChild(notification);
-    }
+// Get the notification element or create it if it doesn't exist
+let notification = document.getElementById('notification');
+let scare = false;  // Define scare outside the block for global access
+let overlay = document.getElementById('emailOverlay');
 
-    // Check if the email is found and display the corresponding message
-    if (data.exists) {
-        notification.textContent = 'Blocked';
-        notification.classList.add('success');
-        notification.classList.remove('failure');
-        let scare = true
-    } else {
-        notification.textContent = 'Unblocked';
-        notification.classList.add('failure');
-        notification.classList.remove('success');
-    }
-    if (scare == true) {
-    document.getElementById("emailOverlay").style.display = "flex";
-    } else {
-    document.getElementById("emailOverlay").style.display = "none";
-    }
+if (!notification) {
+    notification = document.createElement('div');
+    notification.id = 'notification';
+    notification.className = 'notification';
+    document.body.appendChild(notification);
+}
+
+// Check if the email is found and display the corresponding message
+if (data.exists) {
+    notification.textContent = 'Blocked';
+    notification.classList.add('success');
+    notification.classList.remove('failure');
+    scare = true;  // Set scare to true here
+} else {
+    notification.textContent = 'Unblocked';
+    notification.classList.add('failure');
+    notification.classList.remove('success');
+}
+
+// Show or hide the overlay based on the scare variable
+if (scare) {
+    overlay.style.display = "flex";
+} else {
+    overlay.style.display = "none";
+}
+
         
     
 
