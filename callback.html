@@ -23,17 +23,20 @@
             }
             // Secure cookie with domain specified
             document.cookie = name + "=" + (value || "") + expires + "; path=/home; domain=.zealous-meadow-04d0ae41e.5.azurestaticapps.net; Secure; HttpOnly; SameSite=Strict";
-            console.log("Cookie Successful")
+            console.log("Cookie set successfully");
         }
 
         // Retrieve the token from the URL
         const token = getQueryParam('token');
         if (token) {
-            // Save the token to cookies for future requests
-            setTimeout(setCookie('auth_token', token, 1), 5000);  // Store for 1 day (adjust as needed)
+            // Wait 5 seconds before setting the cookie and redirecting
+            setTimeout(() => {
+                // Save the token to cookies for future requests
+                setCookie('auth_token', token, 1);
 
-            // Redirect to the main application page (or another secured area of your app)
-            window.location.href = "/mnlimited";  // Replace with your main app URL
+                // Redirect to the main application page (or another secured area of your app)
+                window.location.href = "/mnlimited";  // Replace with your main app URL
+            }, 5000);
         } else {
             // Handle the case where no token was provided
             console.error("No token provided in URL");
