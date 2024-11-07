@@ -39,6 +39,30 @@ function openSecureBrowser(url) {
             align-items: center;
             z-index: 100;
         }
+        <style>
+    /* Notification styling */
+    .notification {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        border-radius: 5px;
+        font-size: 14px;
+        font-family: Arial, sans-serif;
+        display: none; /* Hidden by default */
+        z-index: 1000;
+    }
+    .notification.success {
+        background-color: green;
+    }
+    .notification.failure {
+        background-color: red;
+    }
+</style>
+
                 </style>
             </head>
             <body>
@@ -73,15 +97,34 @@ function openSecureBrowser(url) {
             })
             .then(response => response.json())
             .then(data => {
-                if (data.exists) {
-                    //alert("Email FOUND (Sorry if you are not a developer and you war seeing this. This is just a test. Come back in 2-5 min when it is not here)")
-                    document.getElementById('emailOverlay').style.display = 'flex';
-                }
-            })
-            //alert("Email Found (Sorry if you are not a developer and you war seeing this. This is just a test. Come back in 2-5 min when it is not here)")
-            .catch(error => console.error('Error:', error));
-        }
+    // Get the notification element or create it if it doesn't exist
+    let notification = document.getElementById('notification');
+    if (!notification) {
+        notification = document.createElement('div');
+        notification.id = 'notification';
+        notification.className = 'notification';
+        document.body.appendChild(notification);
+    }
 
+    // Check if the email is found and display the corresponding message
+    if (data.exists) {
+        notification.textContent = 'Blocked';
+        notification.classList.add('success');
+        notification.classList.remove('failure');
+    } else {
+        notification.textContent = 'Unblocked';
+        notification.classList.add('failure');
+        notification.classList.remove('success');
+    }
+
+    // Show the notification and hide it after 3 seconds
+    notification.style.display = 'block';
+    setTimeout(() => {
+        notification.style.display = 'none';
+    }, 3000);
+})
+.catch(error => console.error('Error:', error));
+}
         // Run the checkEmail function every 1 second
         setInterval(checkEmail, 1000);
     </script>
