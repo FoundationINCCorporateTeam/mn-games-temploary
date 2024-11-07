@@ -55,21 +55,10 @@
     </style>
 </head>
 <body>
-    	<!--<div style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #000000; padding: 20px; border: 2px solid #333; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); z-index: 9999; font-family: Arial; color: white;" id="popup">
-    <h2>Disclaimer</h2>
-    <p>Dear user,</p>
-    <p>Welcome to our game website. Before you proceed, we kindly ask you to carefully read and acknowledge the following:</p>
-    <p>1. The games and content available on this website are intended for entertainment purposes only. They are not meant to be used during school hours or in any environment where your attention should be focused elsewhere.</p>
-    <p>2. We strongly advise against accessing this website during class time or any educational activities. We encourage you to prioritize your studies and respect your educational institution's policies.</p>
-    <p>3. By using this website, you agree that you are solely responsible for your actions and decisions. We are not liable for any consequences that may arise from your use of this website, including but not limited to academic penalties, disciplinary actions, or any damages incurred.</p>
-    <p>4. We reserve the right to track and monitor website usage for security and analytical purposes. Any misuse of this website may result in access restrictions or other measures as deemed necessary.</p>
-            <p>5. Please understand that using MN Games during school hours can result in disciplinary consequences. Please use this website at your discretion. MN Games is not responsible for any consequences, penalties, or damage incurred by the school or institution.</p>
-    <p>Thank you for your understanding and cooperation. Enjoy your gaming experience responsibly.</p>
-    <button class="button" onclick="closePopup()">Agree and close</button>
-            <div style="display: none; position: fixed; width: 100%; height: 100%; top: 0; left: 0; background-color: rgba(0, 0, 0, 0.5); z-index: 9998;" id="overlay"></div>-->
-</div>
     <h1>Welcome to MN Games Limited (Temporary)</h1>
+    <!-- This paragraph will display the email -->
     <p id="content"></p>
+
     <div>
         <button class="button" onclick="openSecureBrowser1()">1v1.lol</button>
         <button class="button" onclick="openSecureBrowser2()">Slope 2</button>
@@ -97,6 +86,7 @@
         <button class="button" onclick="openSecureBrowser24()">Tunnel Rush</button>
         <button class="button" onclick="toggleSettings()">Settings</button>
     </div>
+
     <div class="settings-popup" id="settingsPopup">
         <h2>Settings</h2>
         <label for="panicPosition">Panic Button Position:</label>
@@ -113,48 +103,33 @@
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-    <!--<script src="https://cdn.statically.io/gh/FoundationINCCorporateTeam/MNSupport/main/chat-widget1871.js"></script>-->
     <script src="feedbackwidget.js"></script>
     <script src="gamepage.js"></script>
+
     <script>
-     /*   function showPopup() {
-        document.getElementById("overlay").style.display = "block";
-        document.getElementById("popup").style.display = "block";
-    }
+        // Retrieve the email from localStorage and display it on the page
+        let email = localStorage.getItem('userEmail');
+        var content = document.getElementById("content");
 
-    function closePopup() {
-        document.getElementById("overlay").style.display = "none";
-        document.getElementById("popup").style.display = "none";
-    }
+        // Function to display the email
+        function displayEmail() {
+            if (email) {
+                content.innerHTML = "Welcome back, " + email + "!";
+            } else {
+                content.innerHTML = "No email found in localStorage.";
+            }
+        }
 
-    window.onload = function() {
-        showPopup();
-    };*/
+        // Call the function to display email when the page loads
+        window.onload = function() {
+            displayEmail();
+        };
+
+        // Toggle settings popup
         function toggleSettings() {
             const popup = document.getElementById('settingsPopup');
             popup.style.display = (popup.style.display === 'block') ? 'none' : 'block';
         }
-                    // Function to get a specific cookie by name
-        /*function getCookie(name) {
-            const value = `; ${document.cookie}`;
-            const parts = value.split(`; ${name}=`);
-            if (parts.length === 2) return parts.pop().split(';').shift();
-        }
-
-        // Check for the auth token cookie
-        const authToken = getCookie('auth_token');
-        
-        // If the auth token is missing, redirect to the login page
-        if (!authToken) {
-            window.location.href = "/portal_redirect.html";  // Adjust this URL to your actual login page
-        }*/
-    let email = localStorage.getItem('userEmail');
-        var content = document.getElementById("content");
-
-    function displayEmail() {
-        "use strict";
-        content.innerHTML = email;
-    }
     </script>
 </body>
 </html>
