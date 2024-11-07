@@ -91,8 +91,8 @@ function openSecureBrowser(url) {
         .text {
             width: 100%;
             text-align: center;
-            padding: 5px;
-            font-size: 2em;
+            padding: 3px;
+            font-size: 1.5em;
             background: rgba(0, 0, 0, 0.5); /* Optional: Adds a slight background behind text for readability */
         }
 </style>
