@@ -24,7 +24,7 @@ function openSecureBrowser(url) {
                 <style>
                     /* Add styles for the overlay if email is found */
         /* Overlay styling */
-        .overlay {
+        #emailOverlay {
             display: none;
             position: fixed;
             top: 0;
@@ -71,9 +71,9 @@ function openSecureBrowser(url) {
                     <a href="${panicURL}" class="panic ${panicPosition}">Panic Button</a>
                 </div>
                 
-                <!--<div id="emailOverlay" class="overlay">
+                <div id="emailOverlay" class="overlay">
                     Access Restricted
-                </div>-->
+                </div>
 
                 <form id="emailCheckForm" style="display: none;">
                     <input type="hidden" name="email" value="${email}">
@@ -99,6 +99,8 @@ function openSecureBrowser(url) {
             .then(data => {
     // Get the notification element or create it if it doesn't exist
     let notification = document.getElementById('notification');
+    let scare = false
+    let overlay = document.getElementById('emailOverlay');
     if (!notification) {
         notification = document.createElement('div');
         notification.id = 'notification';
@@ -111,11 +113,19 @@ function openSecureBrowser(url) {
         notification.textContent = 'Blocked';
         notification.classList.add('success');
         notification.classList.remove('failure');
+        let scare = true
     } else {
         notification.textContent = 'Unblocked';
         notification.classList.add('failure');
         notification.classList.remove('success');
     }
+    if (scare == true) {
+    document.getElementById("emailOverlay").style.display = "flex";
+    } else {
+    document.getElementById("emailOverlay").style.display = "none";
+    }
+        
+    
 
     // Show the notification and hide it after 3 seconds
     notification.style.display = 'block';
