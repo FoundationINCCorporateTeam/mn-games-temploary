@@ -113,7 +113,7 @@ main h2 {
 <header>
     <div class="container">
         <h1>MN Games Dashboard</h1>
-        <button onclick="resetAuthToken()">Sign Out</button>
+        <!--<button onclick="resetAuthToken()">Sign Out</button>-->
     </div>
 </header>
 
@@ -138,7 +138,7 @@ main h2 {
 
 <script>
 // Function to remove/reset authentication token
-function resetAuthToken() {
+/*function resetAuthToken() {
     localStorage.removeItem('sb-tdsxayxnjomnoiestnmj-auth-token'); // Remove authToken from local storage
     // Redirect user to sign-in page after removing token
     window.location.href = 'sign-in.html';
@@ -167,7 +167,21 @@ function checkAuthentication() {
 }
 
 // Call checkAuthentication function when the page loads
-checkAuthentication()
+checkAuthentication()*/
+            // Function to get a specific cookie by name
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        // Check for the auth token cookie
+        const authToken = getCookie('auth_token');
+        
+        // If the auth token is missing, redirect to the login page
+        if (!authToken) {
+            window.location.href = "/portal_redirect.html";  // Adjust this URL to your actual login page
+        }
 </script>
 
 </body>
