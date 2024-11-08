@@ -21,6 +21,15 @@ function openSecureBrowser(url) {
             <head>
                 <link rel="stylesheet" href="https://cdn.statically.io/gh/FoundationINCCorporateTeam/mn-games-temploary/main/gamepagestyles.css">
                 <title>MN Games Secure Browser</title>
+                <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YMTTSH9XD3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YMTTSH9XD3');
+</script>
                 <style>
                     /* Add styles for the overlay if email is found */
         /* Overlay styling */
@@ -143,7 +152,6 @@ if (data.exists) {
     scare = true;  // Set scare to true here
 } else {
 }
-
 // Show or hide the overlay based on the scare variable and update the message if provided
 if (scare) {
     overlay.style.display = "flex";
