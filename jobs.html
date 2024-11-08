@@ -99,42 +99,39 @@
 </div>
 
 <script>
-    document.getElementById('jobApplicationForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+document.getElementById('jobApplicationForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-        const formData = new FormData(this);
-        const data = {
-            fields: {
-                Name: formData.get('name'),
-                Email: formData.get('email'),
-                JobChoice: formData.get('jobchoice'),
-                JobReason: formData.get('jobreason')
-            }
-        };
+    const formData = new FormData(this);
+    const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        jobchoice: formData.get('jobchoice'),
+        jobreason: formData.get('jobreason')
+    };
 
-        fetch('https://api.airtable.com/v0/apppf4IoyxbMvdEYs/tblRdgaRNBqnDM9HC', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer keyevqKNKrDeac8J8',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.id) {
-                alert('Application submitted successfully!');
-                document.getElementById('jobApplicationForm').reset();
-            } else {
-                alert('There was an error submitting your application.');
-                console.error(data);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
+    fetch('https://publicmowing.site.blueastroid.com/submit_mnjobapplication.php', { // PHP script URL on your server
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Application submitted successfully!');
+            document.getElementById('jobApplicationForm').reset();
+        } else {
             alert('There was an error submitting your application.');
-        });
+            console.error(data);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error submitting your application.');
     });
+});
 </script>
 
 </body>
