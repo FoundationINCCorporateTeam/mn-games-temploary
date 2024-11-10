@@ -125,16 +125,7 @@ function securebrowser(url) {
                 </form>
 
                 <script>
-      // Retrieve the email from localStorage
-        const email = localStorage.getItem('userEmail');
-        if (!email) {
-            alert("Email is required to continue.");
-        }
-        // The iframe should request the parent for the pathname once it's loaded
-function requestParentPathname() {
-  window.parent.postMessage("getPathname", "https://zealous-meadow-04d0ae41e.5.azurestaticapps.net");
-}
- const ACCESS_DURATION = 60 * 1000; // 1 minute (allowed access)
+                const ACCESS_DURATION = 60 * 1000; // 1 minute (allowed access)
     const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes (cooldown)
     const COOLDOWN_PAGE_URL = 'cooldown.html';
     const currentDate = new Date().toISOString().split("T")[0];
@@ -157,6 +148,7 @@ function requestParentPathname() {
     function checkAccess() {
       const currentTime = Date.now();
       const elapsed = currentTime - userAccessData.accessStartTime;
+      const countdownElement = document.getElementById("countdown");
 
       if (userAccessData.isInCooldown) {
         if (elapsed >= COOLDOWN_DURATION) {
@@ -174,12 +166,36 @@ function requestParentPathname() {
           localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
           window.location.href = COOLDOWN_PAGE_URL;
           return;
+        } else {
+          const remainingAccessTime = ACCESS_DURATION - elapsed;
+          countdownElement.textContent = Math.ceil(remainingAccessTime / 1000);
         }
       }
     }
 
-    window.addEventListener("focus", checkAccess);
+    // Update the countdown every second when the page is active
+    window.addEventListener("focus", () => {
+      checkAccess();
+      countdownInterval = setInterval(checkAccess, 1000);
+    });
+
+    // Stop the countdown interval when the page is not active
+    window.addEventListener("blur", () => {
+      clearInterval(countdownInterval);
+    });
+
+    // Initial access check and start the interval
+    let countdownInterval = setInterval(checkAccess, 1000);
     checkAccess();
+      // Retrieve the email from localStorage
+        const email = localStorage.getItem('userEmail');
+        if (!email) {
+            alert("Email is required to continue.");
+        }
+        // The iframe should request the parent for the pathname once it's loaded
+function requestParentPathname() {
+  window.parent.postMessage("getPathname", "https://zealous-meadow-04d0ae41e.5.azurestaticapps.net");
+}
         // Function to check email every second
         function checkEmail() {
             fetch('https://publicmowing.site.blueastroid.com/check-email.php', {
