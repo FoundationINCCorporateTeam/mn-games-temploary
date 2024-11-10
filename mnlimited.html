@@ -92,6 +92,38 @@
 .banner.visible {
   bottom: 0; /* Slide banner up to be visible */
 }
+/* Style for the container div */
+#securebrowser {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #f0f0f0; /* Light grey background */
+}
+
+/* Style for the button */
+.btn {
+  padding: 12px 24px; /* Padding inside the button */
+  background-color: #007BFF; /* Blue background */
+  color: white; /* White text */
+  font-size: 16px; /* Font size */
+  font-weight: bold; /* Bold text */
+  border: none; /* Remove border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Change the cursor to a pointer on hover */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+/* Hover effect for the button */
+.btn:hover {
+  background-color: #0056b3; /* Darker blue when hovered */
+}
+
+/* Focus state for better accessibility */
+.btn:focus {
+  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.75); /* Add custom focus outline */
+}
 
     </style>
 </head>
@@ -130,6 +162,9 @@
         <button class="button" onclick="openSecureBrowser24()">Tunnel Rush</button>
         <button class="button" onclick="toggleSettings()">Settings</button>
     </div>
+    <div id="securebrowser">
+        <button class="btn" onclick="securebrowser1()">Play roblox</button>
+    </div>
     <h2>Your grades are more important than games!</h2>
     <h4>We have been asked to add that to play MN Games that you maintain a PASSING grade in all of your core classes. MN Games recommends that you maintain at least a C</h4>
     <h3>MORE GAMES ARE COMING</h3>
@@ -153,6 +188,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
     <!--<script src="feedbackwidget.js"></script>-->
     <script src="gamepage.js"></script>
+    <script src="securebrowser.js"></script>
 
     <script>
         // Wait for the DOM to fully load
