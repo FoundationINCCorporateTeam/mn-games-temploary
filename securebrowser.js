@@ -130,6 +130,70 @@ function securebrowser(url) {
         if (!email) {
             alert("Email is required to continue.");
         }
+        // The iframe should request the parent for the pathname once it's loaded
+function requestParentPathname() {
+  window.parent.postMessage("getPathname", "https://zealous-meadow-04d0ae41e.5.azurestaticapps.net");
+}
+
+// Listen for the response from the parent page
+window.addEventListener('message', function(event) {
+  if (event.origin !== "https://zealous-meadow-04d0ae41e.5.azurestaticapps.net") {
+    console.log('Invalid origin:', event.origin);
+    return; // Ignore messages from unexpected origins
+  }
+
+  // Handle the response from the parent, which contains the pathname
+  if (event.data.pathname) {
+    console.log("Received pathname from parent:", event.data.pathname);
+    const input = document.getElementById("iv");
+    const pathname = event.data.pathname;
+
+    // Process URL based on the pathname
+    if (pathname === "/rx") {
+      processUrl(input.value, "");
+    } else {
+      processUrl(input.value, "/rx");
+    }
+  }
+});
+
+// Trigger the request for the pathname once the iframe content is loaded
+window.addEventListener("load", () => {
+  requestParentPathname();  // Ask the parent for the pathname
+});
+
+function processUrl(value, path) {
+  let url = value.trim();
+  const engine = localStorage.getItem("engine");
+  const searchUrl = engine ? engine : "https://www.google.com/search?q=";
+
+  // Check if the value is a valid URL, otherwise search
+  if (!isUrl(url)) {
+    url = searchUrl + url;
+  } else if (!(url.startsWith("https://") || url.startsWith("http://"))) {
+    url = \`https://${url}\`;
+  }
+
+  // Save the encoded URL to session storage
+  sessionStorage.setItem("GoUrl", __uv$config.encodeUrl(url));
+
+  const dy = localStorage.getItem("dy");
+
+  // Redirect based on "dy" value
+  if (dy === "true") {
+    window.location.href = \`/a/q/${__uv$config.encodeUrl(url)}\`;
+  } else if (path) {
+    window.location.href = path;
+  } else {
+    window.location.href = \`/a/${__uv$config.encodeUrl(url)}\`;
+  }
+}
+
+// Helper function to determine if a value is a valid URL
+function isUrl(val = "") {
+  return /^http(s?):\/\//.test(val) || (val.includes(".") && val.substr(0, 1) !== " ");
+}
+
 
         // Function to check email every second
         function checkEmail() {
