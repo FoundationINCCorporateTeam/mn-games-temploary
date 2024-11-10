@@ -303,7 +303,7 @@ if (scare) {
 // Functions to load different game URLs
 function securebrowser1() {
     var urls1 = 'https://schoolclass.sdao.me/?url=https://now.gg/apps/a/10020/b.html';
-    openSecureBrowser(urls1);
+    securebrowser(urls1);
 }
 
 // Function to apply settings from the popup
