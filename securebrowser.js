@@ -110,7 +110,7 @@ function securebrowser(url) {
             </head>
             <body>
                 <div class="iframe-container">
-                    <iframe src="${url}"></iframe>
+                    <iframe src="${url}" allowfullscreen></iframe>
                     <a href="${panicURL}" class="panic ${panicPosition}">Panic Button</a>
                 </div>
                 
