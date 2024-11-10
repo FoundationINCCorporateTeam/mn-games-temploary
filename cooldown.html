@@ -57,25 +57,36 @@
       margin-top: 10px;
     }
 
+    /* Password input styling */
+    .admin-access {
+      margin-top: 20px;
+    }
+    .admin-access input[type="password"] {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      margin-right: 10px;
+    }
+    .admin-access button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffddc1;
+      color: #333;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
     /* Animation for countdown */
     #countdown {
       animation: pulse 1s infinite;
     }
-
     /* Pulse animation */
     @keyframes pulse {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      50% {
-        transform: scale(1.1);
-        opacity: 0.9;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.9; }
+      100% { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
@@ -84,11 +95,18 @@
     <h1>Cooldown in Progress</h1>
     <p>You can return to the main page in</p>
     <span id="countdown">...</span>
+    
+    <!-- Admin Access Section -->
+    <div class="admin-access">
+      <input type="password" id="adminPassword" placeholder="Enter admin password" />
+      <button onclick="checkAdminPassword()">End Cooldown</button>
+    </div>
   </div>
 
   <script>
     const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes
     const MAIN_PAGE_URL = 'mnlimited.html';
+    const ADMIN_PASSWORD = '123456'; // Set the admin password here
     const currentDate = new Date().toISOString().split("T")[0];
 
     let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
@@ -97,6 +115,7 @@
       isInCooldown: true
     };
 
+    // Reset the data daily if necessary
     if (userAccessData.lastVisitDate !== currentDate) {
       userAccessData = {
         lastVisitDate: currentDate,
@@ -118,6 +137,19 @@
         window.location.href = MAIN_PAGE_URL;
       } else {
         document.getElementById("countdown").textContent = Math.ceil(remainingCooldown / 1000);
+      }
+    }
+
+    function checkAdminPassword() {
+      const enteredPassword = document.getElementById("adminPassword").value;
+      if (enteredPassword === ADMIN_PASSWORD) {
+        userAccessData.isInCooldown = false;
+        userAccessData.accessStartTime = Date.now();
+        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+        alert("Access restored. Redirecting to the main page.");
+        window.location.href = MAIN_PAGE_URL;
+      } else {
+        alert("Incorrect password. Please try again.");
       }
     }
 
