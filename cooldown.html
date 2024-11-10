@@ -5,125 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cooldown Page</title>
   <style>
-    /* Reset and base styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    /* Background styling */
+    /* Cooldown page styling */
     body {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      height: 100vh;
       background: linear-gradient(135deg, #ff7e5f, #feb47b);
       color: #fff;
+      font-family: Arial, sans-serif;
       text-align: center;
     }
-
-    /* Container styling */
     .cooldown-container {
       background: rgba(0, 0, 0, 0.7);
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-      max-width: 500px;
-      width: 90%;
+      padding: 30px;
+      border-radius: 8px;
+      width: 300px;
     }
-
-    /* Heading styles */
     h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      font-weight: bold;
-      color: #ffddc1;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
     }
-
-    /* Countdown text styling */
-    p {
-      font-size: 1.2rem;
-      color: #f2f2f2;
-    }
-
-    /* Countdown timer styling */
     #countdown {
-      font-size: 3rem;
-      font-weight: bold;
+      font-size: 2rem;
       color: #ffddc1;
-      display: block;
-      margin-top: 10px;
+      margin-top: 5px;
     }
-
-    /* Password input styling */
-    .admin-access {
-      margin-top: 20px;
-    }
-    .admin-access input[type="password"] {
+    input[type="password"], button {
       padding: 10px;
+      margin-top: 15px;
       font-size: 1rem;
-      border-radius: 5px;
       border: none;
-      margin-right: 10px;
+      border-radius: 4px;
     }
-    .admin-access button {
-      padding: 10px 20px;
-      font-size: 1rem;
+    button {
       background-color: #ffddc1;
       color: #333;
-      border: none;
-      border-radius: 5px;
       cursor: pointer;
-    }
-
-    /* Animation for countdown */
-    #countdown {
-      animation: pulse 1s infinite;
-    }
-    /* Pulse animation */
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.1); opacity: 0.9; }
-      100% { transform: scale(1); opacity: 1; }
     }
   </style>
 </head>
 <body>
   <div class="cooldown-container">
     <h1>Cooldown in Progress</h1>
-    <p>You can return to the main page in</p>
+    <p>Return to the main page in:</p>
     <span id="countdown">...</span>
-    
-    <!-- Admin Access Section -->
-    <div class="admin-access">
-      <input type="password" id="adminPassword" placeholder="Enter admin password" />
-      <button onclick="checkAdminPassword()">End Cooldown</button>
-    </div>
+
+    <!-- Admin password reset section -->
+    <input type="password" id="adminPassword" placeholder="Enter admin password" />
+    <button onclick="checkAdminPassword()">End Cooldown</button>
   </div>
 
   <script>
-    const COOLDOWN_DURATION = 40 * 60 * 1000; // 2 minutes
-    const MAIN_PAGE_URL = 'mnlimited.html';
-    const ADMIN_PASSWORD = 'MNNolan404'; // Set the admin password here
-    const currentDate = new Date().toISOString().split("T")[0];
-
-    let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
-      lastVisitDate: currentDate,
-      accessStartTime: Date.now(),
-      isInCooldown: true
-    };
-
-    // Reset the data daily if necessary
-    if (userAccessData.lastVisitDate !== currentDate) {
-      userAccessData = {
-        lastVisitDate: currentDate,
-        accessStartTime: Date.now(),
-        isInCooldown: true
-      };
-      localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-    }
+    const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes
+    const MAIN_PAGE_URL = 'index.html';
+    const ADMIN_PASSWORD = 'MNNolan404';
+    let userAccessData = JSON.parse(localStorage.getItem("userAccessData"));
 
     function updateCountdown() {
       const currentTime = Date.now();
@@ -131,28 +68,34 @@
       const remainingCooldown = COOLDOWN_DURATION - elapsed;
 
       if (remainingCooldown <= 0) {
+        // End cooldown and redirect to main page
         userAccessData.isInCooldown = false;
         userAccessData.accessStartTime = Date.now();
         localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
         window.location.href = MAIN_PAGE_URL;
       } else {
-        document.getElementById("countdown").textContent = Math.ceil(remainingCooldown / 1000);
+        // Display countdown in minutes and seconds
+        const minutes = Math.floor((remainingCooldown / 1000) / 60);
+        const seconds = Math.floor((remainingCooldown / 1000) % 60);
+        document.getElementById("countdown").textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
       }
     }
 
     function checkAdminPassword() {
       const enteredPassword = document.getElementById("adminPassword").value;
       if (enteredPassword === ADMIN_PASSWORD) {
+        // End cooldown and redirect to main page
         userAccessData.isInCooldown = false;
         userAccessData.accessStartTime = Date.now();
         localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-        alert("Access restored. Redirecting to the main page.");
+        alert("Cooldown ended. Redirecting to the main page.");
         window.location.href = MAIN_PAGE_URL;
       } else {
         alert("Incorrect password. Please try again.");
       }
     }
 
+    // Initialize the countdown on load
     updateCountdown();
     setInterval(updateCountdown, 1000);
   </script>
