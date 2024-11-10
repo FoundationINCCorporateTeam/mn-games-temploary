@@ -96,10 +96,21 @@
 /* Style for the container div */
 #securebrowser {
   display: flex;
+  flex-direction: column; /* Stack elements vertically */
   justify-content: center;
   align-items: center;
-  height: 30vh; /* Full viewport height */
-  background-color: black; /* Light grey background */
+  height: 100vh; /* Full viewport height */
+  background-color: black; /* Black background */
+  color: white; /* White text */
+  text-align: center; /* Center text horizontally */
+  padding: 20px; /* Add padding inside the container */
+}
+
+/* Style for the heading */
+#securebrowser h1 {
+  font-size: 3rem; /* Large font size */
+  margin-bottom: 20px; /* Space below the heading */
+  font-weight: bold; /* Bold text */
 }
 
 /* Style for the button */
@@ -125,7 +136,6 @@
   outline: none; /* Remove default focus outline */
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.75); /* Add custom focus outline */
 }
-
     </style>
 </head>
 <body>
@@ -163,10 +173,10 @@
         <button class="button" onclick="openSecureBrowser24()">Tunnel Rush</button>
         <button class="button" onclick="toggleSettings()">Settings</button>
     </div>
-    <div id="securebrowser">
-        <h1>Ultimate Experiences<br></h1>
-        <button class="btn" onclick="securebrowser1()">Play roblox</button>
-    </div>
+<div id="securebrowser">
+  <h1>Ultimate Experiences</h1>
+  <button class="btn" onclick="securebrowser1()">Play Roblox</button>
+</div>
     <h2>Your grades are more important than games!</h2>
     <h4>We have been asked to add that to play MN Games that you maintain a PASSING grade in all of your core classes. MN Games recommends that you maintain at least a C</h4>
     <h3>MORE GAMES ARE COMING</h3>
