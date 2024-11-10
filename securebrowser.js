@@ -125,68 +125,65 @@ function securebrowser(url) {
                 </form>
 
                 <script>
-                const ACCESS_DURATION = 60 * 1000; // 1 minute (allowed access)
-    const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes (cooldown)
-    const COOLDOWN_PAGE_URL = 'cooldown.html';
-    const currentDate = new Date().toISOString().split("T")[0];
+ // Set durations in milliseconds
+  const ACCESS_DURATION = 60 * 1000; // 1 minute (allowed access)
+  const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes (cooldown)
+  const REDIRECT_URL = 'https://example.com'; // Replace with your redirect URL
+  
+  // Get the current date string (YYYY-MM-DD) to check against stored data
+  const currentDate = new Date().toISOString().split("T")[0];
 
-    let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
-      lastVisitDate: currentDate,
-      accessStartTime: Date.now(),
-      isInCooldown: false
-    };
+  // Initialize or retrieve data from localStorage
+  const userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
+    lastVisitDate: currentDate,
+    accessStartTime: Date.now(),
+    isInCooldown: false
+  };
 
-    if (userAccessData.lastVisitDate !== currentDate) {
-      userAccessData = {
-        lastVisitDate: currentDate,
-        accessStartTime: Date.now(),
-        isInCooldown: false
-      };
-      localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-    }
+  // Reset daily if the last visit was on a different date
+  if (userAccessData.lastVisitDate !== currentDate) {
+    userAccessData.lastVisitDate = currentDate;
+    userAccessData.accessStartTime = Date.now();
+    userAccessData.isInCooldown = false;
+    localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+  }
 
-    function checkAccess() {
-      const currentTime = Date.now();
-      const elapsed = currentTime - userAccessData.accessStartTime;
-      const countdownElement = document.getElementById("countdown");
+  function handleAccess() {
+    const currentTime = Date.now();
+    const elapsed = currentTime - userAccessData.accessStartTime;
 
-      if (userAccessData.isInCooldown) {
-        if (elapsed >= COOLDOWN_DURATION) {
-          userAccessData.accessStartTime = Date.now();
-          userAccessData.isInCooldown = false;
-          localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-        } else {
-          window.location.href = COOLDOWN_PAGE_URL;
-          return;
-        }
+    if (userAccessData.isInCooldown) {
+      // Check if cooldown period has ended
+      if (elapsed >= COOLDOWN_DURATION) {
+        // Reset the cooldown
+        userAccessData.accessStartTime = Date.now();
+        userAccessData.isInCooldown = false;
+        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
       } else {
-        if (elapsed >= ACCESS_DURATION) {
-          userAccessData.accessStartTime = Date.now();
-          userAccessData.isInCooldown = true;
-          localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-          window.location.href = COOLDOWN_PAGE_URL;
-          return;
-        } else {
-          const remainingAccessTime = ACCESS_DURATION - elapsed;
-          countdownElement.textContent = Math.ceil(remainingAccessTime / 1000);
-        }
+        // If still in cooldown, redirect
+        window.location.href = REDIRECT_URL;
+        return;
+      }
+    } else {
+      // If in access period, check if it has ended
+      if (elapsed >= ACCESS_DURATION) {
+        // Start cooldown
+        userAccessData.accessStartTime = Date.now();
+        userAccessData.isInCooldown = true;
+        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+        // Redirect to another page
+        window.location.href = REDIRECT_URL;
+        return;
       }
     }
+    // Update the time display if needed (Optional)
+  }
 
-    // Update the countdown every second when the page is active
-    window.addEventListener("focus", () => {
-      checkAccess();
-      countdownInterval = setInterval(checkAccess, 1000);
-    });
+  // Call the handler on page load
+  handleAccess();
 
-    // Stop the countdown interval when the page is not active
-    window.addEventListener("blur", () => {
-      clearInterval(countdownInterval);
-    });
-
-    // Initial access check and start the interval
-    let countdownInterval = setInterval(checkAccess, 1000);
-    checkAccess();
+  // Optional: Update access every second if you want to display a timer
+  setInterval(handleAccess, 1000);
       // Retrieve the email from localStorage
         const email = localStorage.getItem('userEmail');
         if (!email) {
