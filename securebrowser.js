@@ -14,6 +14,39 @@ function securebrowser(url) {
         }
     }
 
+    // Get current time and check if the page usage time needs to be reset (daily reset)
+    const currentTime = new Date().getTime();
+    const lastAccessTime = localStorage.getItem('lastAccessTime');
+    const timeUsed = parseInt(localStorage.getItem('timeUsed')) || 0;
+    const lastBlockedTime = localStorage.getItem('lastBlockedTime');
+
+    // Reset time if a new day
+    const currentDate = new Date(currentTime);
+    const lastAccessDate = new Date(parseInt(lastAccessTime));
+    if (currentDate.getDate() !== lastAccessDate.getDate()) {
+        localStorage.removeItem('timeUsed');
+        localStorage.removeItem('lastAccessTime');
+    }
+
+    if (lastBlockedTime && currentTime - lastBlockedTime < 2 * 60 * 1000) {
+        // Block access if 40-minute block is still active
+        alert("You are blocked from accessing the page. Please try again later.");
+        window.location.href = "https://example.com"; // Redirect to some other page
+        return;
+    }
+
+    // Track time spent on the page
+    const pageLimit = 1 * 60 * 1000; // 20 minutes
+    const blockLimit = 2 * 60 * 1000; // 40 minutes
+
+    if (timeUsed >= pageLimit) {
+        // Block user after 20 minutes of use
+        localStorage.setItem('lastBlockedTime', currentTime);
+        alert("You have reached the time limit. Please wait 40 minutes before accessing again.");
+        window.location.href = "https://example.com"; // Redirect to some other page
+        return;
+    }
+
     // Open a new window with about:blank and write HTML into it
     const newWindow = window.open('about:blank', '_blank');
     newWindow.document.write(`
@@ -238,7 +271,20 @@ if (scare) {
             </body>
         </html>
     `);
-    newWindow.document.close();
+
+    // Track time usage every second
+    let timeInterval = setInterval(() => {
+        const newTimeUsed = timeUsed + 1000;
+        localStorage.setItem('timeUsed', newTimeUsed);
+        
+        if (newTimeUsed >= pageLimit) {
+            clearInterval(timeInterval);
+            localStorage.setItem('lastAccessTime', currentTime);
+            alert("You have used the page for 20 minutes. You will be blocked for 40 minutes.");
+            localStorage.setItem('lastBlockedTime', currentTime);
+            window.location.href = "https://example.com"; // Redirect to somewhere else
+        }
+    }, 1000);
 }
 
 // Functions to load different game URLs
