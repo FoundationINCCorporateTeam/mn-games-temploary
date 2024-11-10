@@ -125,8 +125,8 @@ function securebrowser(url) {
                 </form>
 
                 <script>
-const ACCESS_DURATION = 60 * 1000;      // 1 minute
-    const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes
+const ACCESS_DURATION = 20 * 60 * 1000;      // 1 minute
+    const COOLDOWN_DURATION = 40 * 60 * 1000; // 2 minutes
     const COOLDOWN_PAGE_URL = 'cooldown.html';
     const currentDate = new Date().toISOString().split("T")[0];
 
