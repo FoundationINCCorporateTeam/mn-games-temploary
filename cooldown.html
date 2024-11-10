@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cooldown Page</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Background styling */
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      color: #fff;
+      text-align: center;
+    }
+
+    /* Container styling */
+    .cooldown-container {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 90%;
+    }
+
+    /* Heading styles */
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #ffddc1;
+    }
+
+    /* Countdown text styling */
+    p {
+      font-size: 1.2rem;
+      color: #f2f2f2;
+    }
+
+    /* Countdown timer styling */
+    #countdown {
+      font-size: 3rem;
+      font-weight: bold;
+      color: #ffddc1;
+      display: block;
+      margin-top: 10px;
+    }
+
+    /* Animation for countdown */
+    #countdown {
+      animation: pulse 1s infinite;
+    }
+
+    /* Pulse animation */
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.9;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cooldown-container">
+    <h1>Cooldown in Progress</h1>
+    <p>You can return to the main page in</p>
+    <span id="countdown">...</span>
+  </div>
+
+  <script>
+    const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes
+    const MAIN_PAGE_URL = 'mnlimited.html';
+    const currentDate = new Date().toISOString().split("T")[0];
+
+    let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
+      lastVisitDate: currentDate,
+      accessStartTime: Date.now(),
+      isInCooldown: true
+    };
+
+    if (userAccessData.lastVisitDate !== currentDate) {
+      userAccessData = {
+        lastVisitDate: currentDate,
+        accessStartTime: Date.now(),
+        isInCooldown: true
+      };
+      localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+    }
+
+    function updateCountdown() {
+      const currentTime = Date.now();
+      const elapsed = currentTime - userAccessData.accessStartTime;
+      const remainingCooldown = COOLDOWN_DURATION - elapsed;
+
+      if (remainingCooldown <= 0) {
+        userAccessData.isInCooldown = false;
+        userAccessData.accessStartTime = Date.now();
+        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+        window.location.href = MAIN_PAGE_URL;
+      } else {
+        document.getElementById("countdown").textContent = Math.ceil(remainingCooldown / 1000);
+      }
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
