@@ -106,24 +106,22 @@ function securebrowser(url) {
         background: rgba(0, 0, 0, 0.5); /* Optional: Adds a slight background behind text for readability */
     }
 
-    /* Cooldown timer styling */
-    #cooldownTimer {
-        position: fixed;
-        top: 20px;  /* Offset from the top edge */
-        right: 20px;  /* Offset from the right edge */
-        padding: 10px 20px;
-        background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
-        color: white;
-        font-size: 20px;
-        font-family: Arial, sans-serif;
-        border-radius: 5px;
-        z-index: 2000;  /* Ensures it's on top */
-        display: none;  /* Hidden by default */
+    /* Timer in upper right corner */
+    #timer {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffddc1;
+      padding: 10px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 5px;
     }
                 </style>
             </head>
             <body>
-            <div id="cooldownTimer"></div>
+             <div id="timer">00:00</div> <!-- Timer element in upper-right corner -->
                 <div class="iframe-container">
                     <iframe src="${url}" allowfullscreen></iframe>
                     <a href="${panicURL}" class="panic ${panicPosition}">Panic Button</a>
@@ -140,19 +138,20 @@ function securebrowser(url) {
                 </form>
 
                 <script>
+// Constants for the access and cooldown durations (in milliseconds)
 const ACCESS_DURATION = 20 * 60 * 1000;  // 20 minutes
 const COOLDOWN_DURATION = 40 * 60 * 1000; // 40 minutes
 const COOLDOWN_PAGE_URL = 'cooldown.html';
 const currentDate = new Date().toISOString().split("T")[0];
 
-// Retrieve user access data from localStorage
+// Retrieve user access data from localStorage, or initialize default data
 let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
   lastVisitDate: currentDate,
   accessStartTime: Date.now(),
   isInCooldown: false
 };
 
-// Reset daily if necessary
+// Reset data if it's a new day
 if (userAccessData.lastVisitDate !== currentDate) {
   userAccessData = {
     lastVisitDate: currentDate,
@@ -162,7 +161,7 @@ if (userAccessData.lastVisitDate !== currentDate) {
   localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
 }
 
-// Function to format time in HH:MM:SS
+// Function to format the remaining time in HH:MM:SS format
 function formatTime(ms) {
   const seconds = Math.floor(ms / 1000);
   const minutes = Math.floor(seconds / 60);
@@ -170,7 +169,7 @@ function formatTime(ms) {
   return `${String(hours).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
 }
 
-// Function to update the displayed timer
+// Function to update the displayed timer based on cooldown or access state
 function updateTimer() {
   const currentTime = Date.now();
   const elapsed = currentTime - userAccessData.accessStartTime;
@@ -178,26 +177,27 @@ function updateTimer() {
   let timerMessage = '';
 
   if (userAccessData.isInCooldown) {
-    // Calculate remaining cooldown time
+    // In cooldown period, calculate remaining cooldown time
     remainingTime = COOLDOWN_DURATION - elapsed;
     if (remainingTime <= 0) {
-      // Cooldown is over
+      // Cooldown finished, start new access
       userAccessData.isInCooldown = false;
       userAccessData.accessStartTime = Date.now();
       localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
     } else {
       timerMessage = `Cooldown: ${formatTime(remainingTime)}`;
       document.getElementById('timer').innerText = timerMessage;
-      return; // Stay in cooldown mode
+      return; // Don't update anything else while in cooldown
     }
   } else {
-    // Calculate remaining access time
+    // In access period, calculate remaining access time
     remainingTime = ACCESS_DURATION - elapsed;
     if (remainingTime <= 0) {
-      // Access time is over, enter cooldown
+      // Access time finished, go into cooldown
       userAccessData.isInCooldown = true;
       userAccessData.accessStartTime = Date.now();
       localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+      // Redirect to cooldown page
       window.location.href = COOLDOWN_PAGE_URL;
     } else {
       timerMessage = `Access: ${formatTime(remainingTime)}`;
@@ -206,39 +206,39 @@ function updateTimer() {
   }
 }
 
-// Run the access handler and update the timer
+// Function to handle the access logic based on cooldown or access period
 function handleAccess() {
   const currentTime = Date.now();
   const elapsed = currentTime - userAccessData.accessStartTime;
 
   if (userAccessData.isInCooldown) {
-    // If still in cooldown, check remaining time
+    // If still in cooldown, check if the cooldown period is over
     if (elapsed >= COOLDOWN_DURATION) {
       userAccessData.isInCooldown = false;
       userAccessData.accessStartTime = Date.now();
       localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
     } else {
-      // Redirect to the cooldown page if still in cooldown
+      // Still in cooldown, redirect to the cooldown page
       window.location.href = COOLDOWN_PAGE_URL;
       return;
     }
   } else {
-    // If in access period, check if it has ended
+    // If in access period, check if the access period is over
     if (elapsed >= ACCESS_DURATION) {
       userAccessData.isInCooldown = true;
       userAccessData.accessStartTime = Date.now();
       localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-      // Redirect to the cooldown page
+      // Redirect to cooldown page after access period ends
       window.location.href = COOLDOWN_PAGE_URL;
       return;
     }
   }
 }
 
-// Initialize and continuously update access state and timer
+// Initialize and continuously update the access state and timer every second
 setInterval(() => {
-  handleAccess();
-  updateTimer();
+  handleAccess();  // Handle access/cooldown logic
+  updateTimer();   // Update the displayed countdown timer
 }, 1000);
       // Retrieve the email from localStorage
         const email = localStorage.getItem('userEmail');
