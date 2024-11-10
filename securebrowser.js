@@ -13,40 +13,6 @@ function securebrowser(url) {
             return;
         }
     }
-
-    // Get current time and check if the page usage time needs to be reset (daily reset)
-    const currentTime = new Date().getTime();
-    const lastAccessTime = localStorage.getItem('lastAccessTime');
-    const timeUsed = parseInt(localStorage.getItem('timeUsed')) || 0;
-    const lastBlockedTime = localStorage.getItem('lastBlockedTime');
-
-    // Reset time if a new day
-    const currentDate = new Date(currentTime);
-    const lastAccessDate = new Date(parseInt(lastAccessTime));
-    if (currentDate.getDate() !== lastAccessDate.getDate()) {
-        localStorage.removeItem('timeUsed');
-        localStorage.removeItem('lastAccessTime');
-    }
-
-    if (lastBlockedTime && currentTime - lastBlockedTime < 2 * 60 * 1000) {
-        // Block access if 40-minute block is still active
-        alert("You are blocked from accessing the page. Please try again later.");
-        window.location.href = "https://example.com"; // Redirect to some other page
-        return;
-    }
-
-    // Track time spent on the page
-    const pageLimit = 1 * 60 * 1000; // 20 minutes
-    const blockLimit = 2 * 60 * 1000; // 40 minutes
-
-    if (timeUsed >= pageLimit) {
-        // Block user after 20 minutes of use
-        localStorage.setItem('lastBlockedTime', currentTime);
-        alert("You have reached the time limit. Please wait 40 minutes before accessing again.");
-        window.location.href = "https://example.com"; // Redirect to some other page
-        return;
-    }
-
     // Open a new window with about:blank and write HTML into it
     const newWindow = window.open('about:blank', '_blank');
     newWindow.document.write(`
@@ -167,6 +133,39 @@ function securebrowser(url) {
 function requestParentPathname() {
   window.parent.postMessage("getPathname", "https://zealous-meadow-04d0ae41e.5.azurestaticapps.net");
 }
+  // Get current time and check if the page usage time needs to be reset (daily reset)
+    const currentTime = new Date().getTime();
+    const lastAccessTime = localStorage.getItem('lastAccessTime');
+    const timeUsed = parseInt(localStorage.getItem('timeUsed')) || 0;
+    const lastBlockedTime = localStorage.getItem('lastBlockedTime');
+
+    // Reset time if a new day
+    const currentDate = new Date(currentTime);
+    const lastAccessDate = new Date(parseInt(lastAccessTime));
+    if (currentDate.getDate() !== lastAccessDate.getDate()) {
+        localStorage.removeItem('timeUsed');
+        localStorage.removeItem('lastAccessTime');
+    }
+
+    if (lastBlockedTime && currentTime - lastBlockedTime < 2 * 60 * 1000) {
+        // Block access if 40-minute block is still active
+        alert("You are blocked from accessing the page. Please try again later.");
+        window.location.href = "https://example.com"; // Redirect to some other page
+        return;
+    }
+
+    // Track time spent on the page
+    const pageLimit = 1 * 60 * 1000; // 20 minutes
+    const blockLimit = 2 * 60 * 1000; // 40 minutes
+
+    if (timeUsed >= pageLimit) {
+        // Block user after 20 minutes of use
+        localStorage.setItem('lastBlockedTime', currentTime);
+        alert("You have reached the time limit. Please wait 40 minutes before accessing again.");
+        window.location.href = "https://example.com"; // Redirect to some other page
+        return;
+    }
+
 
 // Listen for the response from the parent page
 window.addEventListener('message', function(event) {
@@ -267,12 +266,7 @@ if (scare) {
 }
         // Run the checkEmail function every 1 second
         setInterval(checkEmail, 1000);
-    </script>
-            </body>
-        </html>
-    `);
-
-    // Track time usage every second
+            // Track time usage every second
     let timeInterval = setInterval(() => {
         const newTimeUsed = timeUsed + 1000;
         localStorage.setItem('timeUsed', newTimeUsed);
@@ -285,6 +279,10 @@ if (scare) {
             window.location.href = "https://example.com"; // Redirect to somewhere else
         }
     }, 1000);
+    </script>
+            </body>
+        </html>
+    `);
 }
 
 // Functions to load different game URLs
