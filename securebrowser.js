@@ -13,6 +13,7 @@ function securebrowser(url) {
             return;
         }
     }
+
     // Open a new window with about:blank and write HTML into it
     const newWindow = window.open('about:blank', '_blank');
     newWindow.document.write(`
@@ -133,39 +134,65 @@ function securebrowser(url) {
 function requestParentPathname() {
   window.parent.postMessage("getPathname", "https://zealous-meadow-04d0ae41e.5.azurestaticapps.net");
 }
-  // Get current time and check if the page usage time needs to be reset (daily reset)
-    const currentTime = new Date().getTime();
-    const lastAccessTime = localStorage.getItem('lastAccessTime');
-    const timeUsed = parseInt(localStorage.getItem('timeUsed')) || 0;
-    const lastBlockedTime = localStorage.getItem('lastBlockedTime');
+// Set durations in milliseconds
+  const ACCESS_DURATION = 60 * 1000; // 1 minute (allowed access)
+  const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes (cooldown)
+  const REDIRECT_URL = 'https://example.com'; // Replace with your redirect URL
+  
+  // Get the current date string (YYYY-MM-DD) to check against stored data
+  const currentDate = new Date().toISOString().split("T")[0];
 
-    // Reset time if a new day
-    const currentDate = new Date(currentTime);
-    const lastAccessDate = new Date(parseInt(lastAccessTime));
-    if (currentDate.getDate() !== lastAccessDate.getDate()) {
-        localStorage.removeItem('timeUsed');
-        localStorage.removeItem('lastAccessTime');
-    }
+  // Initialize or retrieve data from localStorage
+  const userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
+    lastVisitDate: currentDate,
+    accessStartTime: Date.now(),
+    isInCooldown: false
+  };
 
-    if (lastBlockedTime && currentTime - lastBlockedTime < 2 * 60 * 1000) {
-        // Block access if 40-minute block is still active
-        alert("You are blocked from accessing the page. Please try again later.");
-        window.location.href = "https://example.com"; // Redirect to some other page
+  // Reset daily if the last visit was on a different date
+  if (userAccessData.lastVisitDate !== currentDate) {
+    userAccessData.lastVisitDate = currentDate;
+    userAccessData.accessStartTime = Date.now();
+    userAccessData.isInCooldown = false;
+    localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+  }
+
+  function handleAccess() {
+    const currentTime = Date.now();
+    const elapsed = currentTime - userAccessData.accessStartTime;
+
+    if (userAccessData.isInCooldown) {
+      // Check if cooldown period has ended
+      if (elapsed >= COOLDOWN_DURATION) {
+        // Reset the cooldown
+        userAccessData.accessStartTime = Date.now();
+        userAccessData.isInCooldown = false;
+        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+      } else {
+        // If still in cooldown, redirect
+        window.location.href = REDIRECT_URL;
         return;
-    }
-
-    // Track time spent on the page
-    const pageLimit = 1 * 60 * 1000; // 20 minutes
-    const blockLimit = 2 * 60 * 1000; // 40 minutes
-
-    if (timeUsed >= pageLimit) {
-        // Block user after 20 minutes of use
-        localStorage.setItem('lastBlockedTime', currentTime);
-        alert("You have reached the time limit. Please wait 40 minutes before accessing again.");
-        window.location.href = "https://example.com"; // Redirect to some other page
+      }
+    } else {
+      // If in access period, check if it has ended
+      if (elapsed >= ACCESS_DURATION) {
+        // Start cooldown
+        userAccessData.accessStartTime = Date.now();
+        userAccessData.isInCooldown = true;
+        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+        // Redirect to another page
+        window.location.href = REDIRECT_URL;
         return;
+      }
     }
+    // Update the time display if needed (Optional)
+  }
 
+  // Call the handler on page load
+  handleAccess();
+
+  // Optional: Update access every second if you want to display a timer
+  setInterval(handleAccess, 1000);
 
 // Listen for the response from the parent page
 window.addEventListener('message', function(event) {
@@ -266,23 +293,11 @@ if (scare) {
 }
         // Run the checkEmail function every 1 second
         setInterval(checkEmail, 1000);
-            // Track time usage every second
-    let timeInterval = setInterval(() => {
-        const newTimeUsed = timeUsed + 1000;
-        localStorage.setItem('timeUsed', newTimeUsed);
-        
-        if (newTimeUsed >= pageLimit) {
-            clearInterval(timeInterval);
-            localStorage.setItem('lastAccessTime', currentTime);
-            alert("You have used the page for 20 minutes. You will be blocked for 40 minutes.");
-            localStorage.setItem('lastBlockedTime', currentTime);
-            window.location.href = "https://example.com"; // Redirect to somewhere else
-        }
-    }, 1000);
     </script>
             </body>
         </html>
     `);
+    newWindow.document.close();
 }
 
 // Functions to load different game URLs
