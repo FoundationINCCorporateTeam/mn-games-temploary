@@ -126,8 +126,8 @@ function securebrowser(url) {
 
                 <script>
  // Set durations in milliseconds
-  const ACCESS_DURATION = 60 * 1000; // 1 minute (allowed access)
-  const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes (cooldown)
+  const ACCESS_DURATION = 20 * 60 * 1000; // 1 minute (allowed access)
+  const COOLDOWN_DURATION = 40 * 60 * 1000; // 2 minutes (cooldown)
   const REDIRECT_URL = 'https://example.com'; // Replace with your redirect URL
   
   // Get the current date string (YYYY-MM-DD) to check against stored data
