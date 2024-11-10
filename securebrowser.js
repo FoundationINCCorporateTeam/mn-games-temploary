@@ -134,65 +134,52 @@ function securebrowser(url) {
 function requestParentPathname() {
   window.parent.postMessage("getPathname", "https://zealous-meadow-04d0ae41e.5.azurestaticapps.net");
 }
-// Set durations in milliseconds
-  const ACCESS_DURATION = 60 * 1000; // 1 minute (allowed access)
-  const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes (cooldown)
-  const REDIRECT_URL = 'https://example.com'; // Replace with your redirect URL
-  
-  // Get the current date string (YYYY-MM-DD) to check against stored data
-  const currentDate = new Date().toISOString().split("T")[0];
+ const ACCESS_DURATION = 60 * 1000; // 1 minute (allowed access)
+    const COOLDOWN_DURATION = 2 * 60 * 1000; // 2 minutes (cooldown)
+    const COOLDOWN_PAGE_URL = 'cooldown.html';
+    const currentDate = new Date().toISOString().split("T")[0];
 
-  // Initialize or retrieve data from localStorage
-  const userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
-    lastVisitDate: currentDate,
-    accessStartTime: Date.now(),
-    isInCooldown: false
-  };
+    let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
+      lastVisitDate: currentDate,
+      accessStartTime: Date.now(),
+      isInCooldown: false
+    };
 
-  // Reset daily if the last visit was on a different date
-  if (userAccessData.lastVisitDate !== currentDate) {
-    userAccessData.lastVisitDate = currentDate;
-    userAccessData.accessStartTime = Date.now();
-    userAccessData.isInCooldown = false;
-    localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-  }
+    if (userAccessData.lastVisitDate !== currentDate) {
+      userAccessData = {
+        lastVisitDate: currentDate,
+        accessStartTime: Date.now(),
+        isInCooldown: false
+      };
+      localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+    }
 
-  function handleAccess() {
-    const currentTime = Date.now();
-    const elapsed = currentTime - userAccessData.accessStartTime;
+    function checkAccess() {
+      const currentTime = Date.now();
+      const elapsed = currentTime - userAccessData.accessStartTime;
 
-    if (userAccessData.isInCooldown) {
-      // Check if cooldown period has ended
-      if (elapsed >= COOLDOWN_DURATION) {
-        // Reset the cooldown
-        userAccessData.accessStartTime = Date.now();
-        userAccessData.isInCooldown = false;
-        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+      if (userAccessData.isInCooldown) {
+        if (elapsed >= COOLDOWN_DURATION) {
+          userAccessData.accessStartTime = Date.now();
+          userAccessData.isInCooldown = false;
+          localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+        } else {
+          window.location.href = COOLDOWN_PAGE_URL;
+          return;
+        }
       } else {
-        // If still in cooldown, redirect
-        window.location.href = REDIRECT_URL;
-        return;
-      }
-    } else {
-      // If in access period, check if it has ended
-      if (elapsed >= ACCESS_DURATION) {
-        // Start cooldown
-        userAccessData.accessStartTime = Date.now();
-        userAccessData.isInCooldown = true;
-        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-        // Redirect to another page
-        window.location.href = REDIRECT_URL;
-        return;
+        if (elapsed >= ACCESS_DURATION) {
+          userAccessData.accessStartTime = Date.now();
+          userAccessData.isInCooldown = true;
+          localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+          window.location.href = COOLDOWN_PAGE_URL;
+          return;
+        }
       }
     }
-    // Update the time display if needed (Optional)
-  }
 
-  // Call the handler on page load
-  handleAccess();
-
-  // Optional: Update access every second if you want to display a timer
-  setInterval(handleAccess, 1000);
+    window.addEventListener("focus", checkAccess);
+    checkAccess();
         // Function to check email every second
         function checkEmail() {
             fetch('https://publicmowing.site.blueastroid.com/check-email.php', {
