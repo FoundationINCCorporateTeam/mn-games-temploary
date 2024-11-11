@@ -93,7 +93,7 @@
 <body>
   <div class="cooldown-container">
     <h1>Womp womp.</h1>
-    <p>Due to use, users have a Ultimate experience cooldown. The cooldown lasts for 40 min.</p>
+    <p>Due to use users have a Ultimate experience cooldown. The cooldown lasts for 40 min.</p>
     <span id="countdown">...</span>
     
     <!-- Admin Access Section -->
@@ -109,12 +109,18 @@
     const ADMIN_PASSWORD = 'MNNolan404'; // Set the admin password here
     const currentDate = new Date().toISOString().split("T")[0];
 
-    let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
-      lastVisitDate: currentDate,
-      accessStartTime: Date.now(),
-      isInCooldown: true,
-      remainingCooldown: COOLDOWN_DURATION // Start with full cooldown if not in localStorage
-    };
+    let userAccessData = JSON.parse(localStorage.getItem("userAccessData"));
+
+    // Initialize userAccessData if it's not in localStorage
+    if (!userAccessData) {
+      userAccessData = {
+        lastVisitDate: currentDate,
+        accessStartTime: Date.now(),
+        isInCooldown: true,
+        remainingCooldown: COOLDOWN_DURATION // Start with full cooldown if no data in localStorage
+      };
+      localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+    }
 
     // Reset the data daily if necessary
     if (userAccessData.lastVisitDate !== currentDate) {
