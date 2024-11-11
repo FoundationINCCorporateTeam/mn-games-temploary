@@ -105,18 +105,19 @@ function securebrowser(url) {
                         background: rgba(0, 0, 0, 0.5); /* Optional: Adds a slight background behind text for readability */
                     }
 
-                    /* Timer in upper right corner */
-                    #timer {
-                        position: absolute;
-                        top: 10px;
-                        right: 150px;
-                        font-size: 2rem;
-                        font-weight: bold;
-                        color: #ffddc1;
-                        padding: 10px;
-                        background-color: rgba(0, 0, 0, 0.7);
-                        border-radius: 5px;
-                    }
+                    #countdownTimer {
+    position: absolute;
+    top: 10px;
+    right: 150px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffddc1;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    display: block; /* Ensure it's set to block or flex, not hidden */
+    visibility: visible; /* Ensure visibility is set to visible */
+}
                 </style>
             </head>
             <body>
