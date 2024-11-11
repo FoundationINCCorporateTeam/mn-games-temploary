@@ -93,7 +93,7 @@
 <body>
   <div class="cooldown-container">
     <h1>Womp womp.</h1>
-    <p>Due to use users have a Ultimate experience cooldown. The cooldown lasts for 40 min.</p>
+    <p>Due to use, users have a Ultimate experience cooldown. The cooldown lasts for 40 min.</p>
     <span id="countdown">...</span>
     
     <!-- Admin Access Section -->
@@ -112,7 +112,8 @@
     let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
       lastVisitDate: currentDate,
       accessStartTime: Date.now(),
-      isInCooldown: true
+      isInCooldown: true,
+      remainingCooldown: COOLDOWN_DURATION // Start with full cooldown if not in localStorage
     };
 
     // Reset the data daily if necessary
@@ -120,25 +121,40 @@
       userAccessData = {
         lastVisitDate: currentDate,
         accessStartTime: Date.now(),
-        isInCooldown: true
+        isInCooldown: true,
+        remainingCooldown: COOLDOWN_DURATION
       };
       localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
     }
 
     function updateCountdown() {
       const currentTime = Date.now();
-      const elapsed = currentTime - userAccessData.accessStartTime;
-      const remainingCooldown = COOLDOWN_DURATION - elapsed;
+      let remainingCooldown;
 
-      if (remainingCooldown <= 0) {
-        userAccessData.isInCooldown = false;
-        userAccessData.accessStartTime = Date.now();
-        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-        window.location.href = MAIN_PAGE_URL;
+      if (userAccessData.isInCooldown) {
+        remainingCooldown = userAccessData.remainingCooldown - (currentTime - userAccessData.accessStartTime);
+        
+        if (remainingCooldown <= 0) {
+          // Cooldown has ended
+          userAccessData.isInCooldown = false;
+          userAccessData.remainingCooldown = null; // Reset remaining cooldown to null
+          userAccessData.accessStartTime = Date.now();
+          localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+          window.location.href = MAIN_PAGE_URL; // Redirect to the main page
+        }
       } else {
+        remainingCooldown = null; // Set null if no cooldown is active
+      }
+
+      // Update countdown display if cooldown is active
+      if (remainingCooldown > 0) {
         const minutes = Math.floor((remainingCooldown % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((remainingCooldown % (1000 * 60)) / 1000);
         document.getElementById("countdown").textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        userAccessData.remainingCooldown = remainingCooldown;
+        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+      } else {
+        document.getElementById("countdown").textContent = "Cooldown Ended";
       }
     }
 
@@ -146,6 +162,7 @@
       const enteredPassword = document.getElementById("adminPassword").value;
       if (enteredPassword === ADMIN_PASSWORD) {
         userAccessData.isInCooldown = false;
+        userAccessData.remainingCooldown = null; // Reset the cooldown
         userAccessData.accessStartTime = Date.now();
         localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
         alert("Access restored. Redirecting to the main page.");
@@ -153,6 +170,11 @@
       } else {
         alert("Incorrect password. Please try again.");
       }
+    }
+
+    // If the user is not in cooldown, don't allow access
+    if (!userAccessData.isInCooldown) {
+      window.location.href = MAIN_PAGE_URL; // Redirect to main page if not in cooldown
     }
 
     updateCountdown();
