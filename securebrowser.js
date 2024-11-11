@@ -79,6 +79,8 @@ function securebrowser(url) {
                     body, html {
                         height: 100%;
                         width: 100%;
+                        position: relative; /* Ensure that absolute elements are relative to the body */
+            min-height: 100vh;   /* Make sure the body takes full height */
                         display: flex;
                         justify-content: center;
                         align-items: center;
@@ -105,19 +107,19 @@ function securebrowser(url) {
                         background: rgba(0, 0, 0, 0.5); /* Optional: Adds a slight background behind text for readability */
                     }
 
-                    #timer {
-    position: absolute;
-    top: 10px;
-    right: 150px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffddc1;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 5px;
-    display: block; /* Ensure it's set to block or flex, not hidden */
-    visibility: visible; /* Ensure visibility is set to visible */
-}
+                     /* Timer styles */
+        #timer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffddc1;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            z-index: 1000; /* Ensure it's on top of other content */
+        }
                 </style>
             </head>
             <body>
