@@ -282,7 +282,7 @@ function securebrowser(url) {
 
 // Functions to load different game URLs
 function securebrowser1() {
-    var urls1 = 'https://teched.sdao.me/?url=https://now.gg/apps/a/10020/b.html';
+    var urls1 = 'https://blockingthisviolatesmyfirstamendmentrights.simlifeacademy.com/?url=https://now.gg/apps/a/10020/b.html';
     securebrowser(urls1);
 }
 
