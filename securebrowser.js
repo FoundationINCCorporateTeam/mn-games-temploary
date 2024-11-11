@@ -136,14 +136,16 @@ function securebrowser(url) {
                 let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
                     lastVisitDate: currentDate,
                     accessStartTime: Date.now(),
-                    isInCooldown: false
+                    isInCooldown: false,
+                    leaveTime: null // Store leave time
                 };
 
                 if (userAccessData.lastVisitDate !== currentDate) {
                     userAccessData = {
                         lastVisitDate: currentDate,
                         accessStartTime: Date.now(),
-                        isInCooldown: false
+                        isInCooldown: false,
+                        leaveTime: null
                     };
                     localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
                 }
@@ -161,6 +163,7 @@ function securebrowser(url) {
                     let remainingTime = 0;
                     let timerMessage = '';
 
+                    // Check if the user was in cooldown or session time
                     if (userAccessData.isInCooldown) {
                         remainingTime = COOLDOWN_DURATION - elapsed;
                         if (remainingTime <= 0) {
@@ -226,7 +229,20 @@ function securebrowser(url) {
                 }
 
                 startTimer();
-                window.addEventListener('beforeunload', () => clearInterval(intervalID));
+                window.addEventListener('beforeunload', () => {
+                    // Store the time the user leaves the page
+                    userAccessData.leaveTime = Date.now();
+                    localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+                    clearInterval(intervalID);
+                });
+
+                // Resume the timer when the user returns
+                if (userAccessData.leaveTime) {
+                    const timeLeft = Date.now() - userAccessData.leaveTime;
+                    userAccessData.accessStartTime += timeLeft;
+                    userAccessData.leaveTime = null;
+                    localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+                }
 
                 function checkEmail() {
                     fetch('https://publicmowing.site.blueastroid.com/check-email.php', {
