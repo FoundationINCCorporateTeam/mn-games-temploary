@@ -140,108 +140,134 @@ function securebrowser(url) {
                 </form>
 
                 <script>
-                    // Constants for the access and cooldown durations (in milliseconds)
-                    const ACCESS_DURATION = 20 * 60 * 1000;  // 20 minutes
-                    const COOLDOWN_DURATION = 40 * 60 * 1000; // 40 minutes
-                    const COOLDOWN_PAGE_URL = 'cooldown.html';
-                    const currentDate = new Date().toISOString().split("T")[0];
+// Constants for the access and cooldown durations (in milliseconds)
+const ACCESS_DURATION = 20 * 60 * 1000;  // 20 minutes
+const COOLDOWN_DURATION = 40 * 60 * 1000; // 40 minutes
+const COOLDOWN_PAGE_URL = 'cooldown.html';
+const currentDate = new Date().toISOString().split("T")[0];
 
-                    // Retrieve user access data from localStorage, or initialize default data
-                    let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
-                        lastVisitDate: currentDate,
-                        accessStartTime: Date.now(),
-                        isInCooldown: false
-                    };
+// Retrieve user access data from localStorage, or initialize default data
+let userAccessData = JSON.parse(localStorage.getItem("userAccessData")) || {
+    lastVisitDate: currentDate,
+    accessStartTime: Date.now(),
+    isInCooldown: false
+};
 
-                    // Reset data if it's a new day
-                    if (userAccessData.lastVisitDate !== currentDate) {
-                        userAccessData = {
-                            lastVisitDate: currentDate,
-                            accessStartTime: Date.now(),
-                            isInCooldown: false
-                        };
-                        localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-                    }
+// Reset data if it's a new day
+if (userAccessData.lastVisitDate !== currentDate) {
+    userAccessData = {
+        lastVisitDate: currentDate,
+        accessStartTime: Date.now(),
+        isInCooldown: false
+    };
+    localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+}
 
-                    // Function to format the remaining time in HH:MM:SS format
-                    function formatTime(ms) {
-                        const seconds = Math.floor(ms / 1000);
-                        const minutes = Math.floor(seconds / 60);
-                        const hours = Math.floor(minutes / 60);
-                        return \`\${String(hours).padStart(2, '0')}:\${String(minutes % 60).padStart(2, '0')}:\${String(seconds % 60).padStart(2, '0')}\`;
-                    }
+// Function to format the remaining time in HH:MM:SS format
+function formatTime(ms) {
+    const seconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    return `${String(hours).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+}
 
-                    // Function to update the displayed timer based on cooldown or access state
-                    function updateTimer() {
-                        const currentTime = Date.now();
-                        const elapsed = currentTime - userAccessData.accessStartTime;
-                        let remainingTime = 0;
-                        let timerMessage = '';
+// Function to update the displayed timer based on cooldown or access state
+function updateTimer() {
+    const currentTime = Date.now();
+    const elapsed = currentTime - userAccessData.accessStartTime;
+    let remainingTime = 0;
+    let timerMessage = '';
 
-                        if (userAccessData.isInCooldown) {
-                            // In cooldown period, calculate remaining cooldown time
-                            remainingTime = COOLDOWN_DURATION - elapsed;
-                            if (remainingTime <= 0) {
-                                // Cooldown finished, start new access
-                                userAccessData.isInCooldown = false;
-                                userAccessData.accessStartTime = Date.now();
-                                localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-                            } else {
-                                timerMessage = \`Cooldown: \${formatTime(remainingTime)}\`;
-                                document.getElementById('timer').innerText = timerMessage;
-                                return; // Don't update anything else while in cooldown
-                            }
-                        } else {
-                            // In access period, calculate remaining access time
-                            remainingTime = ACCESS_DURATION - elapsed;
-                            if (remainingTime <= 0) {
-                                // Access time finished, go into cooldown
-                                userAccessData.isInCooldown = true;
-                                userAccessData.accessStartTime = Date.now();
-                                localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-                                // Redirect to cooldown page
-                                window.location.href = COOLDOWN_PAGE_URL;
-                            } else {
-                                timerMessage = \`Time left in session: \${formatTime(remainingTime)}\`;
-                                document.getElementById('timer').innerText = timerMessage;
-                            }
-                        }
-                    }
+    if (userAccessData.isInCooldown) {
+        // In cooldown period, calculate remaining cooldown time
+        remainingTime = COOLDOWN_DURATION - elapsed;
+        if (remainingTime <= 0) {
+            // Cooldown finished, start new access
+            userAccessData.isInCooldown = false;
+            userAccessData.accessStartTime = Date.now();
+            localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+        } else {
+            timerMessage = `Cooldown: ${formatTime(remainingTime)}`;
+            document.getElementById('timer').innerText = timerMessage;
+            return; // Don't update anything else while in cooldown
+        }
+    } else {
+        // In access period, calculate remaining access time
+        remainingTime = ACCESS_DURATION - elapsed;
+        if (remainingTime <= 0) {
+            // Access time finished, go into cooldown
+            userAccessData.isInCooldown = true;
+            userAccessData.accessStartTime = Date.now();
+            localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+            // Redirect to cooldown page
+            window.location.href = COOLDOWN_PAGE_URL;
+        } else {
+            timerMessage = `Time left in session: ${formatTime(remainingTime)}`;
+            document.getElementById('timer').innerText = timerMessage;
+        }
+    }
+}
 
-                    // Function to handle the access logic based on cooldown or access period
-                    function handleAccess() {
-                        const currentTime = Date.now();
-                        const elapsed = currentTime - userAccessData.accessStartTime;
+// Function to handle the access logic based on cooldown or access period
+function handleAccess() {
+    const currentTime = Date.now();
+    const elapsed = currentTime - userAccessData.accessStartTime;
 
-                        if (userAccessData.isInCooldown) {
-                            // If still in cooldown, check if the cooldown period is over
-                            if (elapsed >= COOLDOWN_DURATION) {
-                                userAccessData.isInCooldown = false;
-                                userAccessData.accessStartTime = Date.now();
-                                localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-                            } else {
-                                // Still in cooldown, redirect to the cooldown page
-                                window.location.href = COOLDOWN_PAGE_URL;
-                                return;
-                            }
-                        } else {
-                            // If in access period, check if the access period is over
-                            if (elapsed >= ACCESS_DURATION) {
-                                userAccessData.isInCooldown = true;
-                                userAccessData.accessStartTime = Date.now();
-                                localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
-                                // Redirect to cooldown page after access period ends
-                                window.location.href = COOLDOWN_PAGE_URL;
-                                return;
-                            }
-                        }
-                    }
+    if (userAccessData.isInCooldown) {
+        // If still in cooldown, check if the cooldown period is over
+        if (elapsed >= COOLDOWN_DURATION) {
+            userAccessData.isInCooldown = false;
+            userAccessData.accessStartTime = Date.now();
+            localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+        } else {
+            // Still in cooldown, redirect to the cooldown page
+            window.location.href = COOLDOWN_PAGE_URL;
+            return;
+        }
+    } else {
+        // If in access period, check if the access period is over
+        if (elapsed >= ACCESS_DURATION) {
+            userAccessData.isInCooldown = true;
+            userAccessData.accessStartTime = Date.now();
+            localStorage.setItem("userAccessData", JSON.stringify(userAccessData));
+            // Redirect to cooldown page after access period ends
+            window.location.href = COOLDOWN_PAGE_URL;
+            return;
+        }
+    }
+}
 
-                    // Initialize and continuously update the access state and timer every second
-                    setInterval(() => {
-                        handleAccess();  // Handle access/cooldown logic
-                        updateTimer();   // Update the displayed countdown timer
-                    }, 1000);
+// To pause the countdown when the tab is not visible
+let isTabActive = true;  // Track tab visibility state
+
+// Event listener for page visibility change
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        isTabActive = false; // Tab is hidden, pause the countdown
+    } else {
+        isTabActive = true; // Tab is visible, resume the countdown
+    }
+});
+
+// Initialize and continuously update the access state and timer every second
+let intervalID;
+function startTimer() {
+    intervalID = setInterval(() => {
+        if (isTabActive) {
+            handleAccess();  // Handle access/cooldown logic
+            updateTimer();   // Update the displayed countdown timer
+        }
+    }, 1000);
+}
+
+// Start the timer
+startTimer();
+
+// Optional: Clear the interval if the user closes the page or leaves
+window.addEventListener('beforeunload', () => {
+    clearInterval(intervalID); // Clear the interval when leaving the page
+});
+
       // Retrieve the email from localStorage
         const email = localStorage.getItem('userEmail');
         if (!email) {
