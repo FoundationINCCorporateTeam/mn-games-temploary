@@ -105,7 +105,7 @@ function securebrowser(url) {
                         background: rgba(0, 0, 0, 0.5); /* Optional: Adds a slight background behind text for readability */
                     }
 
-                    #countdownTimer {
+                    #timer {
     position: absolute;
     top: 10px;
     right: 150px;
