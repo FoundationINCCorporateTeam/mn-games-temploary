@@ -199,8 +199,8 @@ function securebrowser(url) {
                                 // Redirect to cooldown page
                                 window.location.href = COOLDOWN_PAGE_URL;
                             } else {
-                                timerMessage = \`Access: \${formatTime(remainingTime)}\`;
-                                document.getElementById('countdownTimer').innerText = "Time left in session:" + timerMessage;
+                                timerMessage = \`Time left in session: \${formatTime(remainingTime)}\`;
+                                document.getElementById('timer').innerText = timerMessage;
                             }
                         }
                     }
