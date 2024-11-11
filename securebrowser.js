@@ -108,8 +108,8 @@ function securebrowser(url) {
                     /* Timer in upper right corner */
                     #timer {
                         position: absolute;
-                        top: 20px;
-                        right: 20px;
+                        top: 10px;
+                        right: 150px;
                         font-size: 2rem;
                         font-weight: bold;
                         color: #ffddc1;
@@ -200,7 +200,7 @@ function securebrowser(url) {
                                 window.location.href = COOLDOWN_PAGE_URL;
                             } else {
                                 timerMessage = \`Access: \${formatTime(remainingTime)}\`;
-                                document.getElementById('countdownTimer').innerText = timerMessage;
+                                document.getElementById('countdownTimer').innerText = "Time left in session:" + timerMessage;
                             }
                         }
                     }
