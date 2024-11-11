@@ -110,12 +110,12 @@ function securebrowser(url) {
                      /* Timer styles */
         #timer {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 15px;
+            right: 150px;
             font-size: 2rem;
             font-weight: bold;
             color: #ffddc1;
-            padding: 10px;
+            padding: 5px;
             background-color: rgba(0, 0, 0, 0.7);
             border-radius: 5px;
             z-index: 1000; /* Ensure it's on top of other content */
