@@ -169,7 +169,7 @@ if (scare) {
 .catch(error => console.error('Error:', error));
 }
         // Run the checkEmail function every 1 second
-        setInterval(checkEmail, 10000);
+        //setInterval(checkEmail, 10000);
     </script>
             </body>
         </html>
