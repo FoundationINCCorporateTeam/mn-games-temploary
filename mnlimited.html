@@ -141,30 +141,53 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-       <!-- AI Callout -->
-    <div id="ai-callout">👋 Hi there! I'm SmarterThanNolanAI! Need help? Click here to chat!</div>
+    <!-- AI Callout -->
+    <div id="ai-callout" role="button" tabindex="0" aria-label="Open chat widget">👋 Hi there! I'm SmarterThanNolanAI! Need help? Click here to chat!</div>
 
     <!-- Chat Widget -->
     <div id="chat-widget">
-        <div id="chat-button">
+        <!-- Chat Button -->
+        <div id="chat-button" role="button" tabindex="0" aria-label="Open chat">
             <span>
-            <img src="https://i.imghippo.com/files/SIXe8641kGQ.png"></span>
+                <img src="https://i.imghippo.com/files/SIXe8641kGQ.png" alt="Chat icon">
+            </span>
         </div>
+
         <!-- Chat Box -->
         <div id="chat-box">
+            <!-- Header -->
             <div id="chat-header">
                 <h4>SmarterThanNolanAI Assistant</h4>
-                <button id="close-chat">✖</button>
+                <button id="close-chat" aria-label="Close chat">✖</button>
             </div>
+
             <div id="chat-messages">
-                <div class="message bot-message">Hi! I am SmarterThanNolanAI! Need help? I'm here! Want to talk to an agent? Just tell me and I will redirect you!</div>
-            </div>
+                <div id="bot-message" class="message bot-message">
+                    Hi! I am SmarterThanNolanAI! Need help? I'm here! Want to talk to an agent? Just tell me, and I will redirect you!
+                </div>
+                <div id="startup-buttons">
+                    <!-- Placeholder for dynamically generated buttons -->
+                </div>
+            </div>            
+
+            <!-- Chat Input -->
             <div id="chat-input">
-                <input type="text" id="user-input" placeholder="Type your message here...">
-                <button id="send-button">
-                    <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><g fill="#292d32"><path d="m5.40995 21.7499c-1.12 0-1.83-.38-2.28-.83-.88-.88-1.5-2.75.48-6.72l.87-1.73c.11-.23.11-.71 0-.94l-.87-1.73c-1.99-3.97-1.36-5.85-.48-6.72.87-.88 2.75-1.51 6.71.48l8.55995 4.28c2.13 1.06 3.3 2.54 3.3 4.16s-1.17 3.1-3.29 4.16l-8.55995 4.28c-1.94.97-3.38 1.31-4.44 1.31zm0-18c-.54 0-.96.13-1.22.39-.73.72-.44 2.59.76 4.98l.87 1.74c.32.65.32 1.63 0 2.28l-.87 1.73c-1.2 2.4-1.49 4.26-.76 4.98.72.73 2.59.44 4.99-.76l8.55995-4.28c1.57-.78 2.46-1.81 2.46-2.82s-.9-2.04-2.47-2.82l-8.55995-4.27c-1.52-.76-2.83-1.15-3.76-1.15z"/><path d="m10.8395 12.75h-5.40005c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h5.40005c.41 0 .75.34.75.75s-.34.75-.75.75z"/></g></svg></button>
+                <input type="text" id="user-input" placeholder="Type your message here..." aria-label="Type your message">
+                <button id="send-button" aria-label="Send message">
+                    <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <g fill="#292d32">
+                            <path d="m5.40995 21.7499c-1.12 0-1.83-.38-2.28-.83-.88-.88-1.5-2.75.48-6.72l.87-1.73c.11-.23.11-.71 0-.94l-.87-1.73c-1.99-3.97-1.36-5.85-.48-6.72.87-.88 2.75-1.51 6.71.48l8.55995 4.28c2.13 1.06 3.3 2.54 3.3 4.16s-1.17 3.1-3.29 4.16l-8.55995 4.28c-1.94.97-3.38 1.31-4.44 1.31zm0-18c-.54 0-.96.13-1.22.39-.73.72-.44 2.59.76 4.98l.87 1.74c.32.65.32 1.63 0 2.28l-.87 1.73c-1.2 2.4-1.49 4.26-.76 4.98.72.73 2.59.44 4.99-.76l8.55995-4.28c1.57-.78 2.46-1.81 2.46-2.82s-.9-2.04-2.47-2.82l-8.55995-4.27c-1.52-.76-2.83-1.15-3.76-1.15z"/>
+                            <path d="m10.8395 12.75h-5.40005c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h5.40005c.41 0 .75.34.75.75s-.34.75-.75.75z"/>
+                        </g>
+                    </svg>
+                </button>
             </div>
-            <button class="button" onclick="window.location.href='/chat'">Need more help? Connect with an Agent 🤝</button>
+
+            <!-- Agent Connection Button -->
+            <button class="button" id="agent-button" aria-label="Connect to an agent">
+                Need more help? Connect with an Agent 🤝
+            </button>
+            <h6>Some answers may be incorrect. By using you agree to the <a href="/aipolicy.html">AI Policy</a></h6>
         </div>
     </div>
     <a href="/jobs"><h3>We're hiring! We are looking for people at OMS, and MGMS for research and support team positions!</h3></a>
