@@ -8,30 +8,64 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatMessages = document.getElementById("chat-messages");
     const aiCallout = document.getElementById("ai-callout");
     const slideMenu = document.getElementById("slide-menu");
+    // Add predefined messages for startup buttons
+    const predefinedMessages = [
+        "I need support! 💬",
+        "I want to help expand! 📈",
+        "Partnerships! 🤝",
+        "Can you connect me to an agent? 🏢",
+        "Something else! ❓"
+    ];
+    const startupButtonsContainer = document.getElementById("startup-buttons");
 
-    const apiUrl = "https://publicmowing.site.blueastroid.com/smarter/chat";  // Your backend API for chatting
-    let botMessageCount = 0;
-    // Function to open the chat box
+    // Create startup buttons dynamically
+    const createStartupButtons = () => {
+        predefinedMessages.forEach(message => {
+            const button = document.createElement("button");
+            button.className = "startup-button";
+            button.textContent = message;
+            button.addEventListener("click", () => {
+                // Submit the message as if it were typed by the user
+                userInput.value = message;
+                sendMessage();
+                // Hide the startup buttons after the first message is sent
+                startupButtonsContainer.style.display = "none";
+            });
+            startupButtonsContainer.appendChild(button);
+        });
+    };
+
+    // Function to initialize chat
     const openChatBox = () => {
         chatBox.style.display = "flex";
         chatButton.style.display = "none";
         aiCallout.style.display = "none";
-    };
 
-    // Function to close the chat box
-    const closeChatBox = () => {
-        chatBox.style.display = "none";
-        chatButton.style.display = "flex";
-        aiCallout.style.display = "block";
-        slideMenu.classList.remove("show");
+        if (chatMessages.children.length === 2 && 
+            chatMessages.firstElementChild.id === 'bot-message' && 
+            !chatMessages.children[1].classList.contains('message')) {
+            startupButtonsContainer.style.display = "block";
+        } else {
+            startupButtonsContainer.style.display = "none";
+        }        
     };
+ // Function to close the chat box
+ const closeChatBox = () => {
+    chatBox.style.display = "none";
+    chatButton.style.display = "flex";
+    aiCallout.style.display = "block";
+    slideMenu.classList.remove("show");
+};
+    // Call the function to generate startup buttons
+    createStartupButtons();
 
-    // Open chat on button or callout click
+    // Rest of the event listeners remain the same
     chatButton.addEventListener("click", openChatBox);
     aiCallout.addEventListener("click", openChatBox);
-
-    // Close chat box on close button click
     closeChatButton.addEventListener("click", closeChatBox);
+
+    const apiUrl = "/chat";  // Your backend API for chatting
+    let botMessageCount = 0;
 
     // Send message to the bot
     const sendMessage = async () => {
@@ -90,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Add bot message to the chat
             const botMessageDiv = document.createElement("div");
             botMessageDiv.className = "message bot-message";
+            botMessageDiv.id = "bot-message"
             const botAvatar = document.createElement("img");
             botAvatar.className = "avatar";
             botAvatar.src = "bot_avatar.jpg";  // Your bot avatar image
