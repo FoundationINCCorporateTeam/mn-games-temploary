@@ -50,6 +50,7 @@
     background-color: #0078d7;
     color: #fff;
     padding: 1px;
+    padding-left: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
