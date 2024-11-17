@@ -4,7 +4,10 @@
     right: 20px;
     z-index: 1000;
 }
-
+h4 {
+    margin-block-start: 0; /* Set to 0 or any desired value */
+    margin-block-end: 0;   /* Set to 0 or any desired value */
+}
 
 #chat-widget {
     position: fixed;
