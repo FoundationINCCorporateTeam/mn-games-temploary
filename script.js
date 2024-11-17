@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
     aiCallout.addEventListener("click", openChatBox);
     closeChatButton.addEventListener("click", closeChatBox);
 
-    const apiUrl = "https://publicmowing.site.blueastroid.com/smarter/chat";  // Your backend API for chatting
+    const apiUrl = "https://publicmowing.site.blueastroid.com/mncares/chat";  // Your backend API for chatting
     let botMessageCount = 0;
 
     // Send message to the bot
