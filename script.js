@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
                connectButton.className = "connect-button";
                connectButton.textContent = "🤝 Need more help? Connect to an Agent";
                connectButton.addEventListener("click", () => {
-                   window.open("https://tawk.to/chat/64879be5cc26a871b0222039/1hkpk6gll", "_blank"); // URL to connect to an agent
+                   window.open("/chat", "_blank"); // URL to connect to an agent
                });
                chatMessages.appendChild(connectButton);
            }
@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 connectButton.className = "message-connect-button";
                 connectButton.innerHTML = "🔗 Connect to Agent";
                 connectButton.addEventListener("click", () => {
-                    window.open("https://tawk.to/chat/64879be5cc26a871b0222039/1hkpk6gll", "_blank");
+                    window.open("/chat", "_blank");
                 });
                 botMessageDiv.appendChild(connectButton);
             }
