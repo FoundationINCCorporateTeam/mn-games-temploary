@@ -255,7 +255,7 @@ function openSecureBrowser19() {
     openSecureBrowser(urls9);
 }
 function openSecureBrowser20() {
-    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/impossiblequiz/index.html';
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/theimpossiblequiz/index.html';
     openSecureBrowser(urls9);
 }
 function openSecureBrowser21() {
