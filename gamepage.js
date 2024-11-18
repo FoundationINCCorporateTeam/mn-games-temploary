@@ -191,9 +191,8 @@ function openSecureBrowser3() {
     openSecureBrowser(urls3);
 }
 function openSecureBrowser4() {
-    var urls4 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20stickman-hook/index.html';
-    //openSecureBrowser(urls4);
-    alert("This game is working but being tested. Will be added this weekend")
+    var urls4 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/stickman-hook/index.html';
+    openSecureBrowser(urls4);
 }
 function openSecureBrowser5() {
     var urls5 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/FoundationINCCorporateTeam%203kh0-assets%20fixy%20worlds-hardest-game-2/index.html';
@@ -256,19 +255,16 @@ function openSecureBrowser19() {
     openSecureBrowser(urls9);
 }
 function openSecureBrowser20() {
-    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/impossiblequiz/impossiblequiz/index.html';
-    //openSecureBrowser(urls9);
-    alert("This game is working but being tested. Will be added this weekend")
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/impossiblequiz/index.html';
+    openSecureBrowser(urls9);
 }
 function openSecureBrowser21() {
-    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/timeshooter2/timeshooter2/index.html';
-    //openSecureBrowser(urls9);
-    alert("This game is working but being tested. Will be added this weekend")
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/timeshooter2/index.html';
+    openSecureBrowser(urls9);
 }
 function openSecureBrowser22() {
-    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/timeshooter3/timeshooter3/index.html';
-    //openSecureBrowser(urls9);
-    alert("This game is working but being tested. Will be added this weekend")
+    var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/timeshooter3/index.html';
+    openSecureBrowser(urls9);
 }
 function openSecureBrowser23() {
     var urls9 = 'https://lively-wave-02deb9a1e.5.azurestaticapps.net/9007199254740992/9007199254740992/index.html';
