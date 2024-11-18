@@ -98,13 +98,14 @@
             <label for="jobreason">Job Explanation</label>
             <textarea id="jobreason" name="jobreason" placeholder="Explain why you are a good fit for the job" required></textarea>
         </div>
-        <button type="submit" class="submit-btn">Submit Application</button>
+        <button id="submitbutton" type="submit" class="submit-btn">Submit Application</button>
     </form>
 </div>
 
 <script>
 document.getElementById('jobApplicationForm').addEventListener('submit', function(event) {
     event.preventDefault();
+    const submitButton = document.getElementById('submitbutton');
 submitButton.disabled = true;
 
             // Change button text or style if needed
