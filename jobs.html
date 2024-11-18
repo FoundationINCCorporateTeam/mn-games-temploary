@@ -63,6 +63,10 @@
         .submit-btn:hover {
             background-color: #0056b3;
         }
+        .submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -101,7 +105,16 @@
 <script>
 document.getElementById('jobApplicationForm').addEventListener('submit', function(event) {
     event.preventDefault();
+submitButton.disabled = true;
 
+            // Change button text or style if needed
+            submitButton.textContent = 'Form Submitted...';
+
+            // Set a 30-second timer to re-enable the button
+            setTimeout(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Application'; // Reset button text
+            }, 30000); // 30 seconds in milliseconds
     const formData = new FormData(this);
     const data = {
         name: formData.get('name'),
