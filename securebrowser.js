@@ -284,7 +284,7 @@ function securebrowser(url) {
 function securebrowser1() {
     //var urls1 = 'https://teched-gvcccvdaenh0gge0.eastus2-01.azurewebsites.net/?url=https://now.gg/apps/a/10020/b.html';
     //securebrowser(urls1);
-    alert("Our roblox servers are being changed. Time back up is TBD but hopefully by Thursday.");
+    alert("Our roblox servers are being changed. This will take some time.");
 }
 
 // Function to apply settings from the popup
